@@ -1,0 +1,9 @@
+url: "https://ethanmcbloxxer.github.io"
+baseurl: "/Rosploco"
+title: Rosploco
+defaults:
+    -
+        scope:
+            path: ""
+        values:
+            title: "Rosploco"

@@ -8,6 +8,10 @@ To use this in your project, you must credit me and Microsoft. We provide an eas
 -- Monaco and Functions by Microsoft and EthanMcBloxxer on GitHub under the MIT License.
 ```
 
+This is already there by default, so you shouldn't have much trouble.
+
+Since Rosploco is a web-based program (as is Monaco), you can also use it interactively inside of your web browser. Just go to [ethanmcbloxxer.github.io/Rosploco/rosploco.html](https://ethanmcbloxxer.github.io/Rosploco/rosploco.html).
+
 <details><summary>Previews</summary>
 
 ![P9uQMEb](https://user-images.githubusercontent.com/39684348/112051473-5b33b480-8b28-11eb-831a-3ed0e89fcb63.gif)
