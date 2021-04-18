@@ -1603,6 +1603,327 @@
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 			]}}});
+			/* Properties (Instance) */ monaco.languages.registerCompletionItemProvider('lua', {triggerCharacters: ["."], provideCompletionItems: function () {return {suggestions: [
+				{
+					label: "Archivable",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: "Determines if an Instance can be cloned using Instance:Clone or saved to file.",
+
+					insertText: "Archivable",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "ClassName",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: "A read-only string representing the class this Instance belongs to.",
+
+					insertText: "ClassName",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "Name",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: "A non-unique identifier of the Instance.",
+
+					insertText: "Name",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "Parent",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: "Determines the hierarchical parent of the Instance.",
+
+					insertText: "Parent",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "RobloxLocked",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: "A deprecated property that used to protect CoreGui objects.",
+
+					tags: [monaco.languages.CompletionItemTag.Deprecated],
+
+					insertText: "RobloxLocked",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+			]}}});
+			/* Properties (BasePart) */ monaco.languages.registerCompletionItemProvider('lua', {triggerCharacters: ["."], provideCompletionItems: function () {return {suggestions: [
+				{
+					label: "Anchored",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: "Determines whether a part is immovable by physics.",
+
+					insertText: "Anchored",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "AssemblyAngularVelocity",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: "The angular velocity of the part’s assembly.",
+
+					insertText: "AssemblyAngularVelocity",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "AssemblyCenterOfMass",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: "The center of mass of the part’s assembly in world space.",
+
+					insertText: "AssemblyCenterOfMass",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "AssemblyLinearVelocity",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: "The linear velocity of the part’s assembly.",
+
+					insertText: "AssemblyLinearVelocity",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "AssemblyMass",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: "The total mass of the part’s assembly.",
+
+					insertText: "AssemblyMass",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "AssemblyRootPart",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: "A reference to the root part of the assembly.",
+
+					insertText: "AssemblyRootPart",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "BrickColor",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: "Determines the color of a part.",
+
+					insertText: "BrickColor",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "CFrame",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: "Determines the position and rotation of a part in the world.",
+
+					insertText: "CFrame",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "CanCollide",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: "Determines whether a part may collide with other parts.",
+
+					insertText: "CanCollide",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "CanTouch",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: "Lets your determine if the part will trigger Touched or TouchEnded events on other parts with `TouchTransmitters`.",
+
+					insertText: "CanTouch",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "CastShadow",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: "Determines whether or not a part casts a shadow.",
+
+					insertText: "CastShadow",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "CenterOfMass",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: "Describes the world position in which a part’s center of mass is located.",
+
+					insertText: "CenterOfMass",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "CollisionGroupId",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: "Describes the automatically-set ID number of a part’s collision group.",
+
+					insertText: "CollisionGroupId",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "Color",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: "Determines the color of a part.",
+
+					insertText: "Color",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "CustomPhysicalProperties",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: "Determines several physical properties of a part.",
+
+					insertText: "CustomPhysicalProperties",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "LocalTransparencyModifier",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: "Determines a multiplier for `Transparency` that is only visible to the local client.",
+
+					insertText: "LocalTransparencyModifier",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "Locked",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: "Determines whether a part is selectable in Studio.",
+
+					insertText: "Locked",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "Mass",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: "Describes the mass of the part, the product of its density and volume.",
+
+					insertText: "Mass",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "Massless",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: "Determines whether the part contributes to the total mass or inertia of its rigid body.",
+
+					insertText: "Massless",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "Material",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: "Determines the texture and default physical properties of a part.",
+
+					insertText: "Material",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "Orientation",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: "Describes the position of the part in the world.",
+
+					insertText: "Orientation",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "Position",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: "Describes the position of the part in the world.",
+
+					insertText: "Position",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "Reflectance",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: "Determines how much a part reflects the skybox.",
+
+					insertText: "Reflectance",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "ResizeIncrement",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: "Describes the smallest change in size allowable by the Resize method.",
+
+					insertText: "ResizeIncrement",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "ResizeableFaces",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: "Describes the faces on which a part may be resized.",
+
+					insertText: "ResizeableFaces",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "RootPriority",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: "The main rule in determining the root part of an assembly.",
+
+					insertText: "RootPriority",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "Rotation",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: "The rotation of the part in degrees for the three axes.",
+
+					insertText: "Rotation",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "Size",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: "Determines the dimensions of a part.",
+
+					insertText: "Size",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "SpecificGravity",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: "The ratio of the part’s density to the density of water determined by the material.",
+
+					insertText: "SpecificGravity",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "Transparency",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: "Determines how much a part can be seen through (the inverse of part opacity).",
+
+					insertText: "Transparency",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+			]}}});
 			/* Methods (Instance) */ monaco.languages.registerCompletionItemProvider('lua', {triggerCharacters: [":"], provideCompletionItems: function () {return {suggestions: [
 				{
 					label: "ClearAllChildren",
