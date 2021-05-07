@@ -3462,7 +3462,7 @@
 
 			var setScroll = function (line) {editor.revealLineInCenter({ lineNumber: line });}
 
-			var	refresh = function () {
+			var refresh = function () {
 				var text = getText();
 				setText("");
 				editor.trigger('keyboard', 'type', { text: text });
