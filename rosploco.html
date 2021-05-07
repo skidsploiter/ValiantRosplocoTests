@@ -147,6 +147,7 @@
 					label: "elseif",
 					kind: monaco.languages.CompletionItemKind.Keyword,
 					detail: "Keyword",
+					documentation: "A combination of `if` and `else` which allows you to evaluate additional conditions in the same block.",
 					preselect: true,
 
 					insertText: "elseif ${1:condition} then\n\t$0",
@@ -156,6 +157,7 @@
 					label: "else",
 					kind: monaco.languages.CompletionItemKind.Keyword,
 					detail: "Keyword",
+					documentation: "Provides a fallback for `if` and `elseif`, which is what to do when all of the evaluated conditions are falsy (nil, false).",
 					preselect: true,
 
 					insertText: "else\n\t$0",
