@@ -46,7 +46,7 @@ define(["require", "exports"], function (require, exports) {
 		tokenPostfix: '.lua',
 		keywords: [
 			// https://developer.roblox.com/en-us/articles/Variables
-			'and', 'break', 'do', 'else', 'elseif',
+			'and', 'break', 'continue', 'do', 'else', 'elseif',
 			'end', 'false', 'for', 'function', 'if',
 			'in', 'local', 'nil', 'not', 'or',
 			'repeat', 'return', 'then', 'true', 'until',
