@@ -1676,6 +1676,48 @@
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 			]}}});
+			/* Properties (DataModel) */ monaco.languages.registerCompletionItemProvider('lua', {triggerCharacters: ["."], provideCompletionItems: function () {return {suggestions: [
+				{
+					label: "CreatorId",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: {value: "Describes the ID of the user or group that owns the place."},
+					filterText: "game.CreatorId",
+
+					insertText: "CreatorId",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "GameId",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: {value: "Describes the ID of the game the place running on the server belongs to."},
+					filterText: "game.GameId",
+
+					insertText: "GameId",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "JobId",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: {value: "A unique identifier for the game server instance running."},
+					filterText: "game.JobId",
+
+					insertText: "JobId",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "PlaceId",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property",
+					documentation: {value: "Describes the ID of the place running on the server."},
+					filterText: "game.PlaceId",
+
+					insertText: "PlaceId",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+			]}}});
 			/* Properties (BasePart) */ monaco.languages.registerCompletionItemProvider('lua', {triggerCharacters: ["."], provideCompletionItems: function () {return {suggestions: [
 				{
 					label: "Anchored",
@@ -2222,47 +2264,7 @@
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 			]}}});
-			/* Properties & Methods (DataModel / ServiceProvider) */ monaco.languages.registerCompletionItemProvider('lua', {triggerCharacters: [":"], provideCompletionItems: function () {return {suggestions: [
-				{
-					label: "CreatorId",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property",
-					documentation: {value: "Describes the ID of the user or group that owns the place."},
-					filterText: "game.CreatorId",
-
-					insertText: "CreatorId",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "GameId",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property",
-					documentation: {value: "Describes the ID of the game the place running on the server belongs to."},
-					filterText: "game.GameId",
-
-					insertText: "GameId",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "JobId",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property",
-					documentation: {value: "A unique identifier for the game server instance running."},
-					filterText: "game.JobId",
-
-					insertText: "JobId",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "PlaceId",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property",
-					documentation: {value: "Describes the ID of the place running on the server."},
-					filterText: "game.PlaceId",
-
-					insertText: "PlaceId",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
+			/* Methods (ServiceProvider) */ monaco.languages.registerCompletionItemProvider('lua', {triggerCharacters: [":"], provideCompletionItems: function () {return {suggestions: [
 				{
 					label: "FindService",
 					kind: monaco.languages.CompletionItemKind.Method,
