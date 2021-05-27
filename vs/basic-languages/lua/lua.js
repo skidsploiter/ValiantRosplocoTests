@@ -64,7 +64,7 @@ define(["require", "exports"], function (require, exports) {
 
 			'coroutine', 'debug', 'table', 'pairs', 'ipairs', 'bit32', 'math', 'utf8', 'os',
 
-			'Color3', 'Instance', 'BrickColor', 'Vector3', 'Vector2', 'UDim2',
+			'Color3', 'Instance', 'BrickColor', 'CFrame', 'Vector3', 'Vector2', 'UDim2',
 			'Drawing',
 
 			'collectgarbage', 'getfenv', 'getmetatable',

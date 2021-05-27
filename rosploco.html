@@ -52,7 +52,7 @@
 					label: "false",
 					kind: monaco.languages.CompletionItemKind.Keyword,
 					detail: "Boolean",
-					documentation: {value: "Boolean type false, often used in parameters or operations, like `if foo == false then [...] end`."},
+					documentation: {value: "Boolean type false, often used in parameters or operations."},
 					preselect: true,
 
 					insertText: "false",
@@ -185,7 +185,7 @@
 					insertText: "for ${1:returns} in ${2:iterator} do\n\t$0\nend",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 
-					filterText: "for ",
+					filterText: "for in ",
 				},
 				{
 					label: "for i, v in ipairs()",
@@ -239,7 +239,7 @@
 					label: "while wait() do",
 					kind: monaco.languages.CompletionItemKind.Snippet,
 					detail: "Loop",
-					documentation: {value: "Shorthand for\n\nwhile true do\n\twait()\nend\n\nPrefer `while true do wait() end`, it is much more syntactically correct."},
+					documentation: {value: "Shorthand for\n\n```lua\nwhile true do\n\twait()\nend\n```\n\nalthough not using this is much more syntactically correct."},
 
 					insertText: "while wait() do\n\t$0\nend",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -307,7 +307,7 @@
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
-					label: "collectgarbage",
+					label: "collectgarbage(\"count\")",
 					kind: monaco.languages.CompletionItemKind.Function,
 					detail: "Lua Global",
 					documentation: {value: "Performs a count operation on the Lua garbage collector, which returns the total Lua memory usage in kilobytes."},
@@ -379,12 +379,12 @@
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
-					label: "newproxy",
+					label: "newproxy(true)",
 					kind: monaco.languages.CompletionItemKind.Function,
 					detail: "Lua Global",
 					documentation: {value: "Creates a blank userdata, with the option for it to have a metatable."},
 
-					insertText: "newproxy($0)",
+					insertText: "newproxy(true)",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
@@ -463,27 +463,27 @@
 					label: "setfenv",
 					kind: monaco.languages.CompletionItemKind.Function,
 					detail: "Lua Global",
-					documentation: {value: "Sets the environment to be used by the given function. The first argument can be a function or a number that specifies the function at that stack level."},
+					documentation: {value: "Sets the environment to be used by the given function. The first argument can be a function or a number that specifies the function at that stack level. **Do not call the function**."},
 
-					insertText: "setfenv(${1:function}, ${2:fenv})",
+					insertText: "setfenv(${1:block}, ${2:fenv})",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
 					label: "setmetatable",
 					kind: monaco.languages.CompletionItemKind.Function,
 					detail: "Lua Global",
-					documentation: {value: "Sets the metatable for the given table to newMeta. If newMeta is nil, the metatable of t is removed. If t already has a metatable whose __metatable metamethod is set, calling this on t raises an error."},
+					documentation: {value: "Sets the metatable for the given table to `metatable`. If `metatable` is nil, the metatable of t is removed. If t already has a metatable whose __metatable metamethod is set, calling this on t raises an error."},
 
-					insertText: "setmetatable(${1:table}, ${2:newMeta})",
+					insertText: "setmetatable(${1:table}, ${2:metatable})",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
 					label: "tonumber",
 					kind: monaco.languages.CompletionItemKind.Function,
 					detail: "Lua Global",
-					documentation: {value: "tonumber($0)"},
+					documentation: {value: "Attempts to convert the arg into a number with a specified base (the optional second argument) to interpret the value in. If it cannot be converted, this function returns nil. Base is automatically 10 unless the number begins with '0x', which makes the base 16."},
 
-					insertText: "Attempts to convert the arg into a number with a specified base (the optional second argument) to interpret the value in. If it cannot be converted, this function returns nil. Base is automatically 10 unless the number begins with '0x', which makes the base 16.",
+					insertText: "tonumber($0)",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
@@ -499,7 +499,7 @@
 					label: "type", // see "typeof" in Roblox Globals
 					kind: monaco.languages.CompletionItemKind.Function,
 					detail: "Lua Global",
-					documentation: {value: "Returns the type of its only argument, coded as a string. Deprecated in favor of `typeof`, which only exists in Roblox Lua. Use `type` if you don't want to include Roblox Datatypes or are using vanilla Lua."},
+					documentation: {value: "Returns the type of its only argument, coded as a string. Deprecated in favor of `typeof`, which only exists in Roblox Lua. Use `type` if you don't want to include Roblox Datatypes or are using vanilla Lua. This is also 30% faster than `typeof`."},
 					tags: [monaco.languages.CompletionItemTag.Deprecated],
 
 					insertText: "typeof($0)",
@@ -509,7 +509,7 @@
 					label: "unpack",
 					kind: monaco.languages.CompletionItemKind.Function,
 					detail: "Lua Global",
-					documentation: {value: "Returns the elements from the given table. By default, start is 1 and end is the length of list, as defined by the length (#) operator."},
+					documentation: {value: "Returns the elements from the given table. By default, start is 1 and end is the length of list, as defined by the length (#) operator. `table.unpack` has the same behavior."},
 
 					insertText: "unpack(${1:list}, ${2:start}, ${3:finish})",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -518,16 +518,26 @@
 					label: "xpcall",
 					kind: monaco.languages.CompletionItemKind.Function,
 					detail: "Lua Global",
-					documentation: {value: "This function is similar to pcall, except that you can set a new error handler (as a function)."},
+					documentation: {value: "This function is similar to `pcall`, except that you can set a new error handler (as a function)."},
 
-					insertText: "local success, message = pcall($2, ${0:handler} ${1:arguments})",
+					insertText: "local success, message = xpcall($2, ${0:handler}, ${1:arguments})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "ypcall",
+					kind: monaco.languages.CompletionItemKind.Function,
+					detail: "Lua Global",
+					documentation: {value: "This function is the exact same as `pcall`, and was used to allow yielding inside of a `pcall`. That functionality is now implemented in the normal `pcall`, and as such, this function is deprecated."},
+					tags: [monaco.languages.CompletionItemTag.Deprecated],
+
+					insertText: "local success, message = pcall($0, ${1:arguments})",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
 					label: "_G",
 					kind: monaco.languages.CompletionItemKind.Variable,
 					detail: "Lua Global",
-					documentation: {value: "A table that is shared between all scripts of the same context level (a table shared cross-script). This is seperate from `shared`."},
+					documentation: {value: "A table that is shared between all scripts of the same context level (a table shared cross-script). This is separate from `shared`."},
 
 					insertText: "_G.$0",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -546,9 +556,9 @@
 					label: "delay",
 					kind: monaco.languages.CompletionItemKind.Function,
 					detail: "Roblox Global",
-					documentation: {value: "Schedules a function to be executed after delayTime seconds have passed, without yielding the current thread. The minimum delay time is 29ms+ and is also the default duration for delayTime."},
+					documentation: {value: "Schedules a function to be executed after `time` seconds have passed, without yielding the current thread. The minimum delay time is 29ms+ and is also the default duration for `time`."},
 
-					insertText: "delay(${1:delayTime}, $0)",
+					insertText: "delay(${1:time}, $0)",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
@@ -582,7 +592,7 @@
 					label: "settings",
 					kind: monaco.languages.CompletionItemKind.Function,
 					detail: "Roblox Global",
-					documentation: {value: "Returns the `GlobalSettings` object, which can be used to access the settings objects that are used in Roblox Studio’s settings menu."},
+					documentation: {value: "Returns the `GlobalSettings` object, which can be used to access the settings objects that are used in Roblox Studio's settings menu."},
 
 					insertText: "settings()",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -591,7 +601,7 @@
 					label: "spawn",
 					kind: monaco.languages.CompletionItemKind.Function,
 					detail: "Roblox Global",
-					documentation: {value: "Runs the specified callback function in a separate thread, without yielding the current thread. The function will be executed the next time Roblox’s Task Scheduler runs an update cycle."},
+					documentation: {value: "Runs the specified callback function in a separate thread, without yielding the current thread. The function will be executed the next time Roblox's Task Scheduler runs an update cycle."},
 
 					insertText: "spawn($0)",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -600,7 +610,7 @@
 					label: "stats",
 					kind: monaco.languages.CompletionItemKind.Function,
 					detail: "Roblox Global",
-					documentation: {value: "Returns the Stats service. Deprecated in favor of game:GetService(\"Stats\")."},
+					documentation: {value: "Returns the Stats service. Deprecated in favor of\n```lua\ngame:GetService(\"Stats\")\n```"},
 					tags: [monaco.languages.CompletionItemTag.Deprecated],
 
 					insertText: "game:GetService(\"Stats\")",
@@ -610,7 +620,7 @@
 					label: "tick",
 					kind: monaco.languages.CompletionItemKind.Function,
 					detail: "Roblox Global",
-					documentation: {value: "Returns the elapsed time (in seconds) since the Unix Epoch (1 January 1970) on the local session's computer."},
+					documentation: {value: "Returns the elapsed time (in seconds) since the Unix Epoch (1 January 1970) on the local session's computer. `os.time()` always returns Unix time and should be used instead."},
 
 					insertText: "tick()",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -637,7 +647,7 @@
 					label: "UserSettings",
 					kind: monaco.languages.CompletionItemKind.Function,
 					detail: "Roblox Global",
-					documentation: {value: "Returns the UserSettings object, which is used to read information from the current user’s game menu settings."},
+					documentation: {value: "Returns the UserSettings object, which is used to read information from the current user's game menu settings."},
 
 					insertText: "UserSettings()",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -664,7 +674,7 @@
 					label: "warn",
 					kind: monaco.languages.CompletionItemKind.Function,
 					detail: "Roblox Global",
-					documentation: {value: "Behaves identically to Lua’s print function, except the output is styled as a warning, with yellow text and a timestamp."},
+					documentation: {value: "Behaves identically to Lua's print function, except the output is styled as a warning, with yellow text and a timestamp."},
 
 					insertText: "warn($0)",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -681,7 +691,7 @@
 					label: "game",
 					kind: monaco.languages.CompletionItemKind.Variable,
 					detail: "Roblox Global",
-					documentation: {value: "A reference to the DataModel, which is the root Instance of Roblox’s parent/child hierarchy."},
+					documentation: {value: "A reference to the DataModel, which is the root Instance of Roblox's parent/child hierarchy."},
 					preselect: true,
 
 					insertText: "game",
@@ -690,7 +700,7 @@
 					label: "shared",
 					kind: monaco.languages.CompletionItemKind.Variable,
 					detail: "Roblox Global",
-					documentation: {value: "A table that is shared across all scripts that share the same execution context level (a table shared cross-script). This is seperate from `_G`."},
+					documentation: {value: "A table that is shared across all scripts that share the same execution context level (a table shared cross-script). This is separate from `_G`."},
 
 					insertText: "",
 				},
@@ -713,13 +723,59 @@
 					insertText: "workspace",
 				},
 			]}}});
+			/* Datatypes */ monaco.languages.registerCompletionItemProvider('lua', {provideCompletionItems: function () {return {suggestions: [
+				{
+					label: "Axes.new",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Creates a new Axes using list of axes and/or faces. NormalIds (faces) are converted to the corresponding axes."},
+
+					insertText: "Axes.new($0)",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "BrickColor.new",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Constructs a BrickColor using its numerical index, name, or RGB / Color3 match."},
+
+					insertText: "BrickColor.new(${0:name|index|rgb|color3})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "CatalogSearchParams.new",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Makes a new CatalogSearchParams object which specifies the parameters of a catalog search."},
+
+					insertText: "local ${1:name} = CatalogSearchParams.new()",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "CFrame.new",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Creates a CFrame based on nothing, a Vector3, or (x, y, z) coordinates and an optional quaternion and/or orientation matrix."},
+
+					insertText: "CFrame.new($0)",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "CFrame.lookAt",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Constructs a CFrame located at the given `position`, and facing towards `look`. The upward `direction` can optionally be specified, which is `0, 1, 0` by default."},
+
+					insertText: "CFrame.lookAt(${1:position}, ${2:look}, ${3:direction})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+			]}}});
 			/* bit32 */ monaco.languages.registerCompletionItemProvider('lua', {provideCompletionItems: function () {return {suggestions: [
 				{
 					label: "bit32",
 					kind: monaco.languages.CompletionItemKind.Module,
 					detail: "Library",
 					documentation: {value: "This library is a back-ported feature from Lua 5.2 which provides functions to perform bitwise operations."},
-					insertText: "bit32",
 				},
 				{
 					label: "bit32.arshift",
@@ -835,8 +891,7 @@
 					label: "coroutine",
 					kind: monaco.languages.CompletionItemKind.Module,
 					detail: "Library",
-					documentation: {value: "A coroutine is used to perform multiple tasks at the same time from within the same script. A task doesn’t need to have a defined ending point, but it does need to define particular times at which it will yield (pause) to let other things be worked on."},
-					insertText: "coroutine",
+					documentation: {value: "A coroutine is used to perform multiple tasks at the same time from within the same script. A task doesn't need to have a defined ending point, but it does need to define particular times at which it will yield (pause) to let other things be worked on."},
 				},
 				{
 					label: "coroutine.create",
@@ -869,7 +924,7 @@
 					label: "coroutine.status",
 					kind: monaco.languages.CompletionItemKind.Function,
 					detail: "Function",
-					documentation: {value: "Returns the status of the coroutine, as a string: ‘running’, if the coroutine is running (that is, it called status); ‘suspended’, if the coroutine is suspended in a call to yield, or if it has not started running yet; ‘normal’ if the coroutine is active but not running (that is, it has resumed another coroutine); and ‘dead’ if the coroutine has finished its body function, or if it has stopped with an error."},
+					documentation: {value: "Returns the status of the coroutine, as a string: ‘running', if the coroutine is running (that is, it called status); ‘suspended', if the coroutine is suspended in a call to yield, or if it has not started running yet; ‘normal' if the coroutine is active but not running (that is, it has resumed another coroutine); and ‘dead' if the coroutine has finished its body function, or if it has stopped with an error."},
 
 					insertText: "coroutine.status($0})",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -899,7 +954,6 @@
 					kind: monaco.languages.CompletionItemKind.Module,
 					detail: "Library",
 					documentation: {value: "This library provides a few basic functions for debugging code in Roblox."},
-					insertText: "debug",
 				},
 				{
 					label: "debug.traceback",
@@ -935,7 +989,6 @@
 					kind: monaco.languages.CompletionItemKind.Module,
 					detail: "Library",
 					documentation: {value: "This library is an interface to the standard C math library, providing all of its functions inside the math table. When the documentation references `x` and arguments are not prefilled, assume it is the first or all argument(s)."},
-					insertText: "math",
 				},
 				{
 					label: "math.abs",
@@ -1025,6 +1078,15 @@
 					documentation: {value: "Returns the angle x (given in radians) in degrees."},
 
 					insertText: "math.deg($0)",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "math.e",
+					kind: monaco.languages.CompletionItemKind.Text,
+					detail: "Fake Constant",
+					documentation: {value: "Autofills the approximate value of Euler's number."},
+
+					insertText: "2.718281828459045",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
@@ -1250,7 +1312,6 @@
 					kind: monaco.languages.CompletionItemKind.Module,
 					detail: "Library",
 					documentation: {value: "This library currently serves the purpose of providing information about the system time under the UTC format."},
-					insertText: "os",
 				},
 				{
 					label: "os.time",
@@ -1295,7 +1356,6 @@
 					kind: monaco.languages.CompletionItemKind.Module,
 					detail: "Library",
 					documentation: {value: "This library provides generic functions for string manipulation such as finding and extracting substrings, pattern matching, and more. It provides all of its functions inside the global `string` variable."},
-					insertText: "string",
 				},
 				{
 					label: "string.byte",
@@ -1430,7 +1490,6 @@
 					kind: monaco.languages.CompletionItemKind.Module,
 					detail: "Library",
 					documentation: {value: "This library provides generic functions for table/array manipulation, providing all its functions inside the global `table` variable."},
-					insertText: "table",
 				},
 				{
 					label: "table.concat",
@@ -1556,7 +1615,6 @@
 					kind: monaco.languages.CompletionItemKind.Module,
 					detail: "Library",
 					documentation: {value: "This library provides basic support for UTF-8 encoding. This library does not provide any support for Unicode other than the handling of the encoding."},
-					insertText: "utf8",
 				},
 				{
 					label: "utf8.char",
@@ -1693,7 +1751,7 @@
 				{
 					label: "CreatorId",
 					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property",
+					detail: "Property (DataModel)",
 					documentation: {value: "Describes the ID of the user or group that owns the place."},
 					filterText: "game.CreatorId",
 
@@ -1703,7 +1761,7 @@
 				{
 					label: "GameId",
 					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property",
+					detail: "Property (DataModel)",
 					documentation: {value: "Describes the ID of the game the place running on the server belongs to."},
 					filterText: "game.GameId",
 
@@ -1713,7 +1771,7 @@
 				{
 					label: "JobId",
 					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property",
+					detail: "Property (DataModel)",
 					documentation: {value: "A unique identifier for the game server instance running."},
 					filterText: "game.JobId",
 
@@ -1723,11 +1781,21 @@
 				{
 					label: "PlaceId",
 					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property",
+					detail: "Property (DataModel)",
 					documentation: {value: "Describes the ID of the place running on the server."},
 					filterText: "game.PlaceId",
 
 					insertText: "PlaceId",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "Workspace",
+					kind: monaco.languages.CompletionItemKind.Property,
+					detail: "Property (DataModel)",
+					documentation: {value: "A reference to the Workspace service."},
+					filterText: "game.Workspace",
+
+					insertText: "Workspace",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 			]}}});
@@ -1745,7 +1813,7 @@
 					label: "AssemblyAngularVelocity",
 					kind: monaco.languages.CompletionItemKind.Property,
 					detail: "Property",
-					documentation: {value: "The angular velocity of the part’s assembly."},
+					documentation: {value: "The angular velocity of the part's assembly."},
 
 					insertText: "AssemblyAngularVelocity",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -1754,7 +1822,7 @@
 					label: "AssemblyCenterOfMass",
 					kind: monaco.languages.CompletionItemKind.Property,
 					detail: "Property",
-					documentation: {value: "The center of mass of the part’s assembly in world space."},
+					documentation: {value: "The center of mass of the part's assembly in world space."},
 
 					insertText: "AssemblyCenterOfMass",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -1763,7 +1831,7 @@
 					label: "AssemblyLinearVelocity",
 					kind: monaco.languages.CompletionItemKind.Property,
 					detail: "Property",
-					documentation: {value: "The linear velocity of the part’s assembly."},
+					documentation: {value: "The linear velocity of the part's assembly."},
 
 					insertText: "AssemblyLinearVelocity",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -1772,7 +1840,7 @@
 					label: "AssemblyMass",
 					kind: monaco.languages.CompletionItemKind.Property,
 					detail: "Property",
-					documentation: {value: "The total mass of the part’s assembly."},
+					documentation: {value: "The total mass of the part's assembly."},
 
 					insertText: "AssemblyMass",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -1835,7 +1903,7 @@
 					label: "CenterOfMass",
 					kind: monaco.languages.CompletionItemKind.Property,
 					detail: "Property",
-					documentation: {value: "Describes the world position in which a part’s center of mass is located."},
+					documentation: {value: "Describes the world position in which a part's center of mass is located."},
 
 					insertText: "CenterOfMass",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -1844,7 +1912,7 @@
 					label: "CollisionGroupId",
 					kind: monaco.languages.CompletionItemKind.Property,
 					detail: "Property",
-					documentation: {value: "Describes the automatically-set ID number of a part’s collision group."},
+					documentation: {value: "Describes the automatically-set ID number of a part's collision group."},
 
 					insertText: "CollisionGroupId",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -1988,7 +2056,7 @@
 					label: "SpecificGravity",
 					kind: monaco.languages.CompletionItemKind.Property,
 					detail: "Property",
-					documentation: {value: "The ratio of the part’s density to the density of water determined by the material."},
+					documentation: {value: "The ratio of the part's density to the density of water determined by the material."},
 
 					insertText: "SpecificGravity",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -2149,7 +2217,7 @@
 					label: "GetAttributes",
 					kind: monaco.languages.CompletionItemKind.Method,
 					detail: "Method",
-					documentation: {value: "Returns a dictionary of string → variant pairs for each of the Instance’s attributes."},
+					documentation: {value: "Returns a dictionary of string → variant pairs for each of the Instance's attributes."},
 					filterText: ":GetAttributes()",
 
 					insertText: "GetAttributes()",
@@ -2159,7 +2227,7 @@
 					label: "GetChildren",
 					kind: monaco.languages.CompletionItemKind.Method,
 					detail: "Method",
-					documentation: {value: "Returns an array containing all of the Instance’s children."},
+					documentation: {value: "Returns an array containing all of the Instance's children."},
 					filterText: ":GetChildren()",
 
 					insertText: "GetChildren()",
@@ -2189,7 +2257,7 @@
 					label: "GetFullName",
 					kind: monaco.languages.CompletionItemKind.Method,
 					detail: "Method",
-					documentation: {value: "Returns a string describing the Instance’s ancestry."},
+					documentation: {value: "Returns a string describing the Instance's ancestry."},
 					filterText: ":GetFullName()",
 
 					insertText: "GetFullName()",
@@ -2209,7 +2277,7 @@
 					label: "IsA",
 					kind: monaco.languages.CompletionItemKind.Method,
 					detail: "Method",
-					documentation: {value: "Returns true if an Instance’s class matches or inherits from a given class."},
+					documentation: {value: "Returns true if an Instance's class matches or inherits from a given class."},
 					filterText: ":IsA()",
 
 					insertText: "IsA(${1:className})",
@@ -2239,7 +2307,7 @@
 					label: "Remove",
 					kind: monaco.languages.CompletionItemKind.Method,
 					detail: "Method",
-					documentation: {value: "Sets the object’s Parent to nil, and does the same for all its descendants.\n\nDeprecated in favor of :Destroy()"},
+					documentation: {value: "Sets the object's Parent to nil, and does the same for all its descendants.\n\nDeprecated in favor of :Destroy()"},
 					filterText: ":Remove()",
 					tags: [monaco.languages.CompletionItemTag.Deprecated],
 
@@ -2270,7 +2338,7 @@
 					label: "Wait",
 					kind: monaco.languages.CompletionItemKind.Event,
 					detail: "Method",
-					documentation: {value: "Causes the script to pause until the event occurs once. When it does, the function returns the data associated with the event’s firing."},
+					documentation: {value: "Causes the script to pause until the event occurs once. When it does, the function returns the data associated with the event's firing."},
 					filterText: ":Wait()",
 
 					insertText: "Wait()",
