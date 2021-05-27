@@ -62,7 +62,7 @@ define(["require", "exports"], function (require, exports) {
 
 			'rawset', 'rawget', 'rawequal',
 
-			'debug', 'table', 'pairs', 'ipairs', 'bit32', 'math', 'utf8', 'os',
+			'coroutine', 'debug', 'table', 'pairs', 'ipairs', 'bit32', 'math', 'utf8', 'os',
 
 			'Color3', 'Instance', 'BrickColor', 'Vector3', 'Vector2', 'UDim2',
 			'Drawing',

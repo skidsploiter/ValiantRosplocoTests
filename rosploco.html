@@ -98,7 +98,7 @@
 					label: "function()",
 					kind: monaco.languages.CompletionItemKind.Keyword,
 					detail: "Function (Anonymous)",
-					documentation: {value: "A self-executing function without a name. Useful when you need to call a function from the result of another function or event or a connection."},
+					documentation: {value: "A self-executing function without a name (an anonymous function). Useful when you need to call a function from the result of another function or event or a connection."},
 					preselect: true,
 
 					insertText: "function(${1:parameters})\n\t$0\nend",
@@ -118,7 +118,7 @@
 					label: "return",
 					kind: monaco.languages.CompletionItemKind.Keyword,
 					detail: "Function",
-					documentation: {value: "Inside of a function, you can return data to the calling command. Useful in arguments."},
+					documentation: {value: "Inside of a function, you can return data to the calling statement. Useful in arguments."},
 					preselect: true,
 
 					insertText: "return ${1:variable}",
@@ -218,8 +218,10 @@
 					documentation: {value: "Runs the code inside of the loop if, when, and while the arguments evaluate to true. If the arguments evaluate to true, the loop is executed and the condition is reevaluated afterward. Includes a `wait()` to prevent the game from freezing up from overload."},
 					preselect: true,
 
-					insertText: "while ${1:condition} do\n\t$0\n\twait()\nend",
+					insertText: "while ${1:condition} do\n\t$0\nend",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+
+					filterText: "while ",
 				},
 				{
 					label: "while true do",
@@ -231,24 +233,24 @@
 					insertText: "while true do\n\t$0\n\twait()\nend",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 
-					filterText: "while",
+					filterText: "while true",
 				},
 				{
 					label: "while wait() do",
 					kind: monaco.languages.CompletionItemKind.Snippet,
 					detail: "Loop",
-					documentation: {value: "Shorthand for\n\nwhile true do\n\twait()\nend\n\nPrefer `while true do wait() end`."},
+					documentation: {value: "Shorthand for\n\nwhile true do\n\twait()\nend\n\nPrefer `while true do wait() end`, it is much more syntactically correct."},
 
 					insertText: "while wait() do\n\t$0\nend",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 
-					filterText: "while",
+					filterText: "while wait",
 				},
 				{
 					label: "do",
 					kind: monaco.languages.CompletionItemKind.Keyword,
 					detail: "Loop",
-					documentation: {value: "Suffix for `for` and `while` loops."},
+					documentation: {value: "Suffix for `for` and `while` loops. This can be used without a loop to alter the scope of variables."},
 
 					insertText: "do\n\t$0\nend",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -280,7 +282,18 @@
 					documentation: {value: "If you are running a loop that won't end normally, you can force it to break with this keyword so the script can continue running the code after the loop. Useful for infinite loops or for additional conditions."},
 					preselect: true,
 
-					insertText: "break",
+					insertText: "break\n",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "continue",
+					kind: monaco.languages.CompletionItemKind.Keyword,
+					detail: "Loop",
+					documentation: {value: "Skips the current iteration of any loop. Syntactically, this is not actually a keyword."},
+					preselect: true,
+
+					insertText: "continue\n",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 			]}}});
 			/* Lua Globals */ monaco.languages.registerCompletionItemProvider('lua', {provideCompletionItems: function () {return {suggestions: [
