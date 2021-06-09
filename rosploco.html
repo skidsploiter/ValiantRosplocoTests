@@ -8,6 +8,9 @@
 	<script type="text/javascript" id="file-saver"">/* FileSaver.js //purl.eligrey.com/github/FileSaver.js (MIT License) */ var saveAs=saveAs ||(typeof navigator!=="undefined"&&navigator.msSaveOrOpenBlob&&navigator.msSaveOrOpenBlob.bind(navigator))||(function(view){"use strict";if(typeof navigator!=="undefined"&&/MSIE [1-9]\./.test(navigator.userAgent)){return}var doc=view.document,get_URL=function(){return view.URL||view.webkitURL||view},save_link=doc.createElementNS("http://www.w3.org/1999/xhtml","a"),can_use_save_link=!view.externalHost&&"download"in save_link,click=function(node){var event=doc.createEvent("MouseEvents");event.initMouseEvent("click",true,false,view,0,0,0,0,0,false,false,false,false,0,null);node.dispatchEvent(event)},webkit_req_fs=view.webkitRequestFileSystem,req_fs=view.requestFileSystem||webkit_req_fs||view.mozRequestFileSystem,throw_outside=function(ex){(view.setImmediate||view.setTimeout)(function(){throw ex},0)},force_saveable_type="application/octet-stream",fs_min_size=0,deletion_queue=[],process_deletion_queue=function(){var i=deletion_queue.length;while(i--){var file=deletion_queue[i];if(typeof file==="string"){get_URL().revokeObjectURL(file)}else{file.remove()}}deletion_queue.length=0;},dispatch=function(filesaver,event_types,event){event_types=[].concat(event_types);var i=event_types.length;while(i--){var listener=filesaver["on"+event_types[i]];if(typeof listener==="function"){try{listener.call(filesaver,event||filesaver)}catch(ex){throw_outside(ex)}}}},FileSaver=function(blob,name){var filesaver=this,type=blob.type,blob_changed=false,object_url,target_view,get_object_url=function(){var object_url=get_URL().createObjectURL(blob);deletion_queue.push(object_url);return object_url},dispatch_all=function(){dispatch(filesaver,"writestart progress write writeend".split(" "))},fs_error=function(){if(blob_changed||!object_url){object_url=get_object_url(blob)}if(target_view){target_view.location.href=object_url}else{window.open(object_url,"_blank")}filesaver.readyState=filesaver.DONE;dispatch_all()},abortable=function(func){return function(){if(filesaver.readyState!==filesaver.DONE){return func.apply(this,arguments)}}},create_if_not_found={create:true,exclusive:false},slice;filesaver.readyState=filesaver.INIT;if(!name){name="download"}if(can_use_save_link){object_url=get_object_url(blob);save_link.href=object_url;save_link.download=name;click(save_link);filesaver.readyState=filesaver.DONE;dispatch_all();return}if(view.chrome&&type&&type!==force_saveable_type){slice=blob.slice||blob.webkitSlice;blob=slice.call(blob,0,blob.size,force_saveable_type);blob_changed=true}if(webkit_req_fs&&name!=="download"){name+=".download"}if(type===force_saveable_type||webkit_req_fs){target_view=view}if(!req_fs){fs_error();return}fs_min_size+=blob.size;req_fs(view.TEMPORARY,fs_min_size,abortable(function(fs){fs.root.getDirectory("saved",create_if_not_found,abortable(function(dir){var save=function(){dir.getFile(name,create_if_not_found,abortable(function(file){file.createWriter(abortable(function(writer){writer.onwriteend=function(event){target_view.location.href=file.toURL();deletion_queue.push(file);filesaver.readyState=filesaver.DONE;dispatch(filesaver,"writeend",event)};writer.onerror=function(){var error=writer.error;if(error.code!==error.ABORT_ERR){fs_error()}};"writestart progress write abort".split(" ").forEach(function(event){writer["on"+event]=filesaver["on"+event]});writer.write(blob);filesaver.abort=function(){writer.abort();filesaver.readyState=filesaver.DONE};filesaver.readyState=filesaver.WRITING}),fs_error)}),fs_error)};dir.getFile(name,{create:false},abortable(function(file){file.remove();save()}),abortable(function(ex){if(ex.code===ex.NOT_FOUND_ERR){save()}else{fs_error()}}))}),fs_error)}),fs_error)},FS_proto=FileSaver.prototype,saveAs=function(blob,name){return new FileSaver(blob,name)};FS_proto.abort=function(){var filesaver=this;filesaver.readyState=filesaver.DONE;dispatch(filesaver,"abort")};FS_proto.readyState=FS_proto.INIT=0;FS_proto.WRITING=1;FS_proto.DONE=2;FS_proto.error=FS_proto.onwritestart=FS_proto.onprogress=FS_proto.onwrite=FS_proto.onabort=FS_proto.onerror=FS_proto.onwriteend=null;view.addEventListener("unload",process_deletion_queue,false);saveAs.unload=function(){process_deletion_queue();view.removeEventListener("unload",process_deletion_queue,false)};return saveAs}(typeof self!=="undefined"&&self||typeof window!=="undefined"&&window||this.content));if(typeof module!=="undefined"&&module!==null){module.exports=saveAs}else if((typeof define!=="undefined"&&define!==null)&&(define.amd!=null)){define([],function(){return saveAs})}String.prototype.endsWithAny=function(){var strArray=Array.prototype.slice.call(arguments),$this=this.toLowerCase().toString();for(var i=0;i<strArray.length;i+=1){if($this.indexOf(strArray[i],$this.length-strArray[i].length)!==-1){return true}}return false};var saveTextAs=saveTextAs||(function(textContent,fileName,charset){fileName=fileName||'download.txt';charset=charset||'utf-8';textContent=(textContent||'').replace(/\r?\n/g,"\r\n");if(saveAs&&Blob){var blob=new Blob([textContent],{type:"text/plain;charset="+charset});saveAs(blob,fileName);return true}else{var saveTxtWindow=window.frames.saveTxtWindow;if(!saveTxtWindow){saveTxtWindow=document.createElement('iframe');saveTxtWindow.id='saveTxtWindow';saveTxtWindow.style.display='none';document.body.insertBefore(saveTxtWindow,null);saveTxtWindow=window.frames.saveTxtWindow;if(!saveTxtWindow){saveTxtWindow=window.open('','_temp','width=100,height=100');if(!saveTxtWindow){window.alert('Sorry, download file could not be created.');return false}}}var doc=saveTxtWindow.document;doc.open('text/html','replace');doc.charset=charset;if(fileName.endsWithAny('.htm','.html')){doc.close();doc.body.innerHTML='\r\n'+textContent+'\r\n'}else{if(!fileName.endsWithAny('.txt')){fileName+='.txt'}doc.write(textContent);doc.close()}var retValue=doc.execCommand('SaveAs',null,fileName);saveTxtWindow.close();return retValue}});</script>
 	<script src="vs/loader.js"></script>
 	<script type="text/javascript">
+		var editor;
+		var Proposals = [];
+		var instanceAction;
 		require(['vs/editor/editor.main'], function() {
 			/* Keywords */ monaco.languages.registerCompletionItemProvider('lua', {provideCompletionItems: function () {return {suggestions: [
 				{
@@ -98,7 +101,7 @@
 					label: "function()",
 					kind: monaco.languages.CompletionItemKind.Keyword,
 					detail: "Function (Anonymous)",
-					documentation: {value: "A self-executing function without a name (an anonymous function). Useful when you need to call a function from the result of another function or event or a connection."},
+					documentation: {value: "A self-executing function without a name (an 'anonymous' function). Useful when you need to call a function from the result of another function or event or a connection."},
 					preselect: true,
 
 					insertText: "function(${1:parameters})\n\t$0\nend",
@@ -111,7 +114,7 @@
 					documentation: {value: "A varaiadic function is a function that allows you to use infinite arguments inside of a function, like `print()`. After packing the `...` token, you can iterate through it with an array's `for` loop."},
 					preselect: true,
 
-					insertText: "local function ${1:name}(${2:parameters}, ...)\n\tlocal arguments = {...} -- table of all the other arguments\n\t$0\nend",
+					insertText: "local function ${1:name}(${2:parameters}, ...)\n\tlocal arguments = table.pack(...)\n\t$0\nend",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
@@ -724,6 +727,9 @@
 				},
 			]}}});
 			/* Datatypes */ monaco.languages.registerCompletionItemProvider('lua', {provideCompletionItems: function () {return {suggestions: [
+
+				// Axes
+
 				{
 					label: "Axes.new",
 					kind: monaco.languages.CompletionItemKind.Constructor,
@@ -733,6 +739,9 @@
 					insertText: "Axes.new($0)",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
+
+				// BrickColor
+
 				{
 					label: "BrickColor.new",
 					kind: monaco.languages.CompletionItemKind.Constructor,
@@ -742,6 +751,9 @@
 					insertText: "BrickColor.new(${0:name|index|rgb|color3})",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
+
+				// CatalogSearchParams
+
 				{
 					label: "CatalogSearchParams.new",
 					kind: monaco.languages.CompletionItemKind.Constructor,
@@ -751,6 +763,9 @@
 					insertText: "local ${1:name} = CatalogSearchParams.new()",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
+
+				// CFrame
+
 				{
 					label: "CFrame.new",
 					kind: monaco.languages.CompletionItemKind.Constructor,
@@ -767,6 +782,231 @@
 					documentation: {value: "Constructs a CFrame located at the given `position`, and facing towards `look`. The upward `direction` can optionally be specified, which is `0, 1, 0` by default."},
 
 					insertText: "CFrame.lookAt(${1:position}, ${2:look}, ${3:direction})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "CFrame.fromEulerAnglesXYZ",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Creates a rotated CFrame using angles (`rx`, `ry`, `rz`) in radians. Applied in Z, Y, X order."},
+
+					insertText: "CFrame.fromEulerAnglesXYZ(${1:rx}, ${2:ry}, ${3:rz})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "CFrame.fromEulerAnglesYXZ",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Creates a rotated CFrame using angles (`rx`, `ry`, `rz`) in radians. Applied in Y, X, Z order."},
+
+					insertText: "CFrame.fromEulerAnglesYXZ(${1:rx}, ${2:ry}, ${3:rz})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "CFrame.Angles",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Equivalent to `CFrame.fromEulerAnglesXYZ`, autofills this."},
+
+					insertText: "CFrame.fromEulerAnglesXYZ(${1:rx}, ${2:ry}, ${3:rz})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "CFrame.fromOrientation",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Equivalent to `CFrame.fromEulerAnglesYXZ`, autofills this."},
+
+					insertText: "CFrame.fromEulerAnglesYXZ(${1:rx}, ${2:ry}, ${3:rz})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "CFrame.fromAxisAngle",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Creates a rotated CFrame from a Unit Vector3 and a rotation in radians."},
+
+					insertText: "CFrame.fromEulerAnglesYXZ(${1:vector}, ${2:rotation})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "CFrame.fromMatrix",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Creates a CFrame from a translation and the columns of a rotation matrix.\nWhen `vz` is excluded, the third column is calculated as `[vx:Cross(vy).Unit]`."},
+
+					insertText: "CFrame.fromEulerAnglesYXZ(${1:position}, ${2:x}, ${3:y}, ${4:z})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "CFrame.Orthonormalize",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Returns an orthonormalized copy of the CFrame."},
+
+					insertText: "CFrame.Orthonormalize()",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+
+				// Color3
+
+				{
+					label: "Color3.new",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Returns a Color3 with the given red, green, and blue values on the range [0, 1]. When no arguments are given, this function creates a Color3 whose values are (0, 0, 0) (black)."},
+
+					insertText: "Color3.new(${1:r}, ${2:g}, ${3:b})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "Color3.fromRGB",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Acts the same as `Color3.new`, but the RGB components are instead on the range [0, 255]."},
+
+					insertText: "Color3.fromRGB(${1:r}, ${2:g}, ${3:b})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "Color3.fromHSV",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Creates a Color3 with the given hue, saturation, and value, on the range [0, 1]."},
+
+					insertText: "Color3.fromHSV(${1:h}, ${2:s}, ${3:v})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+
+				// ColorSequence
+
+				{
+					label: "ColorSequence.new",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Creates a sequence of two keypoints with either `Color1` (Color3) being the starting and end value, or with `Color2` (Color3) being the end value, or an array of [ColorSequenceKeypoints](https://developer.roblox.com/en-us/api-reference/datatype/ColorSequenceKeypoint) for more keypoints."},
+
+					insertText: "ColorSequence.new($0)",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "ColorSequenceKeypoint.new",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Creates a keypoint with a specified time and color."},
+
+					insertText: "Color3.fromHSV(${1:point}, ${2:color})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+
+				// DateTime
+
+				{
+					label: "DateTime.now",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Creates a new DateTime representing the current moment in time."},
+
+					insertText: "DateTime.now()",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "DateTime.fromUnixTimestamp",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Creates a new DateTime object from the given [Unix timestamp](https://en.wikipedia.org/wiki/Unix_time), the number of **seconds** since January 1, 1970."},
+
+					insertText: "DateTime.fromUnixTimestamp(${1:seconds})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "DateTime.fromUnixTimestampMillis",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Creates a new DateTime object from the given [Unix timestamp](https://en.wikipedia.org/wiki/Unix_time), the number of **milliseconds** since January 1, 1970."},
+
+					insertText: "DateTime.fromUnixTimestampMillis(${1:milliseconds})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "DateTime.fromUniversalTime",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Creates a new DateTime using the given units from a UTC time. The values accepted are similar to those found in the time value table returned by `DateTime.ToUniversalTime`."},
+
+					insertText: "DateTime.fromUniversalTime(${1:year}, ${2:month}, ${3:day}, ${4:hour}, ${5:minute}, ${6:second}, ${7:millisecond})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "DateTime.fromLocalTime",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Creates a new DateTime using the given units from a local time. The values accepted are similar to those found in the time value table returned by `DateTime.ToLocalTime`."},
+
+					insertText: "DateTime.fromLocalTime(${1:year}, ${2:month}, ${3:day}, ${4:hour}, ${5:minute}, ${6:second}, ${7:millisecond})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "DateTime.fromIsoDate",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Creates a DateTime from an [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date-time string in UTC time, such as those returned by `DateTime.ToIsoDate`. If the string parsing fails, the function returns `nil`.\n\nAn example ISO 8601 date-time string would be `2020-01-02T10:30:45Z`, which represents January nd 2020 at 10:30 AM, 45 seconds."},
+
+					insertText: "DateTime.fromIsoDate($0)",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+
+				// DockWidgetPluginGuiInfo
+
+				{
+					label: "DockWidgetPluginGuiInfo.new",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "The main constructor function for the `DockWidgetPluginGuiInfo`."},
+
+					insertText: "DockWidgetPluginGuiInfo.new(${1:initDockState}, ${2:initEnabled}, ${3:overrideEnabledRestore}, ${4:floatXSize}, ${5:floatYSize}, ${6:minWidth}, ${7:minHeight})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+
+				// Faces
+
+				{
+					label: "Faces.new",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Creates a new Faces given some number of NormalId enumerators as arguments."},
+
+					insertText: "Faces.new(${1:normalids...})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+
+				// Instance
+
+				{
+					label: "Instance.new",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Creates an new object of the given type."},
+
+					insertText: "Instance.new(\"${0:Class}\")",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "Instance.new",
+					kind: monaco.languages.CompletionItemKind.Snippet,
+					detail: "Snippet",
+					documentation: {value: "A fully-fledged template for instance creation, using performance benifits."},
+
+					insertText: "local ${1:instance} = Instance.new(\"${2:Class}\")\n$0\n${1:instance}.Parent = ${3:parent}",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "Instance.new.Property",
+					kind: monaco.languages.CompletionItemKind.Snippet,
+					detail: "Constructor",
+					documentation: {value: "A shorthand version of the default instance constructor which uses the parent argument and sets the only needed property afterward. Often used for UILayout objects."},
+
+					insertText: "Instance.new(\"${1:Class}\", ${2:parent}).${3:property} = ${4:value}",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 			]}}});
@@ -1695,6 +1935,51 @@
 					documentation: 'The pattern "[%z\\x01-\\x7F\\xC2-\\xF4][\\x80-\\xBF]*", which matches exactly zero or more UTF-8 byte sequence, assuming that the subject is a valid UTF-8 string.',
 
 					insertText: "utf8.charpattern",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+			]}}});
+			/* Snippets */ monaco.languages.registerCompletionItemProvider('lua', {provideCompletionItems: function () {return {suggestions: [
+				{
+					label: "pages",
+					kind: monaco.languages.CompletionItemKind.Snippet,
+					detail: "Snippet",
+					documentation: {value: "Autofills a factory function `pages` which loops through a Pages instance with the returned iterator returning the `Item` and `PageNumber` in the current iteration.\n\n```lua\nfor v, i in pages(PagesInstance) do\n\t-- something\nend\n```"},
+
+					insertText: [
+						"local function pages(Pages)",
+						"\treturn coroutine.wrap(function()",
+						"\t\tlocal Iteration = 1",
+						"\t\twhile true do",
+						"\t\t\tfor _, Item in ipairs(Pages:GetCurrentPage()) do",
+						"\t\t\t\tcoroutine.yield(Item, Iteration)",
+						"\t\t\tend",
+						"\t\t\tif Pages.IsFinished then",
+						"\t\t\t\tbreak",
+						"\t\t\tend",
+						"\t\t\tPages:AdvanceToNextPageAsync()",
+						"\t\t\tIteration += 1",
+						"\t\tend",
+						"\tend)",
+						"end",
+					].join("\n"),
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "Class",
+					kind: monaco.languages.CompletionItemKind.Snippet,
+					detail: "Snippet",
+					documentation: {value: "A simple and accepted boilerplate template for custom objects. Not a real keyword or function."},
+
+					insertText: [
+						"local ${1:Class} = {}",
+						"${1:Class}.__index = ${1:Class}",
+						"",
+						"function ${1:Class}.new()",
+						"\tlocal ${2:Object} = setmetatable({}, ${1:Class})",
+						"\t$0",
+						"\treturn ${2:Object}",
+						"end",
+					].join("\n"),
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 			]}}});
@@ -2823,7 +3108,7 @@
 					label: "getproperties",
 					kind: monaco.languages.CompletionItemKind.Function,
 					detail: "Function",
-					documentation: {value: ""},
+					documentation: {value: "Returns an array of property names on the provided Instance."},
 
 					insertText: "getproperties($0)",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -2937,7 +3222,7 @@
 					label: "iswindowactive",
 					kind: monaco.languages.CompletionItemKind.Function,
 					detail: "Function",
-					documentation: {value: "Returns if the main window is in focus. This must return true for any other mouse/keyboard function to work.\n\nAKA\nisrbxactive()\nisRobloxFocused()"},
+					documentation: {value: "Returns if the main window is in focus. This must return true for any other mouse/keyboard function to work.\n\nAKA\n`isrbxactive()`\n`isRobloxFocused()`"},
 					filterText: "iswindowactive+isrbxactive+isRobloxFocused",
 
 					insertText: "iswindowactive()",
@@ -2947,7 +3232,7 @@
 					label: "keypress",
 					kind: monaco.languages.CompletionItemKind.Function,
 					detail: "Function",
-					documentation: {value: "Simulates a key press for the specified keycode.\n\ndocs.microsoft.com/windows/desktop/inputdev/virtual-key-codes"},
+					documentation: {value: "Simulates a key press for the specified [keycode](https://docs.microsoft.com/windows/desktop/inputdev/virtual-key-codes)."},
 
 					insertText: "keypress($0)",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -2956,7 +3241,7 @@
 					label: "keyrelease",
 					kind: monaco.languages.CompletionItemKind.Function,
 					detail: "Function",
-					documentation: {value: "Releases key on the keyboard.\n\ndocs.microsoft.com/windows/desktop/inputdev/virtual-key-codes"},
+					documentation: {value: "Releases [key](https://docs.microsoft.com/windows/desktop/inputdev/virtual-key-codes) on the keyboard."},
 
 					insertText: "keyrelease($0)",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -2965,7 +3250,7 @@
 					label: "mouse1click",
 					kind: monaco.languages.CompletionItemKind.Function,
 					detail: "Function",
-					documentation: {value: "Simulates a full left mouse button press.\n\nAKA\nMouseButton1Click()"},
+					documentation: {value: "Simulates a full left mouse button press.\n\nAKA\n`MouseButton1Click()`"},
 
 					insertText: "mouse1click()",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -2974,7 +3259,7 @@
 					label: "mouse1press",
 					kind: monaco.languages.CompletionItemKind.Function,
 					detail: "Function",
-					documentation: {value: "Simulates a left mouse button press without releasing it.\n\nAKA\nMouseButton1Press()"},
+					documentation: {value: "Simulates a left mouse button press without releasing it.\n\nAKA\n`MouseButton1Press()`"},
 
 					insertText: "mouse1press()",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -2983,7 +3268,7 @@
 					label: "mouse1release",
 					kind: monaco.languages.CompletionItemKind.Function,
 					detail: "Function",
-					documentation: {value: "Simulates a left mouse button release.\n\nAKA\nMouseButton1Release()"},
+					documentation: {value: "Simulates a left mouse button release.\n\nAKA\n`MouseButton1Release()`"},
 
 					insertText: "mouse1release()",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -2992,7 +3277,7 @@
 					label: "mouse2click",
 					kind: monaco.languages.CompletionItemKind.Function,
 					detail: "Function",
-					documentation: {value: "Simulates a full right mouse button press.\n\nAKA\nMouseButton2Click()"},
+					documentation: {value: "Simulates a full right mouse button press.\n\nAKA\n`MouseButton2Click()`"},
 
 					insertText: "mouse2click()",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -3001,7 +3286,7 @@
 					label: "mouse2press",
 					kind: monaco.languages.CompletionItemKind.Function,
 					detail: "Function",
-					documentation: {value: "Clicks down on the right mouse button.\n\nAKA\nMouseButton2Press()"},
+					documentation: {value: "Clicks down on the right mouse button.\n\nAKA\n`MouseButton2Press()`"},
 
 					insertText: "mouse2press()",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -3010,7 +3295,7 @@
 					label: "mouse2release",
 					kind: monaco.languages.CompletionItemKind.Function,
 					detail: "Function",
-					documentation: {value: "Simulates a right mouse button release.\n\nAKA\nMouseButton2Release()"},
+					documentation: {value: "Simulates a right mouse button release.\n\nAKA\n`MouseButton2Release()`"},
 
 					insertText: "mouse2release()",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -3028,7 +3313,7 @@
 					label: "mousemoverel",
 					kind: monaco.languages.CompletionItemKind.Function,
 					detail: "Function",
-					documentation: {value: "Moves the mouse cursor relatively to the current mouse position by coordinates x and y."},
+					documentation: {value: "Moves the mouse cursor relatively to the current mouse position by coordinates `x` and `y`."},
 
 					insertText: "mousemoverel(${1:x}, ${2:y})",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -3037,7 +3322,7 @@
 					label: "mousemoveabs",
 					kind: monaco.languages.CompletionItemKind.Function,
 					detail: "Function",
-					documentation: {value: "Move's your mouse to the x and y coordinates in pixels from topleft of the main window."},
+					documentation: {value: "Moves your mouse to the `x` and `y` coordinates in pixels from top left of the main window."},
 
 					insertText: "mousemoveabs(${1:x}, ${2:y})",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -3303,7 +3588,7 @@
 					documentation: {value: "Returns content of the PhysicalConfigData of the passed object.\nDeprecated in favor of\n`gethiddenproperty(object, \"PhysicalConfigData\")`"},
 					tags: [monaco.languages.CompletionItemTag.Deprecated],
 
-					insertText: "gethiddenproperty($1, \"PhysicalConfigData\")$0",
+					insertText: "gethiddenproperty($0, \"PhysicalConfigData\")",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 			]}}});
@@ -3461,27 +3746,29 @@
 				},
 			]}}});
 			/* Drawing Library */ monaco.languages.registerCompletionItemProvider('lua', {provideCompletionItems: function () {return {suggestions: [
-				{
-					label: "Drawing",
-					kind: monaco.languages.CompletionItemKind.Module,
-					detail: "Library",
-					documentation: {value: "An alternative to Roblox GUI that allows you to directly draw objects."},
-					insertText: "Drawing.new($0)",
-				},
-				{
-					label: "Drawing.new",
-					kind: monaco.languages.CompletionItemKind.Function,
-					detail: "Function",
-					documentation: {value: "Creates a new drawing object with the provided type (Line, Text, Image, Circle, Square, Quad, Triangle). Returns the new drawing."},
+					{
+						label: "Drawing",
+						kind: monaco.languages.CompletionItemKind.Module,
+						detail: "Library",
+						documentation: {value: "An alternative to Roblox GUI that allows you to directly draw objects."},
 
-					insertText: "Drawing.new($0)",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
+						insertText: "Drawing.new($0)",
+						insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+					},
+					{
+						label: "Drawing.new",
+						kind: monaco.languages.CompletionItemKind.Function,
+						detail: "Function",
+						documentation: {value: "Creates a new drawing object with the provided type (Line, Text, Image, Circle, Square, Quad, Triangle). Returns the new drawing."},
+
+						insertText: "Drawing.new($0)",
+						insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+					},
 			]}}});
 
 			monaco.editor.defineTheme('vsLight', {base: 'vs'});
 			monaco.editor.defineTheme('vsDark', {base: 'vs-dark'});
-
+			
 			monaco.editor.defineTheme('studio', { // also synapse's theme
 				base: 'vs-dark',
 				inherit: true,
@@ -3495,7 +3782,7 @@
 				colors: {'editor.background': '#2d2d2d',}
 			});
 
-			var editor = monaco.editor.create(document.getElementById('container'), {
+			editor = monaco.editor.create(document.getElementById('container'), {
 				value: [
 					"-- Monaco (Microsoft) and Rosploco (EthanMcBloxxer) licensed under the MIT License.",
 					"",
@@ -3560,93 +3847,80 @@
 				replaceValue = null
 			}, [monaco.KeyMod.chord(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_R)]);
 
-			window.onresize = function () {editor.layout();};
-
-			var getText = function () {return editor.getValue();}
-			var setText = function (x) {editor.setValue(x);}
-			var setTheme = function (themeName) {monaco.editor.setTheme(themeName)}
-
-			var setImage = function (x) {
-				document.getElementsByClassName("lines-content monaco-editor-background")[0].style.backgroundImage = "url=(" + x + ")";
-				document.getElementsByClassName("margin")[0].style.backgroundImage = "url=(" + x + ")";
-			}
-
-			var switchMinimap = function (flag) {editor.updateOptions({minimap: {enabled: flag,}});}
-			var switchReadonly = function (flag) {editor.updateOptions({readOnly: flag,});}
-			var switchRenderWhitespace = function (op) {editor.updateOptions({renderWhitespace: op,});}
-			var switchLinks = function (flag) {editor.updateOptions({links: flag,});}
-			var switchLineHeight = function (num) {editor.updateOptions({lineHeight: num,});}
-			var switchFontSize = function (num) {editor.updateOptions({fontSize: num,});}
-			var switchFolding = function (flag) {editor.updateOptions({folding: flag,});}
-			var switchAutoIndent = function (flag) {editor.updateOptions({autoIndent: flag,});}
-			var switchFontFamily = function (name) {editor.updateOptions({fontFamily: name,});}
-			var switchFontLigatures = function (flag) {editor.updateOptions({fontLigatures: flag,});}
-
-			var addIntellisense = function (l, k, d, i) {
-				var t;
-				switch (k) {
-					case "Class": t = monaco.languages.CompletionItemKind.Class; break;
-					case "Color": t = monaco.languages.CompletionItemKind.Color; break;
-					case "Constructor": t = monaco.languages.CompletionItemKind.Constructor; break;
-					case "Enum": t = monaco.languages.CompletionItemKind.Enum; break;
-					case "Field": t = monaco.languages.CompletionItemKind.Field; break;
-					case "File": t = monaco.languages.CompletionItemKind.File; break;
-					case "Folder": t = monaco.languages.CompletionItemKind.Folder; break;
-					case "Function": t = monaco.languages.CompletionItemKind.Method; break;
-					case "Interface": t = monaco.languages.CompletionItemKind.Interface; break;
-					case "Keyword": t = monaco.languages.CompletionItemKind.Keyword; break;
-					case "Method": t = monaco.languages.CompletionItemKind.Method; break;
-					case "Module": t = monaco.languages.CompletionItemKind.Module; break;
-					case "Property": t = monaco.languages.CompletionItemKind.Property; break;
-					case "Reference": t = monaco.languages.CompletionItemKind.Reference; break;
-					case "Snippet": t = monaco.languages.CompletionItemKind.Snippet; break;
-					case "Text": t = monaco.languages.CompletionItemKind.Text; break;
-					case "Unit": t = monaco.languages.CompletionItemKind.Unit; break;
-					case "Value": t = monaco.languages.CompletionItemKind.Value; break;
-					case "Variable": t = monaco.languages.CompletionItemKind.Variable; break;
-				}
-
-				Proposals.push({
-					label: l,
-					kind: t,
-					documentation: d,
-					insertText: i
-				});
-			}
-
-			var showErr = function (line, column, endline, endcolumn, errMessage) {
-				editor.revealPositionInCenter({ lineNumber: line, column: column });
-				editor.deltaDecorations([], [
-					{
-						range: new monaco.Range(line, column, endline, endcolumn),
-						options: {
-							inlineClassName: 'squiggly-error',
-							hoverMessage: {value: errMessage,},
-						},
-					},
-				]);
-			}
-
-			var setScroll = function (line) {editor.revealLineInCenter({ lineNumber: line });}
-
-			var refresh = function () {
-				var text = getText();
-				setText("");
-				editor.trigger('keyboard', 'type', { text: text });
-			}
-
-			editor.onKeyUp(function () {
-				editor.getValue().split("\n").forEach(function (v, i) {
-					if (v.substring(0, 6) == "local " && v.substring(0, 15) != "local function ") { // "local" variables
-						v.split("local")[1].split("=")[0]; // this is the variable name; someone else can implement this
-					} else if (v.substring(0, 6) == "local " && v.substring(0, 15) == "local function ") { // locally scoped functions
-						v.split("local function")[1].split("(")[0]; // this is the function name; someone else can implement this
-					} else if (v.substring(0, 9) == "function ") { // globally scoped functions
-						v.split("(")[0].split("function")[1]; // this is the function name; someone else can implement this
-					}
-				})
-			})
+			window.onresize = function () {editor.layout();}
 		});
+		var getText = function () {return editor.getValue();}
+		var setText = function (x) {editor.setValue(x);}
+		var setTheme = function (themeName) {monaco.editor.setTheme(themeName)}
+
+		var setImage = function (x) {
+			document.getElementsByClassName("lines-content monaco-editor-background")[0].style.backgroundImage = "url=(" + x + ")";
+			document.getElementsByClassName("margin")[0].style.backgroundImage = "url=(" + x + ")";
+		}
+
+		var switchMinimap = function (flag) {editor.updateOptions({minimap: {enabled: flag,}});}
+		var switchReadonly = function (flag) {editor.updateOptions({readOnly: flag,});}
+		var switchRenderWhitespace = function (op) {editor.updateOptions({renderWhitespace: op,});}
+		var switchLinks = function (flag) {editor.updateOptions({links: flag,});}
+		var switchLineHeight = function (num) {editor.updateOptions({lineHeight: num,});}
+		var switchFontSize = function (num) {editor.updateOptions({fontSize: num,});}
+		var switchFolding = function (flag) {editor.updateOptions({folding: flag,});}
+		var switchAutoIndent = function (flag) {editor.updateOptions({autoIndent: flag,});}
+		var switchFontFamily = function (name) {editor.updateOptions({fontFamily: name,});}
+		var switchFontLigatures = function (flag) {editor.updateOptions({fontLigatures: flag,});}
+
+		var addIntellisense = function (l, k, d, i) {
+			var t;
+			switch (k) {
+				case "Class": t = monaco.languages.CompletionItemKind.Class; break;
+				case "Color": t = monaco.languages.CompletionItemKind.Color; break;
+				case "Constructor": t = monaco.languages.CompletionItemKind.Constructor; break;
+				case "Enum": t = monaco.languages.CompletionItemKind.Enum; break;
+				case "Field": t = monaco.languages.CompletionItemKind.Field; break;
+				case "File": t = monaco.languages.CompletionItemKind.File; break;
+				case "Folder": t = monaco.languages.CompletionItemKind.Folder; break;
+				case "Function": t = monaco.languages.CompletionItemKind.Method; break;
+				case "Interface": t = monaco.languages.CompletionItemKind.Interface; break;
+				case "Keyword": t = monaco.languages.CompletionItemKind.Keyword; break;
+				case "Method": t = monaco.languages.CompletionItemKind.Method; break;
+				case "Module": t = monaco.languages.CompletionItemKind.Module; break;
+				case "Property": t = monaco.languages.CompletionItemKind.Property; break;
+				case "Reference": t = monaco.languages.CompletionItemKind.Reference; break;
+				case "Snippet": t = monaco.languages.CompletionItemKind.Snippet; break;
+				case "Text": t = monaco.languages.CompletionItemKind.Text; break;
+				case "Unit": t = monaco.languages.CompletionItemKind.Unit; break;
+				case "Value": t = monaco.languages.CompletionItemKind.Value; break;
+				case "Variable": t = monaco.languages.CompletionItemKind.Variable; break;
+			}
+
+			Proposals.push({
+				label: l,
+				kind: t,
+				documentation: d,
+				insertText: i
+			});
+		}
+
+		var showErr = function (line, column, endline, endcolumn, errMessage) {
+			editor.revealPositionInCenter({ lineNumber: line, column: column });
+			editor.deltaDecorations([], [
+				{
+					range: new monaco.Range(line, column, endline, endcolumn),
+					options: {
+						inlineClassName: 'squiggly-error',
+						hoverMessage: {value: errMessage,},
+					},
+				},
+			]);
+		}
+
+		var setScroll = function (line) {editor.revealLineInCenter({ lineNumber: line });}
+
+		var refresh = function () {
+			var text = getText();
+			setText("");
+			editor.trigger('keyboard', 'type', { text: text });
+		}
 	</script>
 </body>
 

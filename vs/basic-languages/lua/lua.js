@@ -32,7 +32,7 @@ define(["require", "exports"], function (require, exports) {
 			{ open: '[', close: ']' },
 			{ open: '(', close: ')' },
 			{ open: '"', close: '"' },
-			{ open: "'", close: "'"  },
+			{ open: "'", close: "'" },
 		],
 		folding: {
 			markers: {
@@ -134,7 +134,8 @@ define(["require", "exports"], function (require, exports) {
 							'$#==$S2': { token: 'string', next: '@pop' },
 							'@default': 'string'
 						}
-					}]
+					}
+				]
 			],
 		},
 	};
