@@ -1940,6 +1940,55 @@
 			]}}});
 			/* Snippets */ monaco.languages.registerCompletionItemProvider('lua', {provideCompletionItems: function () {return {suggestions: [
 				{
+					label: "method",
+					kind: monaco.languages.CompletionItemKind.Snippet,
+					detail: "Snippet",
+					documentation: {value: "Method template for a class, which automatically defines the `self` variable which references the table."},
+
+					insertText: [
+						"function ${1:class}:${2:method}(${3:arguments})",
+						"\t$0",
+						"end",
+					].join("\n"),
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "Class",
+					kind: monaco.languages.CompletionItemKind.Snippet,
+					detail: "Snippet",
+					documentation: {value: "A simple and accepted boilerplate template for custom objects. Not a real keyword or function."},
+
+					insertText: [
+						"local ${1:Class} = {}",
+						"${1:Class}.__index = ${1:Class}",
+						"",
+						"function ${1:Class}.new()",
+						"\tlocal ${2:Object} = setmetatable({}, ${1:Class})",
+						"\t$0",
+						"\treturn ${2:Object}",
+						"end",
+					].join("\n"),
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "iterator",
+					kind: monaco.languages.CompletionItemKind.Snippet,
+					detail: "Snippet",
+					documentation: {value: "Autofills a factory which returns an [iterator function](https://www.lua.org/pil/7.1.html), for use in a generic\n```lua\nfor ... in iterator() do\n\t\nend\n```"},
+
+					insertText: [
+						"local function ${1:factory}(Table)",
+						"\tlocal State = 0",
+						"\treturn function()",
+						"\t\tState += 1",
+						"\t\t$0",
+						"\t\treturn Table[State]",
+						"\tend",
+						"end",
+					].join("\n"),
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
 					label: "pages",
 					kind: monaco.languages.CompletionItemKind.Snippet,
 					detail: "Snippet",
@@ -1960,24 +2009,6 @@
 						"\t\t\tIteration += 1",
 						"\t\tend",
 						"\tend)",
-						"end",
-					].join("\n"),
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "Class",
-					kind: monaco.languages.CompletionItemKind.Snippet,
-					detail: "Snippet",
-					documentation: {value: "A simple and accepted boilerplate template for custom objects. Not a real keyword or function."},
-
-					insertText: [
-						"local ${1:Class} = {}",
-						"${1:Class}.__index = ${1:Class}",
-						"",
-						"function ${1:Class}.new()",
-						"\tlocal ${2:Object} = setmetatable({}, ${1:Class})",
-						"\t$0",
-						"\treturn ${2:Object}",
 						"end",
 					].join("\n"),
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -2724,7 +2755,8 @@
 					detail: "Metamethod",
 					documentation: {value: "Fires when table[index] is indexed, if table[index] is nil. Can also be set to a table, in which case that table will be indexed."},
 
-					insertText: "__index",
+					insertText: "__index = function(${1:self}, ${2:index})\n\t$0\nend",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
 					label: "__newindex",
@@ -2732,7 +2764,8 @@
 					detail: "Metamethod",
 					documentation: {value: "Fires when table[index] tries to be set (table[index] = value), if table[index] is nil. Can also be set to a table, in which case that table will be indexed."},
 
-					insertText: "__newindex",
+					insertText: "__newindex = function(${1:self}, ${2:index}, ${3:value})\n\t$0\nend",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
 					label: "__call",
@@ -2740,7 +2773,8 @@
 					detail: "Metamethod",
 					documentation: {value: "Fires when the table is called like a function, ... is the arguments that were passed."},
 
-					insertText: "__call",
+					insertText: "__call  = function(${1:self}, ${2:...})\n\t$0\nend",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
 					label: "__concat",
@@ -2748,7 +2782,8 @@
 					detail: "Metamethod",
 					documentation: {value: "Fires when the .. concatenation operator is used on the table."},
 
-					insertText: "__concat",
+					insertText: "__concat = function(${1:self}, ${2:value})\n\t$0\nend",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
 					label: "__unm",
@@ -2756,7 +2791,8 @@
 					detail: "Metamethod",
 					documentation: {value: "Fires when the unary – operator is used on the table."},
 
-					insertText: "__unm",
+					insertText: "__unm = function(${1:self})\n\t$0\nend",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
 					label: "__add",
@@ -2764,7 +2800,8 @@
 					detail: "Metamethod",
 					documentation: {value: "The + addition operator."},
 
-					insertText: "__add",
+					insertText: "__add = function(${1:self}, ${2:value})\n\t$0\nend",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
 					label: "__sub",
@@ -2772,7 +2809,8 @@
 					detail: "Metamethod",
 					documentation: {value: "The - subtraction operator."},
 
-					insertText: "__sub",
+					insertText: "__sub = function(${1:self}, ${2:value})\n\t$0\nend",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
 					label: "__mul",
@@ -2780,7 +2818,8 @@
 					detail: "Metamethod",
 					documentation: {value: "The * multiplication operator."},
 
-					insertText: "__mul",
+					insertText: "__mul = function(${1:self}, ${2:value})\n\t$0\nend",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
 					label: "__div",
@@ -2788,7 +2827,8 @@
 					detail: "Metamethod",
 					documentation: {value: "The / division operator."},
 
-					insertText: "__div",
+					insertText: "__div = function(${1:self}, ${2:value})\n\t$0\nend",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
 					label: "__mod",
@@ -2796,7 +2836,8 @@
 					detail: "Metamethod",
 					documentation: {value: "The % modulus operator."},
 
-					insertText: "__mod",
+					insertText: "__mod = function(${1:self}, ${2:value})\n\t$0\nend",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
 					label: "__pow",
@@ -2804,7 +2845,8 @@
 					detail: "Metamethod",
 					documentation: {value: "The ^ exponentiation operator."},
 
-					insertText: "__pow",
+					insertText: "__pow = function(${1:self}, ${2:value})\n\t$0\nend",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
 					label: "__eq",
@@ -2812,7 +2854,8 @@
 					detail: "Metamethod",
 					documentation: {value: "The == equal to operator."},
 
-					insertText: "__eq",
+					insertText: "__eq = function(${1:self}, ${2:value})\n\t$0\nend",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
 					label: "__lt",
@@ -2820,7 +2863,8 @@
 					detail: "Metamethod",
 					documentation: {value: "The < less than operator\n\nUsing the >= greater than or equal to operator will invoke this metamethod and return the opposite of what this returns, as greater than or equal to is the same as not less than."},
 
-					insertText: "__lt",
+					insertText: "__lt = function(${1:self}, ${2:value})\n\t$0\nend",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
 					label: "__le",
@@ -2828,7 +2872,8 @@
 					detail: "Metamethod",
 					documentation: {value: "The <= operator\n\nUsing the > greater than operator will invoke this metamethod and return the opposite of what this returns, as greater than is the same as not less than or equal to."},
 
-					insertText: "__le",
+					insertText: "__le = function(${1:self}, ${2:value})\n\t$0\nend",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
 					label: "__len",
@@ -2836,7 +2881,8 @@
 					detail: "Metamethod",
 					documentation: {value: "Fired when the # length operator is used on the Object.\n\nOnly userdatas actually respect the __len() metamethod in Lua 5.1."},
 
-					insertText: "__len",
+					insertText: "__len = function(${1:self})\n\t$0\nend",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
 					label: "__tostring",
@@ -2844,15 +2890,17 @@
 					detail: "Metamethod",
 					documentation: {value: "Fired when tostring is called on the table."},
 
-					insertText: "__tostring",
+					insertText: "__tostring = function(${1:self})\n\t$0\nend",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
 					label: "__metatable",
 					kind: monaco.languages.CompletionItemKind.Method,
 					detail: "Metamethod",
-					documentation: {value: "If present, locks the metatable so getmetatable will return this instead of the metatable and setmetatable will error. Non-function value."},
+					documentation: {value: "If present, locks the metatable so `getmetatable` will return this instead of the metatable and `setmetatable` will error. Non-function value."},
 
-					insertText: "__metatable",
+					insertText: "__metatable = \"${1:The metatable is locked}\"",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
 					label: "__mode",
@@ -2861,6 +2909,7 @@
 					documentation: {value: "Used in weak tables, declaring whether the keys and/or values of a table are weak.\n\nReferences to Roblox instances are never weak. Tables that hold such references will never be garbage collected."},
 
 					insertText: "__mode",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
 					label: "__gc",
@@ -2869,7 +2918,8 @@
 					documentation: {value: "Fired when the table is garbage-collected.\n\nOn Roblox, this metamethod is disabled."},
 					tags: [monaco.languages.CompletionItemTag.Deprecated],
 
-					insertText: "__gc",
+					insertText: "__gc = function(${1:self})\n\t$0\nend",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 			]}}});
 			/* Exploiting (Environment) */ monaco.languages.registerCompletionItemProvider('lua', {provideCompletionItems: function () {return {suggestions: [
