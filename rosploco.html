@@ -5,12 +5,44 @@
 
 <body style="width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;">
 	<div id="container" style="width:100%; height:100%;"></div>
-	<script type="text/javascript" id="file-saver"">/* FileSaver.js //purl.eligrey.com/github/FileSaver.js (MIT License) */ var saveAs=saveAs ||(typeof navigator!=="undefined"&&navigator.msSaveOrOpenBlob&&navigator.msSaveOrOpenBlob.bind(navigator))||(function(view){"use strict";if(typeof navigator!=="undefined"&&/MSIE [1-9]\./.test(navigator.userAgent)){return}var doc=view.document,get_URL=function(){return view.URL||view.webkitURL||view},save_link=doc.createElementNS("http://www.w3.org/1999/xhtml","a"),can_use_save_link=!view.externalHost&&"download"in save_link,click=function(node){var event=doc.createEvent("MouseEvents");event.initMouseEvent("click",true,false,view,0,0,0,0,0,false,false,false,false,0,null);node.dispatchEvent(event)},webkit_req_fs=view.webkitRequestFileSystem,req_fs=view.requestFileSystem||webkit_req_fs||view.mozRequestFileSystem,throw_outside=function(ex){(view.setImmediate||view.setTimeout)(function(){throw ex},0)},force_saveable_type="application/octet-stream",fs_min_size=0,deletion_queue=[],process_deletion_queue=function(){var i=deletion_queue.length;while(i--){var file=deletion_queue[i];if(typeof file==="string"){get_URL().revokeObjectURL(file)}else{file.remove()}}deletion_queue.length=0;},dispatch=function(filesaver,event_types,event){event_types=[].concat(event_types);var i=event_types.length;while(i--){var listener=filesaver["on"+event_types[i]];if(typeof listener==="function"){try{listener.call(filesaver,event||filesaver)}catch(ex){throw_outside(ex)}}}},FileSaver=function(blob,name){var filesaver=this,type=blob.type,blob_changed=false,object_url,target_view,get_object_url=function(){var object_url=get_URL().createObjectURL(blob);deletion_queue.push(object_url);return object_url},dispatch_all=function(){dispatch(filesaver,"writestart progress write writeend".split(" "))},fs_error=function(){if(blob_changed||!object_url){object_url=get_object_url(blob)}if(target_view){target_view.location.href=object_url}else{window.open(object_url,"_blank")}filesaver.readyState=filesaver.DONE;dispatch_all()},abortable=function(func){return function(){if(filesaver.readyState!==filesaver.DONE){return func.apply(this,arguments)}}},create_if_not_found={create:true,exclusive:false},slice;filesaver.readyState=filesaver.INIT;if(!name){name="download"}if(can_use_save_link){object_url=get_object_url(blob);save_link.href=object_url;save_link.download=name;click(save_link);filesaver.readyState=filesaver.DONE;dispatch_all();return}if(view.chrome&&type&&type!==force_saveable_type){slice=blob.slice||blob.webkitSlice;blob=slice.call(blob,0,blob.size,force_saveable_type);blob_changed=true}if(webkit_req_fs&&name!=="download"){name+=".download"}if(type===force_saveable_type||webkit_req_fs){target_view=view}if(!req_fs){fs_error();return}fs_min_size+=blob.size;req_fs(view.TEMPORARY,fs_min_size,abortable(function(fs){fs.root.getDirectory("saved",create_if_not_found,abortable(function(dir){var save=function(){dir.getFile(name,create_if_not_found,abortable(function(file){file.createWriter(abortable(function(writer){writer.onwriteend=function(event){target_view.location.href=file.toURL();deletion_queue.push(file);filesaver.readyState=filesaver.DONE;dispatch(filesaver,"writeend",event)};writer.onerror=function(){var error=writer.error;if(error.code!==error.ABORT_ERR){fs_error()}};"writestart progress write abort".split(" ").forEach(function(event){writer["on"+event]=filesaver["on"+event]});writer.write(blob);filesaver.abort=function(){writer.abort();filesaver.readyState=filesaver.DONE};filesaver.readyState=filesaver.WRITING}),fs_error)}),fs_error)};dir.getFile(name,{create:false},abortable(function(file){file.remove();save()}),abortable(function(ex){if(ex.code===ex.NOT_FOUND_ERR){save()}else{fs_error()}}))}),fs_error)}),fs_error)},FS_proto=FileSaver.prototype,saveAs=function(blob,name){return new FileSaver(blob,name)};FS_proto.abort=function(){var filesaver=this;filesaver.readyState=filesaver.DONE;dispatch(filesaver,"abort")};FS_proto.readyState=FS_proto.INIT=0;FS_proto.WRITING=1;FS_proto.DONE=2;FS_proto.error=FS_proto.onwritestart=FS_proto.onprogress=FS_proto.onwrite=FS_proto.onabort=FS_proto.onerror=FS_proto.onwriteend=null;view.addEventListener("unload",process_deletion_queue,false);saveAs.unload=function(){process_deletion_queue();view.removeEventListener("unload",process_deletion_queue,false)};return saveAs}(typeof self!=="undefined"&&self||typeof window!=="undefined"&&window||this.content));if(typeof module!=="undefined"&&module!==null){module.exports=saveAs}else if((typeof define!=="undefined"&&define!==null)&&(define.amd!=null)){define([],function(){return saveAs})}String.prototype.endsWithAny=function(){var strArray=Array.prototype.slice.call(arguments),$this=this.toLowerCase().toString();for(var i=0;i<strArray.length;i+=1){if($this.indexOf(strArray[i],$this.length-strArray[i].length)!==-1){return true}}return false};var saveTextAs=saveTextAs||(function(textContent,fileName,charset){fileName=fileName||'download.txt';charset=charset||'utf-8';textContent=(textContent||'').replace(/\r?\n/g,"\r\n");if(saveAs&&Blob){var blob=new Blob([textContent],{type:"text/plain;charset="+charset});saveAs(blob,fileName);return true}else{var saveTxtWindow=window.frames.saveTxtWindow;if(!saveTxtWindow){saveTxtWindow=document.createElement('iframe');saveTxtWindow.id='saveTxtWindow';saveTxtWindow.style.display='none';document.body.insertBefore(saveTxtWindow,null);saveTxtWindow=window.frames.saveTxtWindow;if(!saveTxtWindow){saveTxtWindow=window.open('','_temp','width=100,height=100');if(!saveTxtWindow){window.alert('Sorry, download file could not be created.');return false}}}var doc=saveTxtWindow.document;doc.open('text/html','replace');doc.charset=charset;if(fileName.endsWithAny('.htm','.html')){doc.close();doc.body.innerHTML='\r\n'+textContent+'\r\n'}else{if(!fileName.endsWithAny('.txt')){fileName+='.txt'}doc.write(textContent);doc.close()}var retValue=doc.execCommand('SaveAs',null,fileName);saveTxtWindow.close();return retValue}});</script>
+	<script type="text/javascript">/* FileSaver.js //purl.eligrey.com/github/FileSaver.js (MIT License) */ var saveAs=saveAs ||(typeof navigator!=="undefined"&&navigator.msSaveOrOpenBlob&&navigator.msSaveOrOpenBlob.bind(navigator))||(function(view){"use strict";if(typeof navigator!=="undefined"&&/MSIE [1-9]\./.test(navigator.userAgent)){return}var doc=view.document,get_URL=function(){return view.URL||view.webkitURL||view},save_link=doc.createElementNS("http://www.w3.org/1999/xhtml","a"),can_use_save_link=!view.externalHost&&"download"in save_link,click=function(node){var event=doc.createEvent("MouseEvents");event.initMouseEvent("click",true,false,view,0,0,0,0,0,false,false,false,false,0,null);node.dispatchEvent(event)},webkit_req_fs=view.webkitRequestFileSystem,req_fs=view.requestFileSystem||webkit_req_fs||view.mozRequestFileSystem,throw_outside=function(ex){(view.setImmediate||view.setTimeout)(function(){throw ex},0)},force_saveable_type="application/octet-stream",fs_min_size=0,deletion_queue=[],process_deletion_queue=function(){var i=deletion_queue.length;while(i--){var file=deletion_queue[i];if(typeof file==="string"){get_URL().revokeObjectURL(file)}else{file.remove()}}deletion_queue.length=0;},dispatch=function(filesaver,event_types,event){event_types=[].concat(event_types);var i=event_types.length;while(i--){var listener=filesaver["on"+event_types[i]];if(typeof listener==="function"){try{listener.call(filesaver,event||filesaver)}catch(ex){throw_outside(ex)}}}},FileSaver=function(blob,name){var filesaver=this,type=blob.type,blob_changed=false,object_url,target_view,get_object_url=function(){var object_url=get_URL().createObjectURL(blob);deletion_queue.push(object_url);return object_url},dispatch_all=function(){dispatch(filesaver,"writestart progress write writeend".split(" "))},fs_error=function(){if(blob_changed||!object_url){object_url=get_object_url(blob)}if(target_view){target_view.location.href=object_url}else{window.open(object_url,"_blank")}filesaver.readyState=filesaver.DONE;dispatch_all()},abortable=function(func){return function(){if(filesaver.readyState!==filesaver.DONE){return func.apply(this,arguments)}}},create_if_not_found={create:true,exclusive:false},slice;filesaver.readyState=filesaver.INIT;if(!name){name="download"}if(can_use_save_link){object_url=get_object_url(blob);save_link.href=object_url;save_link.download=name;click(save_link);filesaver.readyState=filesaver.DONE;dispatch_all();return}if(view.chrome&&type&&type!==force_saveable_type){slice=blob.slice||blob.webkitSlice;blob=slice.call(blob,0,blob.size,force_saveable_type);blob_changed=true}if(webkit_req_fs&&name!=="download"){name+=".download"}if(type===force_saveable_type||webkit_req_fs){target_view=view}if(!req_fs){fs_error();return}fs_min_size+=blob.size;req_fs(view.TEMPORARY,fs_min_size,abortable(function(fs){fs.root.getDirectory("saved",create_if_not_found,abortable(function(dir){var save=function(){dir.getFile(name,create_if_not_found,abortable(function(file){file.createWriter(abortable(function(writer){writer.onwriteend=function(event){target_view.location.href=file.toURL();deletion_queue.push(file);filesaver.readyState=filesaver.DONE;dispatch(filesaver,"writeend",event)};writer.onerror=function(){var error=writer.error;if(error.code!==error.ABORT_ERR){fs_error()}};"writestart progress write abort".split(" ").forEach(function(event){writer["on"+event]=filesaver["on"+event]});writer.write(blob);filesaver.abort=function(){writer.abort();filesaver.readyState=filesaver.DONE};filesaver.readyState=filesaver.WRITING}),fs_error)}),fs_error)};dir.getFile(name,{create:false},abortable(function(file){file.remove();save()}),abortable(function(ex){if(ex.code===ex.NOT_FOUND_ERR){save()}else{fs_error()}}))}),fs_error)}),fs_error)},FS_proto=FileSaver.prototype,saveAs=function(blob,name){return new FileSaver(blob,name)};FS_proto.abort=function(){var filesaver=this;filesaver.readyState=filesaver.DONE;dispatch(filesaver,"abort")};FS_proto.readyState=FS_proto.INIT=0;FS_proto.WRITING=1;FS_proto.DONE=2;FS_proto.error=FS_proto.onwritestart=FS_proto.onprogress=FS_proto.onwrite=FS_proto.onabort=FS_proto.onerror=FS_proto.onwriteend=null;view.addEventListener("unload",process_deletion_queue,false);saveAs.unload=function(){process_deletion_queue();view.removeEventListener("unload",process_deletion_queue,false)};return saveAs}(typeof self!=="undefined"&&self||typeof window!=="undefined"&&window||this.content));if(typeof module!=="undefined"&&module!==null){module.exports=saveAs}else if((typeof define!=="undefined"&&define!==null)&&(define.amd!=null)){define([],function(){return saveAs})}String.prototype.endsWithAny=function(){var strArray=Array.prototype.slice.call(arguments),$this=this.toLowerCase().toString();for(var i=0;i<strArray.length;i+=1){if($this.indexOf(strArray[i],$this.length-strArray[i].length)!==-1){return true}}return false};var saveTextAs=saveTextAs||(function(textContent,fileName,charset){fileName=fileName||'download.txt';charset=charset||'utf-8';textContent=(textContent||'').replace(/\r?\n/g,"\r\n");if(saveAs&&Blob){var blob=new Blob([textContent],{type:"text/plain;charset="+charset});saveAs(blob,fileName);return true}else{var saveTxtWindow=window.frames.saveTxtWindow;if(!saveTxtWindow){saveTxtWindow=document.createElement('iframe');saveTxtWindow.id='saveTxtWindow';saveTxtWindow.style.display='none';document.body.insertBefore(saveTxtWindow,null);saveTxtWindow=window.frames.saveTxtWindow;if(!saveTxtWindow){saveTxtWindow=window.open('','_temp','width=100,height=100');if(!saveTxtWindow){window.alert('Sorry, download file could not be created.');return false}}}var doc=saveTxtWindow.document;doc.open('text/html','replace');doc.charset=charset;if(fileName.endsWithAny('.htm','.html')){doc.close();doc.body.innerHTML='\r\n'+textContent+'\r\n'}else{if(!fileName.endsWithAny('.txt')){fileName+='.txt'}doc.write(textContent);doc.close()}var retValue=doc.execCommand('SaveAs',null,fileName);saveTxtWindow.close();return retValue}});</script>
 	<script src="vs/loader.js"></script>
 	<script type="text/javascript">
 		var editor;
-		var Proposals = [];
-		var instanceAction;
+		var proposals = [];
+
+		var instances = [];
+		var services = [];
+		var enums = [];
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				let json = JSON.parse(this.responseText);
+				for (let index = 0; index < json["Classes"].length; index++) {
+					const element = json["Classes"][index];
+					if (element.Tags && element.Tags.includes("Service")) {
+						services.push(element.Name);
+					}
+				}
+				for (let index = 0; index < json["Classes"].length; index++) {
+					const element = json["Classes"][index];
+					if (!element.Tags || (element.Tags && !element.Tags.includes("NotCreatable") && !element.Tags.includes("Service"))) {
+						instances.push(element.Name);
+						instances.sort();
+					}
+				}
+				for (let index = 0; index < json["Enums"].length; index++) {
+					enums.push(json["Enums"][index].Name);
+				}
+			}
+			else if (this.status >= 300) {
+				instances = ["Part"];
+				services = ["Workspace", "Players", "Lighting", "ReplicatedStorage", "ReplicatedFirst", "StarterGui", "StarterPack", "StarterPlayer", "DataStoreService", "HttpService", "InsertService", "GroupService", "MarketplaceService", "RunService", "SoundService", "TeleportService", "TestService", "TweenService", "UserInputService"];
+			};
+		};
+		xhttp.open("GET", "https://raw.githubusercontent.com/CloneTrooper1019/Roblox-Client-Tracker/roblox/API-Dump.json", true);
+		xhttp.send();
+
 		require(['vs/editor/editor.main'], function() {
 			/* Keywords */ monaco.languages.registerCompletionItemProvider('lua', {provideCompletionItems: function () {return {suggestions: [
 				{
@@ -94,7 +126,7 @@
 					documentation: {value: "Functions are code that can be used multiple times throughout a script. After defining them, you can execute them through a command or trigger them with an event. You can call the function by doing `name(argument1, argument2)`. Excess arguments will be ignored, and lacking arguments will become `nil`."},
 					preselect: true,
 
-					insertText: "local function ${1:name}(${2:parameters})\n\t$0\nend",
+					insertText: "function ${1:name}(${2:parameters})\n\t$0\nend",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
@@ -105,16 +137,6 @@
 					preselect: true,
 
 					insertText: "function(${1:parameters})\n\t$0\nend",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "function(...)",
-					kind: monaco.languages.CompletionItemKind.Snippet,
-					detail: "Function (Variadic)",
-					documentation: {value: "A varaiadic function is a function that allows you to use infinite arguments inside of a function, like `print()`. After packing the `...` token, you can iterate through it with an array's `for` loop."},
-					preselect: true,
-
-					insertText: "local function ${1:name}(${2:parameters}, ...)\n\tlocal arguments = table.pack(...)\n\t$0\nend",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
@@ -134,7 +156,7 @@
 					documentation: {value: "Runs the code inside of `then` and `end`, but only if the arguments you passed evaluate to true."},
 					preselect: true,
 
-					insertText: "if ${1:condition} then\n\t$2\nelse\n\t$0\nend",
+					insertText: "if ${1:condition} then\n\t$0\nend",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
@@ -173,13 +195,13 @@
 					documentation: {value: "Run a command or group of commands (code) a set number of times. Beginning at the start value, the loop will count up by the increment variable until it reaches the end variable. The increment variable can be negative."},
 					preselect: true,
 
-					insertText: "for i = ${1:start}, ${2:finish}, ${3:increment} do\n\t$0\nend",
+					insertText: "for i = ${1:1}, ${2:10}, ${3:1} do\n\t$0\nend",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 
 					filterText: "for ",
 				},
 				{
-					label: "for ... in ? do",
+					label: "for ... in ?",
 					kind: monaco.languages.CompletionItemKind.Snippet,
 					detail: "Loop",
 					documentation: {value: "A snippet for iterator function usage with a `for` loop."},
@@ -189,30 +211,6 @@
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 
 					filterText: "for in ",
-				},
-				{
-					label: "for i, v in ipairs()",
-					kind: monaco.languages.CompletionItemKind.Snippet,
-					detail: "Loop",
-					documentation: {value: "This is a commonly used variation of the `for` loop which iterates through an array with the `ipairs` iterator. `i` means index, and `v` means value."},
-					preselect: true,
-
-					insertText: "for i, v in ipairs(${1:array}) do\n\t$0\nend",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-
-					filterText: "for i, v in ipairs",
-				},
-				{
-					label: "for k, v in pairs()",
-					kind: monaco.languages.CompletionItemKind.Snippet,
-					detail: "Loop",
-					documentation: {value: "This is a commonly used variation of the `for` loop which iterates through a dictionary with the `pairs` iterator. `k` means key, and `v` means value. The loop may not return items in the same way they're declared."},
-					preselect: true,
-
-					insertText: "for k, v in pairs(${1:dictionary}) do\n\t$0\nend",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-
-					filterText: "for k, v in pairs",
 				},
 				{
 					label: "while",
@@ -225,29 +223,6 @@
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 
 					filterText: "while ",
-				},
-				{
-					label: "while true do",
-					kind: monaco.languages.CompletionItemKind.Snippet,
-					detail: "Loop",
-					documentation: {value: "Creates an infinite loop since `true` is `true`. Includes a `wait()` to prevent the game from freezing up from overload."},
-					preselect: true,
-
-					insertText: "while true do\n\t$0\n\twait()\nend",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-
-					filterText: "while true",
-				},
-				{
-					label: "while wait() do",
-					kind: monaco.languages.CompletionItemKind.Snippet,
-					detail: "Loop",
-					documentation: {value: "Shorthand for\n\n```lua\nwhile true do\n\twait()\nend\n```\n\nalthough not using this is much more syntactically correct."},
-
-					insertText: "while wait() do\n\t$0\nend",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-
-					filterText: "while wait",
 				},
 				{
 					label: "do",
@@ -306,7 +281,7 @@
 					detail: "Lua Global",
 					documentation: {value: "Throws an error if the provided value is `false` or `nil`. If the assertion passes, it returns all values passed to it."},
 
-					insertText: "assert(${1:value}, ${2:errorMessage})",
+					insertText: "assert(${1:value}, ${2:message})",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
@@ -361,24 +336,6 @@
 					documentation: {value: "Loads Lua code from a string, and returns it as a function.\n\nRoblox cannot load the binary version of Lua using loadstring, but it might be possible with an exploit."},
 
 					insertText: "loadstring($0)",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "loadstring(http)",
-					kind: monaco.languages.CompletionItemKind.Snippet,
-					detail: "Lua Global",
-					documentation: {value: "Mostly for use in exploits, this snippet loads the Lua code from a website and executes it."},
-
-					insertText: "loadstring(game:HttpGet(\"${1:url}\"))()",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "loadstring(rbx)",
-					kind: monaco.languages.CompletionItemKind.Snippet,
-					detail: "Lua Global",
-					documentation: {value: "Mostly for use in exploits, this snippet loads the Lua code from a Roblox Model and executes it."},
-
-					insertText: "loadstring(game:GetObjects(\"rbxassetid://${1:id}\")[1].Source)()",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
@@ -604,9 +561,10 @@
 					label: "spawn",
 					kind: monaco.languages.CompletionItemKind.Function,
 					detail: "Roblox Global",
-					documentation: {value: "Runs the specified callback function in a separate thread, without yielding the current thread. The function will be executed the next time Roblox's Task Scheduler runs an update cycle."},
+					documentation: {value: "Runs the specified callback function in a separate thread, without yielding the current thread. Since the function will be executed the next time Roblox's Task Scheduler runs an update cycle, this is deprecated in favor of `coroutine.wrap()()`."},
+					tags: [monaco.languages.CompletionItemTag.Deprecated],
 
-					insertText: "spawn($0)",
+					insertText: "coroutine.wrap($0)()",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
@@ -623,7 +581,7 @@
 					label: "tick",
 					kind: monaco.languages.CompletionItemKind.Function,
 					detail: "Roblox Global",
-					documentation: {value: "Returns the elapsed time (in seconds) since the Unix Epoch (1 January 1970) on the local session's computer. `os.time()` always returns Unix time and should be used instead."},
+					documentation: {value: "Returns the elapsed time (in seconds) since the Unix Epoch (1 January 1970) on the local session's computer. `os.time()` always returns Unix time and should be used instead. `os.clock()` is also a better function for benchmarking purposes."},
 
 					insertText: "tick()",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -641,7 +599,7 @@
 					label: "typeof",
 					kind: monaco.languages.CompletionItemKind.Function,
 					detail: "Roblox Global",
-					documentation: {value: "Returns the type of the object specified, as a string, including Roblox Datatypes."},
+					documentation: {value: "Returns the type of the object specified, as a string, including Roblox Datatypes. `type()` is much faster and therefore should be used instead when you do not need to also parse Roblox Datatypes."},
 
 					insertText: "typeof($0)",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -659,7 +617,7 @@
 					label: "version",
 					kind: monaco.languages.CompletionItemKind.Function,
 					detail: "Roblox Global",
-					documentation: {value: "Returns the current version of Roblox as a string. The integers in the version string are separated by periods, and representing Generation.Version.Patch.Commit."},
+					documentation: {value: "Returns the current version of Roblox as a string. The integers in the version string are separated by periods, and representing `Generation`.`Version`.`Patch`.`Commit`."},
 
 					insertText: "version()",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -668,7 +626,7 @@
 					label: "wait",
 					kind: monaco.languages.CompletionItemKind.Function,
 					detail: "Roblox Global",
-					documentation: {value: "Yields the current thread until the specified amount of seconds have elapsed. Minimum duration is 29ms+."},
+					documentation: {value: "Yields the current thread until the specified amount of seconds have elapsed. Minimum duration is 29ms+. Very unreliable."},
 
 					insertText: "wait($0)",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -688,7 +646,8 @@
 					detail: "Roblox Global",
 					documentation: {value: "A reference to the Enums datatype, which stores all of the available enums that can be used on Roblox."},
 
-					insertText: "Enum",
+					insertText: "Enum.${1|" + enums.join(",") + "|}.",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
 					label: "game",
@@ -698,6 +657,7 @@
 					preselect: true,
 
 					insertText: "game",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
 					label: "shared",
@@ -705,7 +665,8 @@
 					detail: "Roblox Global",
 					documentation: {value: "A table that is shared across all scripts that share the same execution context level (a table shared cross-script). This is separate from `_G`."},
 
-					insertText: "",
+					insertText: "shared",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
 					label: "script",
@@ -715,15 +676,17 @@
 					preselect: true,
 
 					insertText: "script",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
 					label: "workspace",
 					kind: monaco.languages.CompletionItemKind.Variable,
 					detail: "Roblox Global",
-					documentation: {value: "A reference to the Workspace service, which contains all of the physical components of a Roblox world. You can also use game.Workspace or game:GetService(\"Workspace\") to access the workspace."},
+					documentation: {value: "A reference to the Workspace service, which contains all of the physical components of a Roblox world. You can also use `game.Workspace` or `game:GetService(\"Workspace\")` to access the workspace."},
 					preselect: true,
 
 					insertText: "workspace",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 			]}}});
 			/* Datatypes */ monaco.languages.registerCompletionItemProvider('lua', {provideCompletionItems: function () {return {suggestions: [
@@ -988,7 +951,7 @@
 					detail: "Constructor",
 					documentation: {value: "Creates an new object of the given type."},
 
-					insertText: "Instance.new(\"${0:Class}\")",
+					insertText: "Instance.new(\"${1|" + instances.join(",") + "|}\")",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
@@ -997,7 +960,7 @@
 					detail: "Snippet",
 					documentation: {value: "A fully-fledged template for instance creation, using performance benifits."},
 
-					insertText: "local ${1:instance} = Instance.new(\"${2:Class}\")\n$0\n${1:instance}.Parent = ${3:parent}",
+					insertText: "local ${1:instance} = Instance.new(\"${2|" + instances.join(",") + "|}\")\n$0\n${1:instance}.Parent = ${3:parent}",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
@@ -1006,7 +969,7 @@
 					detail: "Constructor",
 					documentation: {value: "A shorthand version of the default instance constructor which uses the parent argument and sets the only needed property afterward. Often used for UILayout objects."},
 
-					insertText: "Instance.new(\"${1:Class}\", ${2:parent}).${3:property} = ${4:value}",
+					insertText: "Instance.new(\"${1|" + instances.join(",") + "|}\", ${2:parent}).${3:property} = ${4:value}",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 			]}}});
@@ -1318,15 +1281,6 @@
 					documentation: {value: "Returns the angle x (given in radians) in degrees."},
 
 					insertText: "math.deg($0)",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "math.e",
-					kind: monaco.languages.CompletionItemKind.Text,
-					detail: "Fake Constant",
-					documentation: {value: "Autofills the approximate value of Euler's number."},
-
-					insertText: "2.718281828459045",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
@@ -1940,6 +1894,63 @@
 			]}}});
 			/* Snippets */ monaco.languages.registerCompletionItemProvider('lua', {provideCompletionItems: function () {return {suggestions: [
 				{
+					label: "function(...)",
+					kind: monaco.languages.CompletionItemKind.Snippet,
+					detail: "Function (Variadic)",
+					documentation: {value: "A varaiadic function is a function that allows you to use infinite arguments inside of a function, like `print()`. After packing the `...` token, you can iterate through it with an array's `for` loop."},
+					preselect: true,
+
+					insertText: "local function ${1:name}(${2:parameters}, ...)\n\tlocal arguments = table.pack(...)\n\t$0\nend",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "for i, v in ipairs()",
+					kind: monaco.languages.CompletionItemKind.Snippet,
+					detail: "Loop",
+					documentation: {value: "This is a commonly used variation of the `for` loop which iterates through an array with the `ipairs` iterator. `i` means index, and `v` means value."},
+					preselect: true,
+
+					insertText: "for i, v in ipairs(${1:array}) do\n\t$0\nend",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+
+					filterText: "for i, v in ipairs",
+				},
+				{
+					label: "for k, v in pairs()",
+					kind: monaco.languages.CompletionItemKind.Snippet,
+					detail: "Loop",
+					documentation: {value: "This is a commonly used variation of the `for` loop which iterates through a dictionary with the `pairs` iterator. `k` means key, and `v` means value. The loop may not return items in the same way they're declared."},
+					preselect: true,
+
+					insertText: "for k, v in pairs(${1:dictionary}) do\n\t$0\nend",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+
+					filterText: "for k, v in pairs",
+				},
+				{
+					label: "while true do",
+					kind: monaco.languages.CompletionItemKind.Snippet,
+					detail: "Loop",
+					documentation: {value: "Creates an infinite loop in a new thread since `true` is `true`. Includes a `wait()` and is wrapped in a coroutine to prevent the game from freezing up from overload."},
+					preselect: true,
+
+					insertText: "coroutine.wrap(function()\n\twhile true do\n\t\t$0\n\t\twait()\n\tend\nend)()",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+
+					filterText: "while true",
+				},
+				{
+					label: "while wait() do",
+					kind: monaco.languages.CompletionItemKind.Snippet,
+					detail: "Loop",
+					documentation: {value: "Shorthand for\n\n```lua\ncoroutine.wrap(function()\n\twhile true do\n\t\twait()\n\tend\nend)()\n```\n\nalthough not using this is much more syntactically correct."},
+
+					insertText: "coroutine.wrap(function()\n\twhile true do\n\t\t$0\n\t\twait()\n\tend\nend)()",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+
+					filterText: "while wait",
+				},
+				{
 					label: "method",
 					kind: monaco.languages.CompletionItemKind.Snippet,
 					detail: "Snippet",
@@ -1948,6 +1959,93 @@
 					insertText: [
 						"function ${1:class}:${2:method}(${3:arguments})",
 						"\t$0",
+						"end",
+					].join("\n"),
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "loadstring(http)",
+					kind: monaco.languages.CompletionItemKind.Snippet,
+					detail: "Snippet",
+					documentation: {value: "Mostly for use in exploits, this snippet loads the Lua code from a website and executes it."},
+
+					insertText: "loadstring(game:HttpGet(\"${1:url}\"))()",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "loadstring(rbx)",
+					kind: monaco.languages.CompletionItemKind.Snippet,
+					detail: "Snippet",
+					documentation: {value: "Mostly for use in exploits, this snippet loads the Lua code from a Roblox Model and executes it."},
+
+					insertText: "loadstring(game:GetObjects(\"rbxassetid://${1:id}\")[1].Source)()",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "benchmark",
+					kind: monaco.languages.CompletionItemKind.Snippet,
+					detail: "Snippet",
+					documentation: {value: "Benchmark code to run for the performance of an operation."},
+
+					insertText: [
+						"local startTime = os.clock()",
+						"$0",
+						"local deltaTime = os.clock() - startTime",
+					].join("\n"),
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "HUGE_VAL",
+					kind: monaco.languages.CompletionItemKind.Snippet,
+					detail: "Snippet",
+					documentation: {value: "The value which can only be used when returned from `math.huge`."},
+
+					insertText: "math.huge()",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "INT32_MAX",
+					kind: monaco.languages.CompletionItemKind.Snippet,
+					detail: "Snippet",
+					documentation: {value: "Autofills 2³² - 1."},
+
+					insertText: "2^32 - 1",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "INT32_MIN",
+					kind: monaco.languages.CompletionItemKind.Snippet,
+					detail: "Snippet",
+					documentation: {value: "Autofills -2³² - 1."},
+
+					insertText: "-2^32 - 1",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "math.e",
+					kind: monaco.languages.CompletionItemKind.Snippet,
+					detail: "Snippet",
+					documentation: {value: "Uses `math.exp` and gets the power of e^1, which is just e."},
+
+					insertText: "math.exp(1)",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "table.copy",
+					kind: monaco.languages.CompletionItemKind.Snippet,
+					detail: "Snippet",
+					documentation: {value: "A function that deep copies the contents of a given table, using a recusrive function. Not a real function of the `table` library."},
+
+					insertText: [
+						"local function ${1:name}(original)",
+						"\tlocal copy = {}",
+						"\tfor k, v in pairs(original) do",
+						"\t\tif type(v) == \"table\" then",
+						"\t\t\tv = ${1:name}(v)",
+						"\t\tend",
+						"\t\tcopy[k] = v",
+						"\tend",
+						"\treturn copy",
 						"end",
 					].join("\n"),
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -2661,7 +2759,7 @@
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 			]}}});
-			/* Methods (ServiceProvider) */ monaco.languages.registerCompletionItemProvider('lua', {triggerCharacters: [":"], provideCompletionItems: function () {return {suggestions: [
+			/* Methods (ServiceProvider) */ monaco.languages.registerCompletionItemProvider('lua', {provideCompletionItems: function () {return {suggestions: [
 				{
 					label: "FindService",
 					kind: monaco.languages.CompletionItemKind.Method,
@@ -2669,7 +2767,7 @@
 					documentation: {value: "Returns the service specified by the given class name if it's already created. Errors for an invalid name."},
 					filterText: "game:FindService",
 
-					insertText: 'FindService("$0")',
+					insertText: 'game:FindService(\"${1|' + services.join(",") + '|}\")',
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
@@ -2677,9 +2775,9 @@
 					kind: monaco.languages.CompletionItemKind.Method,
 					detail: "Method",
 					documentation: {value: "Returns the service with the requested class name, creating it if it does not exist."},
-					filterText: "game:FindService",
+					filterText: "game:GetService",
 
-					insertText: 'GetService("$0")',
+					insertText: 'game:GetService(\"${1|' + services.join(",") + '|}\")',
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 			]}}});
@@ -3802,7 +3900,7 @@
 						detail: "Library",
 						documentation: {value: "An alternative to Roblox GUI that allows you to directly draw objects."},
 
-						insertText: "Drawing.new($0)",
+						insertText: "Drawing.new(\"${1|Line,Text,Image,Circle,Square,Quad,Triangle|}\")",
 						insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 					},
 					{
@@ -3811,7 +3909,7 @@
 						detail: "Function",
 						documentation: {value: "Creates a new drawing object with the provided type (Line, Text, Image, Circle, Square, Quad, Triangle). Returns the new drawing."},
 
-						insertText: "Drawing.new($0)",
+						insertText: "Drawing.new(\"${1|Line,Text,Image,Circle,Square,Quad,Triangle|}\")",
 						insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 					},
 			]}}});
@@ -3943,7 +4041,7 @@
 				case "Variable": t = monaco.languages.CompletionItemKind.Variable; break;
 			}
 
-			Proposals.push({
+			proposals.push({
 				label: l,
 				kind: t,
 				documentation: d,

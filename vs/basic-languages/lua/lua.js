@@ -62,10 +62,13 @@ define(["require", "exports"], function (require, exports) {
 
 			'rawset', 'rawget', 'rawequal',
 
-			'coroutine', 'debug', 'table', 'pairs', 'ipairs', 'bit32', 'math', 'utf8', 'os',
+			'coroutine', 'debug', 'table', 'pairs', 'ipairs', 'bit', 'bit32', 'math', 'utf8', 'os',
 
-			'Color3', 'Instance', 'BrickColor', 'CFrame', 'Vector3', 'Vector2', 'UDim2',
-			'Drawing',
+			'Axes', 'BrickColor', 'CatalogSearchParams', 'CFrame', 'Color3', 'ColorSequence',
+			'ColorSequenceKeypoint', 'DateTime', 'DockWidgetPluginGuiInfo', 'Faces', 'Instance',
+			'NumberRange', 'NumberSequence', 'NumberSequenceKeypoint', 'PathWaypoint', 'PhysicalProperties',
+			'Random', 'Ray', 'RaycastParams', 'RaycastResult', 'Rect', 'Region3', 'Region3int16',
+			'TweenInfo', 'UDim', 'UDim2', 'Vector2', 'Vector2int16', 'Vector3', 'Vector3int16',
 
 			'collectgarbage', 'getfenv', 'getmetatable',
 			'loadfile', 'loadstring', 'newproxy', 'next',
