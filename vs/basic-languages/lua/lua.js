@@ -75,12 +75,12 @@ define(["require", "exports"], function (require, exports) {
 			'pcall', 'select', 'setfenv',
 			'setmetatable', 'tonumber', 'tostring', 'type', 'xpcall', '_G',
 			'shared', 'delay', 'spawn', 'tick', 'typeof', 'wait',
-			'Enum', 'script', 'workspace', 'printidentity', 'Instance'
+			'Enum', 'script', 'workspace', 'printidentity',
 		],
 		operators: [
 			'+', '-', '*', '/', '%', '^', '#', '..',
 			'==', '~=', '<=', '>=', '<', '>', 'or', 'and', 'not',
-			'=', '+=', '-=', '*=', '/=', '%=', '^=',
+			'=', '+=', '-=', '*=', '/=', '%=', '^=', "..=",
 		],
 
 		symbols: /[=><!~?:&|+\-*\/\^%]+/,
