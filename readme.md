@@ -27,7 +27,7 @@ If you realize that some functions or documentation is outdated, then fork this 
 	detail: "Function", // Make this "Function", "Constant", "Module" and keep aligned with `kind`
 	documentation: "This is a custom function for example purposes.", // Your documentation (what appears when you click more info)
   
-	insertText: "mycustomfunction(${1:arg1}, "${2|enumoption1,enumoption2|}", $0)", // Follow the syntax highlighted in https://code.visualstudio.com/docs/editor/userdefinedsnippets#_snippet-syntax.
+	insertText: "mycustomfunction(${1:arg1}, \"${2|enumoption1,enumoption2|}\", $0)", // Follow the syntax highlighted in https://code.visualstudio.com/docs/editor/userdefinedsnippets#_snippet-syntax.
 	insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet, // Keep this as-is
 },
 ```
