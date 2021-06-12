@@ -23,10 +23,7 @@
 					if (element.Tags && element.Tags.includes("Service")) {
 						services.push(element.Name);
 					}
-				}
-				for (let index = 0; index < json["Classes"].length; index++) {
-					const element = json["Classes"][index];
-					if (!element.Tags || (element.Tags && !element.Tags.includes("NotCreatable") && !element.Tags.includes("Service"))) {
+					else if (!element.Tags || (element.Tags && !element.Tags.includes("NotCreatable"))) {
 						instances.push(element.Name);
 						instances.sort();
 					}
@@ -36,7 +33,7 @@
 				}
 			}
 			else if (this.status >= 300) {
-				instances = ["Part"];
+				instances = ["Part", "ScreenGui", "Frame", "TextLabel", "ImageLabel", "TextButton", "ImageButton"];
 				services = ["Workspace", "Players", "Lighting", "ReplicatedStorage", "ReplicatedFirst", "StarterGui", "StarterPack", "StarterPlayer", "DataStoreService", "HttpService", "InsertService", "GroupService", "MarketplaceService", "RunService", "SoundService", "TeleportService", "TestService", "TweenService", "UserInputService"];
 			};
 		};
@@ -193,36 +190,33 @@
 					kind: monaco.languages.CompletionItemKind.Keyword,
 					detail: "Loop",
 					documentation: {value: "Run a command or group of commands (code) a set number of times. Beginning at the start value, the loop will count up by the increment variable until it reaches the end variable. The increment variable can be negative."},
+					filterText: "for ",
 					preselect: true,
 
 					insertText: "for i = ${1:1}, ${2:10}, ${3:1} do\n\t$0\nend",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-
-					filterText: "for ",
 				},
 				{
 					label: "for ... in ?",
 					kind: monaco.languages.CompletionItemKind.Snippet,
 					detail: "Loop",
 					documentation: {value: "A snippet for iterator function usage with a `for` loop."},
+					filterText: "for ... in ",
 					preselect: true,
 
 					insertText: "for ${1:returns} in ${2:iterator} do\n\t$0\nend",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-
-					filterText: "for in ",
 				},
 				{
 					label: "while",
 					kind: monaco.languages.CompletionItemKind.Keyword,
 					detail: "Loop",
 					documentation: {value: "Runs the code inside of the loop if, when, and while the arguments evaluate to true. If the arguments evaluate to true, the loop is executed and the condition is reevaluated afterward. Includes a `wait()` to prevent the game from freezing up from overload."},
+					filterText: "while ",
 					preselect: true,
 
 					insertText: "while ${1:condition} do\n\t$0\nend",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-
-					filterText: "while ",
 				},
 				{
 					label: "do",
@@ -379,6 +373,7 @@
 					kind: monaco.languages.CompletionItemKind.Function,
 					detail: "Lua Global",
 					documentation: {value: "Receives any number of arguments, and prints their values to the output. Uses `__tostring` instead of `tostring()`."},
+					preselect: true,
 
 					insertText: "print($0)",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -987,6 +982,7 @@
 					kind: monaco.languages.CompletionItemKind.Constructor,
 					detail: "Constructor",
 					documentation: {value: "Creates an new object of the given type."},
+					preselect: true,
 
 					insertText: "Instance.new(\"${1|" + instances.join(",") + "|}\")",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -2184,7 +2180,12 @@
 					documentation: {value: "A varaiadic function is a function that allows you to use infinite arguments inside of a function, like `print()`. After packing the `...` token, you can iterate through it with an array's `for` loop."},
 					preselect: true,
 
-					insertText: "local function ${1:name}(${2:parameters}, ...)\n\tlocal arguments = table.pack(...)\n\t$0\nend",
+					insertText: [
+						"local function ${1:name}(${2:parameters}, ...)",
+						"\tlocal arguments = table.pack(...)",
+						"\t$0",
+						"end",
+					].join("\n"),
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
@@ -2192,47 +2193,65 @@
 					kind: monaco.languages.CompletionItemKind.Snippet,
 					detail: "Loop",
 					documentation: {value: "This is a commonly used variation of the `for` loop which iterates through an array with the `ipairs` iterator. `i` means index, and `v` means value."},
+					filterText: "for i, v in ipairs",
 					preselect: true,
 
-					insertText: "for i, v in ipairs(${1:array}) do\n\t$0\nend",
+					insertText: [
+						"for i, v in ipairs(${1:array}) do",
+						"\t$0",
+						"end",
+					].join("\n"),
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-
-					filterText: "for i, v in ipairs",
 				},
 				{
 					label: "for k, v in pairs()",
 					kind: monaco.languages.CompletionItemKind.Snippet,
 					detail: "Loop",
 					documentation: {value: "This is a commonly used variation of the `for` loop which iterates through a dictionary with the `pairs` iterator. `k` means key, and `v` means value. The loop may not return items in the same way they're declared."},
+					filterText: "for k, v in pairs",
 					preselect: true,
 
-					insertText: "for k, v in pairs(${1:dictionary}) do\n\t$0\nend",
+					insertText: [
+						"for k, v in pairs(${1:dictionary}) do",
+						"\t$0",
+						"end",
+					].join("\n"),
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-
-					filterText: "for k, v in pairs",
 				},
 				{
 					label: "while true do",
 					kind: monaco.languages.CompletionItemKind.Snippet,
 					detail: "Loop",
 					documentation: {value: "Creates an infinite loop in a new thread since `true` is `true`. Includes a `wait()` and is wrapped in a coroutine to prevent the game from freezing up from overload."},
+					filterText: "while true",
 					preselect: true,
 
-					insertText: "coroutine.wrap(function()\n\twhile true do\n\t\t$0\n\t\twait()\n\tend\nend)()",
+					insertText: [
+						"coroutine.wrap(function()",
+						"\twhile true do",
+						"\t\t$0",
+						"\t\twait()",
+						"\tend",
+						"end)()",
+					].join("\n"),
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-
-					filterText: "while true",
 				},
 				{
 					label: "while wait() do",
 					kind: monaco.languages.CompletionItemKind.Snippet,
 					detail: "Loop",
 					documentation: {value: "Shorthand for\n\n```lua\ncoroutine.wrap(function()\n\twhile true do\n\t\twait()\n\tend\nend)()\n```\n\nalthough not using this is much more syntactically correct."},
-
-					insertText: "coroutine.wrap(function()\n\twhile true do\n\t\t$0\n\t\twait()\n\tend\nend)()",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-
 					filterText: "while wait",
+
+					insertText: [
+						"coroutine.wrap(function()",
+						"\twhile true do",
+						"\t\t$0",
+						"\t\twait()",
+						"\tend",
+						"end)()",
+					].join("\n"),
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
 					label: "method",
@@ -2409,7 +2428,6 @@
 						"\tButton2 = $6,",
 						"})",
 						"Callback:Destroy()",
-						"",
 					].join("\n"),
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
@@ -3920,10 +3938,298 @@
 						kind: monaco.languages.CompletionItemKind.Function,
 						detail: "Function",
 						documentation: {value: "Creates a new drawing object with the provided type (Line, Text, Image, Circle, Square, Quad, Triangle). Returns the new drawing."},
+						preselect: true,
 
 						insertText: "Drawing.new(\"${1|Line,Text,Image,Square,Triangle,Circle,Quad|}\")",
 						insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 					},
+					{
+						label: "Drawing.line",
+						kind: monaco.languages.CompletionItemKind.Snippet,
+						detail: "Snippet",
+						documentation: {value: "Creates a new line drawing."},
+						
+						insertText: [
+							"local ${1:Line} = Drawing.new(\"Line\")",
+							"${1:Line}.Color = ${2:Color3.new(${6:r}, ${7:g}, ${8:b})}",
+							"${1:Line}.Thickness = ${3:Thickness}",
+							"${1:Line}.From = ${4:Vector2.new(${9:x}, ${10:y})}",
+							"${1:Line}.To = ${5:Vector2.new(${11:x}, ${12:y})}",
+						].join("\n"),
+						insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+					},
+					{
+						label: "Drawing.text",
+						kind: monaco.languages.CompletionItemKind.Snippet,
+						detail: "Snippet",
+						documentation: {value: "Creates a new text drawing."},
+						
+						insertText: [
+							"local ${1:Text} = Drawing.new(\"Text\")",
+							"${1:Text}.Color = ${2:Color3.new(${10:r}, ${11:g}, ${12:b})}",
+							"${1:Text}.Text = \"${3:Text}\"",
+							"${1:Text}.Size = ${4:12}",
+							"${1:Text}.Center = ${5|true,false|}",
+							"${1:Text}.Outline = ${6|true,false|}",
+							"${1:Text}.OutlineColor = ${7:Color3.new(${13:r}, ${14:g}, ${15:b})}",
+							"${1:Text}.Position = ${8:Vector2.new(${16:x}, ${17:y})}",
+							"${1:Text}.Font = ${9|UI,System,Plex,Monospace|}",
+						].join("\n"),
+						insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+					},
+					{
+						label: "Drawing.image",
+						kind: monaco.languages.CompletionItemKind.Snippet,
+						detail: "Snippet",
+						documentation: {value: "Creates a new image drawing."},
+						
+						insertText: [
+							"local ${1:Image} = Drawing.new(\"Image\")",
+							"${1:Image}.Data = game:HttpGet(\"${2:url}\")",
+							"${1:Image}.Size = ${3:Vector2.new(${6:x}, ${7:y})}",
+							"${1:Image}.Position = ${4:Vector2.new(${8:x}, ${9:y})}",
+							"${1:Image}.Rounding = ${5:0}",
+						].join("\n"),
+						insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+					},
+					{
+						label: "Drawing.circle",
+						kind: monaco.languages.CompletionItemKind.Snippet,
+						detail: "Snippet",
+						documentation: {value: "Creates a new circle drawing."},
+						
+						insertText: [
+							"local ${1:Circle} = Drawing.new(\"Circle\")",
+							"${1:Circle}.Thickness = ${2:2}",
+							"${1:Circle}.NumSides = ${3:0}",
+							"${1:Circle}.Radius = ${4:5}",
+							"${1:Circle}.Filled = ${5|true,false|}",
+							"${1:Circle}.Position = ${6:Vector2.new(${7:x}, ${8:y})}",
+						].join("\n"),
+						insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+					},
+					{
+						label: "Drawing.square",
+						kind: monaco.languages.CompletionItemKind.Snippet,
+						detail: "Snippet",
+						documentation: {value: "Creates a new square drawing."},
+						
+						insertText: [
+							"local ${1:Square} = Drawing.new(\"Square\")",
+							"${1:Square}.Thickness = ${2:1}",
+							"${1:Square}.Size = ${3:Vector2.new(${6:x}, ${7:y})}",
+							"${1:Square}.Position = ${4:Vector2.new(${8:x}, ${9:y})}",
+							"${1:Square}.Filled = ${5|true,false|}",
+						].join("\n"),
+						insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+					},
+					{
+						label: "Drawing.quad",
+						kind: monaco.languages.CompletionItemKind.Snippet,
+						detail: "Snippet",
+						documentation: {value: "Creates a new quad drawing. Points are in counter-clockwise order, starting with PointA at the top right."},
+						
+						insertText: [
+							"local ${1:Quad} = Drawing.new(\"Quad\")",
+							"${1:Quad}.Thickness = ${2:1}",
+							"${1:Quad}.PointA = ${3:Vector2.new(${8:x}, ${9:y})}",
+							"${1:Quad}.PointB = ${4:Vector2.new(${10:x}, ${11:y})}",
+							"${1:Quad}.PointC = ${5:Vector2.new(${12:x}, ${13:y})}",
+							"${1:Quad}.PointD = ${6:Vector2.new(${14:x}, ${15:y})}",
+							"${1:Quad}.Filled = ${7|true,false|}",
+						].join("\n"),
+						insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+					},
+					{
+						label: "Drawing.triangle",
+						kind: monaco.languages.CompletionItemKind.Snippet,
+						detail: "Snippet",
+						documentation: {value: "Creates a new triangle drawing."},
+						
+						insertText: [
+							"local ${1:Triangle} = Drawing.new(\"Triangle\")",
+							"${1:Triangle}.Thickness = ${2:1}",
+							"${1:Triangle}.PointA = ${3:Vector2.new(${7:x}, ${8:y})}",
+							"${1:Triangle}.PointB = ${4:Vector2.new(${9:x}, ${10:y})}",
+							"${1:Triangle}.PointC = ${5:Vector2.new(${11:x}, ${12:y})}",
+							"${1:Triangle}.Filled = ${6|true,false|}"
+						].join("\n"),
+						insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+					},
+					{
+						label: "Drawing.properties",
+						kind: monaco.languages.CompletionItemKind.Snippet,
+						detail: "Snippet",
+						documentation: {value: "Inherited properties of all Drawing objects. The transparency property uses `1` for fully opaque and `0` is fully transparent."},
+						preselect: true,
+						
+						insertText: [
+							"${1:Name}.Visible = ${2|true,false|}",
+							"${1:Name}.Transparency = ${3:1}",
+							"${1:Name}.Color = ${4:Color3.new(${5:r}, ${6:g}, ${7:b})}",
+						].join("\n"),
+						insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+					},
+			]}}});
+			/* Debug (Exploiting) */ monaco.languages.registerCompletionItemProvider('lua', {provideCompletionItems: function () {return {suggestions: [
+
+				// Synapse
+
+				{
+					label: "debug.getconstants",
+					kind: monaco.languages.CompletionItemKind.Function,
+					detail: "Function",
+					documentation: {value: "Retrieve the constants in the given function or at the given level."},
+
+					insertText: "debug.getconstants($0)",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "debug.getconstant",
+					kind: monaco.languages.CompletionItemKind.Function,
+					detail: "Function",
+					documentation: {value: "Returns the constant at the given index in the given function or level."},
+
+					insertText: "debug.getconstant($0, ${1:index})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "debug.setconstant",
+					kind: monaco.languages.CompletionItemKind.Function,
+					detail: "Function",
+					documentation: {value: "Sets the constant at the given index in the given function or level."},
+
+					insertText: "debug.setconstant($0, ${1:index}, ${2:value})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "debug.getupvalues",
+					kind: monaco.languages.CompletionItemKind.Function,
+					detail: "Function",
+					documentation: {value: "Retrieve the upvalues in the given function or at the given level."},
+
+					insertText: "debug.getupvalues($0)",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "debug.getupvalue",
+					kind: monaco.languages.CompletionItemKind.Function,
+					detail: "Function",
+					documentation: {value: "Returns the upvalue at the given index in the given function or level."},
+
+					insertText: "debug.getupvalue($0, ${1:index})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "debug.setupvalues",
+					kind: monaco.languages.CompletionItemKind.Function,
+					detail: "Function",
+					documentation: {value: "Sets the upvalue at the given index in the given function or level."},
+
+					insertText: "debug.setupvalues($0, ${1:index}, ${2:value})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "debug.getprotos",
+					kind: monaco.languages.CompletionItemKind.Function,
+					detail: "Function",
+					documentation: {value: "Returns a table containing the inner functions of the given function. Note these functions will not have upvalues, use `debug.getproto` with activated `true` to get a list of instances."},
+
+					insertText: "debug.getprotos($0)",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "debug.getproto",
+					kind: monaco.languages.CompletionItemKind.Function,
+					detail: "Function",
+					documentation: {value: "Gets the inner function of the given function at the provided index. When `activated` is true it will return a table of functions."},
+
+					insertText: "debug.getproto($0, ${1:index}, ${2:activated})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "debug.setproto",
+					kind: monaco.languages.CompletionItemKind.Function,
+					detail: "Function",
+					documentation: {value: "Replaces the given function at `index` with function `replacement` at the given level/function."},
+
+					insertText: "debug.setproto($0, ${1:index}, ${2:replacement})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "debug.getstack",
+					kind: monaco.languages.CompletionItemKind.Function,
+					detail: "Function",
+					documentation: {value: "Gets the method stack at the given level or function."},
+
+					insertText: "debug.getstack($0)",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "debug.setstack",
+					kind: monaco.languages.CompletionItemKind.Function,
+					detail: "Function",
+					documentation: {value: "Set the stack indice at `indice` to value `value` at the given level or function."},
+
+					insertText: "debug.setstack($0, ${1:indice}, ${2:value})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "debug.setmetatable",
+					kind: monaco.languages.CompletionItemKind.Function,
+					detail: "Function",
+					documentation: {value: "Sets the metatable of the given table to the given metatable."},
+
+					insertText: "debug.setmetatable(${1:table}, ${2:metatable})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "debug.getregistry",
+					kind: monaco.languages.CompletionItemKind.Function,
+					detail: "Function",
+					documentation: {value: "Returns the Lua registry."},
+
+					insertText: "debug.getregistry()",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "debug.getinfo",
+					kind: monaco.languages.CompletionItemKind.Function,
+					detail: "Function",
+					documentation: {value: "Returns a table of info pertaining to the given function/level."},
+
+					insertText: "debug.getinfo($0, \"${2:flnSu}\")",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+			]}}});
+			/* Websocket (Exploiting) */ monaco.languages.registerCompletionItemProvider('lua', {provideCompletionItems: function () {return {suggestions: [
+				{
+					label: "WebSocket.connect",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Constructs a new WebSocket object and connects to it with the provided url."},
+					
+					insertText: "${1:syn.}${2|websocket,WebSocket|}.connect(\"${3:url}\")",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "WebSocket",
+					kind: monaco.languages.CompletionItemKind.Snippet,
+					detail: "Snippet",
+					documentation: {value: "WebSocket methods and general usage."},
+					
+					insertText: [
+						"local ${1:WebSocket} = ${2:syn.}${3|websocket,WebSocket|}.connect(\"${4:url}\")",
+						"",
+						"${1:WebSocket}.OnMessage:Connect(function(Message)",
+						"\t$0",
+						"end)",
+						"",
+						"${1:WebSocket}:Send(\"$5\")",
+						"${1:WebSocket}:Close()",
+					].join("\n"),
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
 			]}}});
 
 			monaco.editor.defineTheme('vsLight', {base: 'vs'});

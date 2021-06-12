@@ -58,3 +58,5 @@ Supported Libraries:
   * Closure
   * Reflection
   * Filesystem
+  * Drawing
+  * Websocket
