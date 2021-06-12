@@ -9,8 +9,6 @@
 	<script src="vs/loader.js"></script>
 	<script type="text/javascript">
 		var editor;
-		var proposals = [];
-
 		var instances = [];
 		var services = [];
 		var enums = [];
@@ -23,7 +21,7 @@
 					if (element.Tags && element.Tags.includes("Service")) {
 						services.push(element.Name);
 					}
-					else if (!element.Tags || (element.Tags && !element.Tags.includes("NotCreatable"))) {
+					else if (!element.Tags || !element.Tags.includes("NotCreatable")) {
 						instances.push(element.Name);
 						instances.sort();
 					}
@@ -33,8 +31,9 @@
 				}
 			}
 			else if (this.status >= 300) {
-				instances = ["Part", "ScreenGui", "Frame", "TextLabel", "ImageLabel", "TextButton", "ImageButton"];
-				services = ["Workspace", "Players", "Lighting", "ReplicatedStorage", "ReplicatedFirst", "StarterGui", "StarterPack", "StarterPlayer", "DataStoreService", "HttpService", "InsertService", "GroupService", "MarketplaceService", "RunService", "SoundService", "TeleportService", "TestService", "TweenService", "UserInputService"];
+				instances = ["Autocomplete Failed to Load", "Part"];
+				services = ["Autocomplete Failed to Load", "Workspace", "Players", "Lighting", "ReplicatedStorage", "ReplicatedFirst", "StarterGui", "StarterPack", "StarterPlayer", "DataStoreService", "HttpService", "InsertService", "GroupService", "MarketplaceService", "RunService", "SoundService", "TeleportService", "TestService", "TweenService", "UserInputService"];
+				enums = ["Autocomplete Failed to Load", "Font"];
 			};
 		};
 		xhttp.open("GET", "https://raw.githubusercontent.com/CloneTrooper1019/Roblox-Client-Tracker/roblox/API-Dump.json", true);
@@ -4249,11 +4248,7 @@
 			});
 
 			editor = monaco.editor.create(document.getElementById('container'), {
-				value: [
-					"-- Monaco (Microsoft) and Rosploco (EthanMcBloxxer) licensed under the MIT License.",
-					"",
-					"",
-				].join('\n'),
+				value: "-- Monaco (Microsoft) and Rosploco (EthanMcBloxxer) licensed under the MIT License.",
 				language: 'lua',
 				theme: "studio",
 				folding: true,
