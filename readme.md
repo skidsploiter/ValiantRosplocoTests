@@ -32,7 +32,7 @@ If you realize that some functions or documentation is outdated, then fork this 
 },
 ```
 
-then add that under the proper exploiting autofill section. Remove all the comments other than `// Your Exploit`. Other parameters for do also exist. Read more the Monaco [CompletionItem](https://microsoft.github.io/monaco-editor/api/interfaces/monaco.languages.completionitem.html) Interface documentation.
+then add that under the proper exploiting autofill section. Remove all the comments other than `// Your Exploit`. Other parameters for this do also exist. Read more the Monaco [CompletionItem](https://microsoft.github.io/monaco-editor/api/interfaces/monaco.languages.completionitem.html) Interface documentation.
 
 Supported:
 
