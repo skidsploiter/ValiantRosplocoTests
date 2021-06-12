@@ -709,9 +709,36 @@
 					label: "BrickColor.new",
 					kind: monaco.languages.CompletionItemKind.Constructor,
 					detail: "Constructor",
-					documentation: {value: "Constructs a BrickColor using its numerical index, name, or RGB / Color3 match."},
+					documentation: {value: "Constructs a BrickColor using its numerical index, or RGB / Color3 match."},
 
-					insertText: "BrickColor.new(${0:name|index|rgb|color3})",
+					insertText: "BrickColor.new($0)",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "BrickColor.new (named)",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Constructs a BrickColor using its name."},
+
+					insertText: "BrickColor.new(\"${1|" + ["White", "Grey", "Light yellow", "Brick yellow", "Light green (Mint)", "Light reddish violet", "Pastel Blue", "Light orange brown", "Nougat", "Bright red", "Med. reddish violet", "Bright blue", "Bright yellow", "Earth orange", "Black", "Dark grey", "Dark green", "Medium green", "Lig. Yellowich orange", "Bright green", "Dark orange", "Light bluish violet", "Transparent", "Tr. Red", "Tr. Lg blue", "Tr. Blue", "Tr. Yellow", "Light blue", "Tr. Flu. Reddish orange", "Tr. Green", "Tr. Flu. Green", "Phosph. White", "Light red", "Medium red", "Medium blue", "Light grey", "Bright violet", "Br. yellowish orange", "Bright orange", "Bright bluish green", "Earth yellow", "Bright bluish violet", "Tr. Brown", "Medium bluish violet", "Tr. Medi. reddish violet", "Med. yellowish green", "Med. bluish green", "Light bluish green", "Br. yellowish green", "Lig. yellowish green", "Med. yellowish orange", "Br. reddish orange", "Bright reddish violet", "Light orange", "Tr. Bright bluish violet", "Gold", "Dark nougat", "Silver", "Neon orange", "Neon green", "Sand blue", "Sand violet", "Medium orange", "Sand yellow", "Earth blue", "Earth green", "Tr. Flu. Blue", "Sand blue metallic", "Sand violet metallic", "Sand yellow metallic", "Dark grey metallic", "Black metallic", "Light grey metallic", "Sand green", "Sand red", "Dark red", "Tr. Flu. Yellow", "Tr. Flu. Red", "Gun metallic", "Red flip/flop", "Yellow flip/flop", "Silver flip/flop", "Curry", "Fire Yellow", "Flame yellowish orange", "Reddish brown", "Flame reddish orange", "Medium stone grey", "Royal blue", "Dark Royal blue", "Bright reddish lilac", "Dark stone grey", "Lemon metalic", "Light stone grey", "Dark Curry", "Faded green", "Turquoise", "Light Royal blue", "Medium Royal blue", "Rust", "Brown", "Reddish lilac", "Lilac", "Light lilac", "Bright purple", "Light purple", "Light pink", "Light brick yellow", "Warm yellowish orange", "Cool yellow", "Dove blue", "Medium lilac", "Slime green", "Smoky grey", "Dark blue", "Parsley green", "Steel blue", "Storm blue", "Lapis", "Dark indigo", "Sea green", "Shamrock", "Fossil", "Mulberry", "Forest green", "Cadet blue", "Electric blue", "Eggplant", "Moss", "Artichoke", "Sage green", "Ghost grey", "Lilac", "Plum", "Olivine", "Laurel green", "Quill grey", "Crimson", "Mint", "Baby blue", "Carnation pink", "Persimmon", "Maroon", "Gold", "Daisy orange", "Pearl", "Fog", "Salmon", "Terra Cotta", "Cocoa", "Wheat", "Buttermilk", "Mauve", "Sunrise", "Tawny", "Rust", "Cashmere", "Khaki", "Lily white", "Seashell", "Burgundy", "Cork", "Burlap", "Beige", "Oyster", "Pine Cone", "Fawn brown", "Hurricane grey", "Cloudy grey", "Linen", "Copper", "Dirt brown", "Bronze", "Flint", "Dark taupe", "Burnt Sienna", "Institutional white", "Mid gray", "Really black", "Really red", "Deep orange", "Alder", "Dusty Rose", "Olive", "New Yeller", "Really blue", "Navy blue", "Deep blue", "Cyan", "CGA brown", "Magenta", "Pink", "Deep orange", "Teal", "Toothpaste", "Lime green", "Camo", "Grime", "Lavender", "Pastel light blue", "Pastel orange", "Pastel violet", "Pastel blue-green", "Pastel green", "Pastel yellow", "Pastel brown", "Royal purple", "Hot pink"].sort().join(",") + "|}\")",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "BrickColor.pallete",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Constructs a BrickColor from its palette index."},
+
+					insertText: "BrickColor.pallete(${0:pallete})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "BrickColor.random",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Constructs a random BrickColor."},
+
+					insertText: "BrickColor.random()",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 
@@ -723,7 +750,17 @@
 					detail: "Constructor",
 					documentation: {value: "Makes a new CatalogSearchParams object which specifies the parameters of a catalog search."},
 
-					insertText: "local ${1:name} = CatalogSearchParams.new()",
+					insertText: [
+						"local ${1:name} = CatalogSearchParams.new()",
+						"${1:name}.SearchKeyword = \"$2\"",
+						"${1:name}.MinPrice = ${3:0}",
+						"${1:name}.MaxPrice = ${4:2^32 - 1}",
+						"${1:name}.SortType = Enum.CatalogSortType.${5|Relevance,PriceHighToLow,PriceLowToHigh,RecentlyUpdated,MostFavorited|}",
+						"${1:name}.CategoryFilter = Enum.CatalogFilter.${6|None,Featured,Collectibles,CommunityCreations,Premium,Recommended|}",
+						"${1:name}.BundleType = {$7}",
+						"${1:name}.AssetTypes = {$8}",
+						"",
+					].join("\n"),
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 
@@ -927,7 +964,7 @@
 					detail: "Constructor",
 					documentation: {value: "The main constructor function for the `DockWidgetPluginGuiInfo`."},
 
-					insertText: "DockWidgetPluginGuiInfo.new(${1:initDockState}, ${2:initEnabled}, ${3:overrideEnabledRestore}, ${4:floatXSize}, ${5:floatYSize}, ${6:minWidth}, ${7:minHeight})",
+					insertText: "DockWidgetPluginGuiInfo.new(Enum.InitialDockState.${1|Top,Bottom,Left,Right,Float|}, ${2:enabled}, ${3:overrideEnabledRestore}, ${4:floatXSize}, ${5:floatYSize}, ${6:minWidth}, ${7:minHeight})",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 
@@ -939,7 +976,7 @@
 					detail: "Constructor",
 					documentation: {value: "Creates a new Faces given some number of NormalId enumerators as arguments."},
 
-					insertText: "Faces.new(${1:normalids...})",
+					insertText: "Faces.new(Enum.NormalId.${1|Top,Bottom,Back,Front,Right,Left|}${2:, ${3:...}})",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 
@@ -970,6 +1007,253 @@
 					documentation: {value: "A shorthand version of the default instance constructor which uses the parent argument and sets the only needed property afterward. Often used for UILayout objects."},
 
 					insertText: "Instance.new(\"${1|" + instances.join(",") + "|}\", ${2:parent}).${3:property} = ${4:value}",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+
+				// NumberRange
+
+				{
+					label: "NumberRange.new",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Creates a new NumberRange with the provided minimum and maximum. `Minimum <= Maximum` must be true."},
+
+					insertText: "NumberRange.new(${1:min}, ${2:max})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+
+				// NumberSequence
+
+				{
+					label: "NumberSequence.new",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Creates a sequence of two keypoints with a start and end value or a table with all the numbers with a `NumberSequenceKeypoint`."},
+
+					insertText: "NumberSequence.new(${1:start}, ${2:finish})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "NumberSequenceKeypoint.new",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Creates a keypoint with a specified time, value, and envelope."},
+
+					insertText: "NumberSequenceKeypoint.new(${1:time}, ${2:value}, ${3:envelop})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+
+				// PathWaypoint
+
+				{
+					label: "PathWaypoint.new",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Creates a new PathWaypoint object."},
+
+					insertText: "PathWaypoint.new(${1:position}, Enum.PathWaypointAction.${2|Walk,Jump|})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+
+				// PhysicalProperties
+
+				{
+					label: "PhysicalProperties.new",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Creates a PhysicalProperties container, with the specified density, friction, and elasticity, as well as the weight of the friction and elasticity."},
+
+					insertText: "PhysicalProperties.new(${1:density}, ${2:friction}, ${3:elasticity}, ${4:frictionWeight}, ${5:elasticityWeight})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "PhysicalProperties.new (material)",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Creates a PhysicalProperties container, with the density, friction, and elasticity specified for this Material."},
+
+					insertText: "PhysicalProperties.new(Enum.Material.${1|" + ["Plastic", "Wood", "Slate", "Concrete", "CorrodedMetal", "DiamondPlate", "Foil", "Grass", "Ice", "Marble", "Granite", "Brick", "Pebble", "Sand", "Fabric", "SmoothPlastic", "Metal", "WoodPlanks", "Cobblestone", "Air", "Water", "Rock", "Glacier", "Snow", "Sandstone", "Mud", "Basalt", "Ground", "CrackedLava", "Neon", "Glass", "Asphalt", "LeafyGrass", "Salt", "Limestone", "Pavement", "ForceField"].sort().join(",") + "|})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+
+				// Random
+
+				{
+					label: "Random.new",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Creates a new Random object. If the seed parameter is not specified, it will use a seed pulled from an internal entropy source."},
+
+					insertText: "Random.new(\"${1:seed}\")",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+
+				// Ray
+
+				{
+					label: "Ray.new",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Creates a new Ray with given Origin and Direction."},
+
+					insertText: "Ray.new(${1:origin}, ${2:direction})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "RaycastParams.new",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Creates a blank RaycastParams object. Unlike other datatype constructors, this constructor does not have any parameters, so you should set its properties appropriately."},
+
+					insertText: "RaycastParams.new()",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+
+				// Rect
+
+				{
+					label: "Rect.new",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Constructs a new Rect given two `Vector2`s: `min` as top left corner and `max` as bottom right corner."},
+
+					insertText: "Rect.new(${1:min}, ${2:max})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+
+				// Region3
+
+				{
+					label: "Region3.new",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Creates a new Region3 given the `Vector3` bounds of a the rectangular prism volume."},
+
+					insertText: "Region3.new(${1:min}, ${2:max})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "Region3int16.new",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Creates a new Region3int16 given its bounds as `Vector3int16`s."},
+
+					insertText: "Region3int16.new(${1:min}, ${2:max})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+
+				// TweenInfo
+
+				{
+					label: "TweenInfo.new",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Creates a new TweenInfo with the given parameters."},
+
+					insertText: "TweenInfo.new(${2:length}, Enum.EasingStyle.${3|Linear,Sine,Back,Quad,Quart,Quint,Bounce,Elastic,Exponential,Circular,Cubic|}, Enum.EasingDirection.${4|In,Out,InOut|}, ${5:repeats}, ${6:reverses}, 0)",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+
+				// UDim
+
+				{
+					label: "UDim.new",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Creates a UDim from components."},
+
+					insertText: "UDim.new(${1:scale}, ${2:offset})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+
+				// UDim2
+
+				{
+					label: "UDim2.new",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Construct a new `UDim2` given the coordinates of the two UDim representing each axis."},
+
+					insertText: "UDim2.new(${1:xS}, ${2:xO}, ${3:yS}, ${4:yO})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "UDim2.fromScale",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Construct a new UDim2 using the given scalar coordinates."},
+
+					insertText: "UDim2.fromScale(${1:x}, ${2:y})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "UDim2.fromOffset",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Construct a new UDim2 using the given offset coordinates."},
+
+					insertText: "UDim2.fromOffset(${1:x}, ${2:y})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+
+				// Vector2
+
+				{
+					label: "Vector2.new",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Creates a new Vector2 using ordinates `x` and `y`."},
+
+					insertText: "Vector2.new(${1:x}, ${2:y})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "Vector2int16.new",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Creates a new Vector2int16 given the x and y components. Non-integer components are rounded down. Maximum values are -2^15, 2^15."},
+
+					insertText: "Vector2int16.new(${1:x}, ${2:y})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+
+				// Vector3
+
+				{
+					label: "Vector3.new",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Constructs a new Vector3 using the given x, y, and z components."},
+					preselect: true,
+
+					insertText: "Vector3.new(${1:x}, ${2:y}, ${3:z})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "Vector3.FromNormalId",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Constructs a new Vector3 in a particular direction."},
+
+					insertText: "Vector3.FromNormalId(Enum.NormalId.${1|Top,Bottom,Back,Front,Right,Left|}${2:, ${3:...}})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "Vector3.FromAxis",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Constructs a new Vector3 for a particular axis."},
+
+					insertText: "Vector3.FromAxis(Enum.Axis.${1|X,Y,Z|})",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "Vector3int16.new",
+					kind: monaco.languages.CompletionItemKind.Constructor,
+					detail: "Constructor",
+					documentation: {value: "Creates a new Vector3int16 given the x, y and z components. Non-integer components are rounded down. Maximum values are -2^15, 2^15."},
+
+					insertText: "Vector3int16.new(${1:x}, ${2:y}, ${3:z})",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 			]}}});
@@ -2022,6 +2306,15 @@
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
+					label: "Infinity",
+					kind: monaco.languages.CompletionItemKind.Snippet,
+					detail: "Snippet",
+					documentation: {value: "Autofills 10 ^ 1000."},
+
+					insertText: "10^1000",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
 					label: "math.e",
 					kind: monaco.languages.CompletionItemKind.Snippet,
 					detail: "Snippet",
@@ -2084,6 +2377,49 @@
 						"\tend",
 						"end",
 					].join("\n"),
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "tween",
+					kind: monaco.languages.CompletionItemKind.Snippet,
+					detail: "Snippet",
+					documentation: {value: "The code to create and start a tween."},
+
+					insertText: "game:GetService(\"TweenService\"):Create(${1:instance}, TweenInfo.new(${2:seconds}, Enum.EasingStyle.${3|Linear,Sine,Back,Quad,Quart,Quint,Bounce,Elastic,Exponential,Circular,Cubic|}, Enum.EasingDirection.${4|In,Out,InOut|}, ${5:repeats}, ${6:reverses}, 0), {$0}):Play()",
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "notify",
+					kind: monaco.languages.CompletionItemKind.Snippet,
+					detail: "Snippet",
+					documentation: {value: "Notifies with the default Roblox GUI."},
+
+					insertText: [
+						"local Callback = Instance.new(\"BindableFunction\")",
+						"function Callback.OnInvoke(Button)",
+						"\t$0",
+						"end",
+						"game:GetService(\"StarterGui\"):SetCore(\"SendNotification\", {",
+						"\tTitle = \"$1\",",
+						"\tText = \"$2\",",
+						"\tIcon = \"$3\",",
+						"\tDuration = ${4:5},",
+						"\tCallback = Callback,",
+						"\tButton1 = $5,",
+						"\tButton2 = $6,",
+						"})",
+						"Callback:Destroy()",
+						"",
+					].join("\n"),
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				},
+				{
+					label: "teleport",
+					kind: monaco.languages.CompletionItemKind.Snippet,
+					detail: "Snippet",
+					documentation: {value: "Teleportation code using `TeleportService`."},
+
+					insertText: "game:GetService(\"TeleportService\"):Teleport(${1:place}, ${2:game.Players.LocalPlayer})",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 				{
@@ -2158,330 +2494,6 @@
 					tags: [monaco.languages.CompletionItemTag.Deprecated],
 
 					insertText: "RobloxLocked",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-			]}}});
-			/* Properties (DataModel) */ monaco.languages.registerCompletionItemProvider('lua', {triggerCharacters: ["."], provideCompletionItems: function () {return {suggestions: [
-				{
-					label: "CreatorId",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property (DataModel)",
-					documentation: {value: "Describes the ID of the user or group that owns the place."},
-					filterText: "game.CreatorId",
-
-					insertText: "CreatorId",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "GameId",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property (DataModel)",
-					documentation: {value: "Describes the ID of the game the place running on the server belongs to."},
-					filterText: "game.GameId",
-
-					insertText: "GameId",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "JobId",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property (DataModel)",
-					documentation: {value: "A unique identifier for the game server instance running."},
-					filterText: "game.JobId",
-
-					insertText: "JobId",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "PlaceId",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property (DataModel)",
-					documentation: {value: "Describes the ID of the place running on the server."},
-					filterText: "game.PlaceId",
-
-					insertText: "PlaceId",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "Workspace",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property (DataModel)",
-					documentation: {value: "A reference to the Workspace service."},
-					filterText: "game.Workspace",
-
-					insertText: "Workspace",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-			]}}});
-			/* Properties (BasePart) */ monaco.languages.registerCompletionItemProvider('lua', {triggerCharacters: ["."], provideCompletionItems: function () {return {suggestions: [
-				{
-					label: "Anchored",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property",
-					documentation: {value: "Determines whether a part is immovable by physics."},
-
-					insertText: "Anchored",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "AssemblyAngularVelocity",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property",
-					documentation: {value: "The angular velocity of the part's assembly."},
-
-					insertText: "AssemblyAngularVelocity",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "AssemblyCenterOfMass",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property",
-					documentation: {value: "The center of mass of the part's assembly in world space."},
-
-					insertText: "AssemblyCenterOfMass",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "AssemblyLinearVelocity",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property",
-					documentation: {value: "The linear velocity of the part's assembly."},
-
-					insertText: "AssemblyLinearVelocity",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "AssemblyMass",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property",
-					documentation: {value: "The total mass of the part's assembly."},
-
-					insertText: "AssemblyMass",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "AssemblyRootPart",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property",
-					documentation: {value: "A reference to the root part of the assembly."},
-
-					insertText: "AssemblyRootPart",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "BrickColor",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property",
-					documentation: {value: "Determines the color of a part."},
-
-					insertText: "BrickColor",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "CFrame",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property",
-					documentation: {value: "Determines the position and rotation of a part in the world."},
-
-					insertText: "CFrame",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "CanCollide",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property",
-					documentation: {value: "Determines whether a part may collide with other parts."},
-
-					insertText: "CanCollide",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "CanTouch",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property",
-					documentation: {value: "Lets your determine if the part will trigger Touched or TouchEnded events on other parts with `TouchTransmitters`."},
-
-					insertText: "CanTouch",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "CastShadow",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property",
-					documentation: {value: "Determines whether or not a part casts a shadow."},
-
-					insertText: "CastShadow",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "CenterOfMass",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property",
-					documentation: {value: "Describes the world position in which a part's center of mass is located."},
-
-					insertText: "CenterOfMass",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "CollisionGroupId",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property",
-					documentation: {value: "Describes the automatically-set ID number of a part's collision group."},
-
-					insertText: "CollisionGroupId",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "Color",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property",
-					documentation: {value: "Determines the color of a part."},
-
-					insertText: "Color",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "CustomPhysicalProperties",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property",
-					documentation: {value: "Determines several physical properties of a part."},
-
-					insertText: "CustomPhysicalProperties",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "LocalTransparencyModifier",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property",
-					documentation: {value: "Determines a multiplier for `Transparency` that is only visible to the local client."},
-
-					insertText: "LocalTransparencyModifier",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "Locked",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property",
-					documentation: {value: "Determines whether a part is selectable in Studio."},
-
-					insertText: "Locked",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "Mass",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property",
-					documentation: {value: "Describes the mass of the part, the product of its density and volume."},
-
-					insertText: "Mass",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "Massless",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property",
-					documentation: {value: "Determines whether the part contributes to the total mass or inertia of its rigid body."},
-
-					insertText: "Massless",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "Material",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property",
-					documentation: {value: "Determines the texture and default physical properties of a part."},
-
-					insertText: "Material",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "Orientation",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property",
-					documentation: {value: "Describes the position of the part in the world."},
-
-					insertText: "Orientation",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "Position",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property",
-					documentation: {value: "Describes the position of the part in the world."},
-
-					insertText: "Position",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "Reflectance",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property",
-					documentation: {value: "Determines how much a part reflects the skybox."},
-
-					insertText: "Reflectance",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "ResizeIncrement",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property",
-					documentation: {value: "Describes the smallest change in size allowable by the Resize method."},
-
-					insertText: "ResizeIncrement",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "ResizeableFaces",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property",
-					documentation: {value: "Describes the faces on which a part may be resized."},
-
-					insertText: "ResizeableFaces",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "RootPriority",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property",
-					documentation: {value: "The main rule in determining the root part of an assembly."},
-
-					insertText: "RootPriority",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "Rotation",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property",
-					documentation: {value: "The rotation of the part in degrees for the three axes."},
-
-					insertText: "Rotation",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "Size",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property",
-					documentation: {value: "Determines the dimensions of a part."},
-
-					insertText: "Size",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "SpecificGravity",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property",
-					documentation: {value: "The ratio of the part's density to the density of water determined by the material."},
-
-					insertText: "SpecificGravity",
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-				},
-				{
-					label: "Transparency",
-					kind: monaco.languages.CompletionItemKind.Property,
-					detail: "Property",
-					documentation: {value: "Determines how much a part can be seen through (the inverse of part opacity)."},
-
-					insertText: "Transparency",
 					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 				},
 			]}}});
@@ -3909,7 +3921,7 @@
 						detail: "Function",
 						documentation: {value: "Creates a new drawing object with the provided type (Line, Text, Image, Circle, Square, Quad, Triangle). Returns the new drawing."},
 
-						insertText: "Drawing.new(\"${1|Line,Text,Image,Circle,Square,Quad,Triangle|}\")",
+						insertText: "Drawing.new(\"${1|Line,Text,Image,Square,Triangle,Circle,Quad|}\")",
 						insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 					},
 			]}}});
@@ -4041,12 +4053,16 @@
 				case "Variable": t = monaco.languages.CompletionItemKind.Variable; break;
 			}
 
-			proposals.push({
-				label: l,
-				kind: t,
-				documentation: d,
-				insertText: i
-			});
+			monaco.languages.registerCompletionItemProvider('lua', {provideCompletionItems: function () {return {suggestions: [
+				{
+					label: l,
+					kind: t,
+					documentation: {value: d},
+
+					insertText: i,
+					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				}
+			]}}});
 		}
 
 		var showErr = function (line, column, endline, endcolumn, errMessage) {
