@@ -12,9 +12,9 @@ This is already there by default, so you shouldn't have much trouble.
 
 Since Rosploco is a web-based program (as is Monaco), you can also use it interactively inside of your web browser. Just go to [ethanmcbloxxer.github.io/Rosploco/rosploco.html](https://ethanmcbloxxer.github.io/Rosploco/rosploco.html).
 
-<img src="https://bloxxing.is-ne.at/OpQu4Q.png" align="right"/>
+<img src="/context.png" align="right"/>
 
-**ProTip**: We also provide a nice right-click menu, with options to get help, save the document, clear the editor, and refresh it. If you had these buttons on your exploit previously, you might not need them anymore. Test to be sure, though.
+**ProTip**: We also provide a rich context menu, with options to get help, save the document, clear the editor, and refresh it. If you had these buttons on your exploit previously, you might not need them anymore. Test to be sure, though.
 
 If you realize that some functions or documentation is outdated, then fork this repository, make your changes, and pull request. This is also applied to actual exploit developers, you can add your own functions and documentation to Rosploco in the same way. Just use this exoskeleton:
 
@@ -22,41 +22,44 @@ If you realize that some functions or documentation is outdated, then fork this 
 // Your Exploit
 
 {
-	label: "mycustomfunction", // This is what shows up in the intellisense
-	kind: monaco.languages.CompletionItemKind.Function, // You can change this to "Function", "Constant", or "Module" (for libraries, eg Crypt, Bit, etc.)
-	detail: "Function", // Make this "Function", "Constant", "Module" and keep aligned with `kind`
-	documentation: "This is a custom function for example purposes.", // Your documentation (what appears when you click more info)
+	label: "mycustomfunction", // Intellisense label
+	kind: monaco.languages.CompletionItemKind.Function, // "Function", "Constant", or "Module" (for libraries, eg Crypt, Bit, etc.)
+	detail: "Function", // Keep aligned with `kind`
+	documentation: {value: "This is a custom function for example purposes."}, // Your documentation, in Markdown (what appears when you click more info)
   
-	insertText: "mycustomfunction(${1:arg1}, \"${2|enumoption1,enumoption2|}\", $0)", // Follow the syntax highlighted in https://code.visualstudio.com/docs/editor/userdefinedsnippets#_snippet-syntax.
-	insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet, // Keep this as-is
+	insertText: "mycustomfunction(${1:arg1}, \"${2|enumoption1,enumoption2|}\", $0)", // https://code.visualstudio.com/docs/editor/userdefinedsnippets#_snippet-syntax
+	insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 },
 ```
 
-then add that under the proper exploiting autofill section. Remove all the comments other than `// Your Exploit`.
+then add that under the proper exploiting autofill section. Remove all the comments other than `// Your Exploit`. Other options do also exist, as a [CompletionItem](https://microsoft.github.io/monaco-editor/api/interfaces/monaco.languages.completionitem.html)
 
-Supported Libraries:
+Supported:
 
 * Keywords
 * Lua Globals
 * Roblox Globals
-* bit32
+* bit + bit32
 * coroutine
-* debug (only Roblox)
+* debug
 * math
 * os
 * string
 * table
 * utf8
-* Methods (Instance / DataModel)
-* Events (Instance / DataModel)
+* Methods
+	* Instance
+	* DataModel (ServiceProvider)
+* Events
+	* Instance
 * Metatables
 * Exploiting (Synapse, Script-Ware)
-  * Environment
-  * Script
-  * Table
-  * Input
-  * Closure
-  * Reflection
-  * Filesystem
-  * Drawing
-  * Websocket
+	* Environment
+	* Script
+	* Table
+	* Input
+	* Closure
+	* Reflection
+	* Filesystem
+	* Drawing
+	* Websocket
