@@ -4238,13 +4238,19 @@
 				base: 'vs-dark',
 				inherit: true,
 				rules: [
-					{token: 'global', foreground: '84d6f7', fontStyle: "bold"},
 					{token: 'keyword', foreground: 'f86d7c', fontStyle: "bold"},
-					{token: 'comment', foreground: '669966'},
-					{token: 'number', foreground: 'fcc600'},
+					{token: 'global', foreground: '84d6f7', fontStyle: "bold"},
+					{token: 'type', foreground: '84d6f7'},
 					{token: 'string', foreground: 'adf195'},
+					{token: 'number', foreground: 'fcc600'},
+					{token: 'operator', foreground: 'ffffff'},
+					{token: 'comment', foreground: '669966'},
+					{token: 'comment.todo', fontStyle: "bold"},
 				],
-				colors: {'editor.background': '#2d2d2d',}
+				colors: {
+					'editor.background': '#252525',
+					'editor.foreground': '#cccccc',
+				}
 			});
 
 			editor = monaco.editor.create(document.getElementById('container'), {
@@ -4266,9 +4272,11 @@
 				lineNumbersMinChars: 3,
 				roundedSelection: true,
 				scrollBeyondLastLine: false,
-				acceptSuggestionOnEnter: "smart",
+				acceptSuggestionOnEnter: "on",
 				autoClosingBrackets: "always",
+				detectIndentation: true,
 				autoIndent: "full",
+				insertSpaces: false,
 				cursorBlinking: "phase",
 				formatOnPaste: true,
 				formatOnType: true,

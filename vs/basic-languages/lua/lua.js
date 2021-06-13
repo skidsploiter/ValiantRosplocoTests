@@ -21,18 +21,18 @@ define(["require", "exports"], function (require, exports) {
 			['function', 'end']
 		],
 		autoClosingPairs: [
-			{ open: '{', close: '}' },
-			{ open: '[', close: ']' },
-			{ open: '(', close: ')' },
-			{ open: '"', close: '"' },
-			{ open: "'", close: "'" },
+			{open: '{', close: '}'},
+			{open: '[', close: ']'},
+			{open: '(', close: ')'},
+			{open: '"', close: '"'},
+			{open: "'", close: "'"},
 		],
 		surroundingPairs: [
-			{ open: '{', close: '}' },
-			{ open: '[', close: ']' },
-			{ open: '(', close: ')' },
-			{ open: '"', close: '"' },
-			{ open: "'", close: "'" },
+			{open: '{', close: '}'},
+			{open: '[', close: ']'},
+			{open: '(', close: ')'},
+			{open: '"', close: '"'},
+			{open: "'", close: "'"},
 		],
 		folding: {
 			markers: {
@@ -64,19 +64,20 @@ define(["require", "exports"], function (require, exports) {
 
 			'coroutine', 'debug', 'table', 'pairs', 'ipairs', 'bit', 'bit32', 'math', 'utf8', 'os',
 
-			'Axes', 'BrickColor', 'CatalogSearchParams', 'CFrame', 'Color3', 'ColorSequence',
-			'ColorSequenceKeypoint', 'DateTime', 'Drawing', 'DockWidgetPluginGuiInfo', 'Faces',
-			'Instance', 'NumberRange', 'NumberSequence', 'NumberSequenceKeypoint', 'PathWaypoint',
-			'PhysicalProperties', 'Random', 'Ray', 'RaycastParams', 'RaycastResult', 'Rect',
-			'Region3', 'Region3int16', 'TweenInfo', 'UDim', 'UDim2', 'Vector2', 'Vector2int16',
-			'Vector3', 'Vector3int16',
-
 			'collectgarbage', 'getfenv', 'getmetatable',
 			'loadfile', 'loadstring', 'newproxy', 'next',
 			'pcall', 'select', 'setfenv',
 			'setmetatable', 'tonumber', 'tostring', 'type', 'xpcall', '_G',
 			'shared', 'delay', 'spawn', 'tick', 'typeof', 'wait',
 			'Enum', 'script', 'workspace', 'printidentity',
+		],
+		types: [
+			'Axes', 'BrickColor', 'CatalogSearchParams', 'CFrame', 'Color3', 'ColorSequence',
+			'ColorSequenceKeypoint', 'DateTime', 'Drawing', 'DockWidgetPluginGuiInfo', 'Faces',
+			'Instance', 'NumberRange', 'NumberSequence', 'NumberSequenceKeypoint', 'PathWaypoint',
+			'PhysicalProperties', 'Random', 'Ray', 'RaycastParams', 'RaycastResult', 'Rect',
+			'Region3', 'Region3int16', 'TweenInfo', 'UDim', 'UDim2', 'Vector2', 'Vector2int16',
+			'Vector3', 'Vector3int16',
 		],
 		operators: [
 			'+', '-', '*', '/', '%', '^', '#', '..',
@@ -93,6 +94,7 @@ define(["require", "exports"], function (require, exports) {
 						cases: {
 							'@keywords': { token: 'keyword.$0' },
 							'@globals': { token: 'global' },
+							'@types': { token: 'type' },
 							'@default': 'identifier'
 						}
 					}],
@@ -118,6 +120,7 @@ define(["require", "exports"], function (require, exports) {
 			whitespace: [
 				[/[ \t\r\n]+/, ''],
 				[/--\[([=]*)\[/, 'comment', '@comment.$1'],
+				[/--[tT][oO][-]?[dD][oO].*$/, 'comment.todo'],
 				[/--.*$/, 'comment'],
 			],
 			comment: [
