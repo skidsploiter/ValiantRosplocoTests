@@ -14,11 +14,6 @@ define(["require", "exports"], function (require, exports) {
 			['{', '}'],
 			['[', ']'],
 			['(', ')'],
-			['do', 'end'],
-			['then', 'end'],
-			['if', 'end'],
-			['for', 'end'],
-			['function', 'end']
 		],
 		autoClosingPairs: [
 			{open: '{', close: '}'},
