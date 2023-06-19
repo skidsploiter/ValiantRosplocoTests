@@ -1,11 +1,16 @@
-You're in a repository that forked a web-based code editor, Monaco, from the Microsoft Corporation.
+## ValiantRosploco - a modifed version of Rosploco
 
-`rosploco.html` is the file which contains most modifications, as described in the repository description. It has the autocomplete code and the documentation. For unintellectuals using YouTube to learn to make Roblox exploits, this file what you replace `monaco.html` with. Remember to download everything in the repository, though, since we're using Monaco 0.18.1, which might be a different version then what you already have (if you already have Monaco at all).
+You're in a repository that forked a web-based code editor, Monaco, from the Microsoft Corporation that has been forked again to this one.
+
+`ValiantRosplocoEditor.html` is the file which contains most modifications, as described in the repository description. It has the autocomplete code and the documentation. For unintellectuals using YouTube to learn to make Roblox exploits, this file what you replace `monaco.html` with. Remember to download everything in the repository, though, since we're using Monaco 0.18.1, which might be a different version then what you already have (if you already have Monaco at all).
 
 To use this in your project, you must credit EthanMcBloxxer and Microsoft, KanekiCat. We provide an easy way to do this. Just insert this code at the top of the rendered document:
 
+✅ Original repo: https://github.com/vt-d/Rosploco
+
 ```lua
--- Monaco and Autocomplete by Microsoft and EthanMcBloxxer on GitHub under the MIT License.\n-- Edited By KanekiCat
+-- Monaco and Autocomplete by Microsoft and EthanMcBloxxer on GitHub under the MIT License.
+-- Had been modified By KanekiCat
 ```
 
 This is already there by default, so you shouldn't have much trouble.
