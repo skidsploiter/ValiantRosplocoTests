@@ -15,7 +15,7 @@ To use this in your project, you must credit EthanMcBloxxer and Microsoft, Kanek
 
 This is already there by default, so you shouldn't have much trouble.
 
-Since Rosploco is a web-based program (as is Monaco), you can also use it interactively inside of your web browser. Just go to [ethanmcbloxxer.github.io/Rosploco/rosploco.html](https://ethanmcbloxxer.github.io/Rosploco/rosploco.html).
+Since (Valiant)Rosploco is a web-based program (as is Monaco), you can also use it interactively inside of your web browser. Just go to [https://kanekicow.github.io/ValiantRosploco/ValiantRosplocoEditor.html]
 
 <img src="/context.png" align="right"/>
 
