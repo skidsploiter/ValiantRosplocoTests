@@ -36,6 +36,9 @@
       .lua-inlay-hint.parameter {
         color: #555555;
       }
+      .line-numbers {
+        cursor: default;
+      }
     </style>
   </head>
 
@@ -7439,6 +7442,9 @@
             });
           }
 
+          // Handle additional Lua U-specific hints here
+          // ...
+
           if (node && typeof node === "object") {
             for (const key in node) {
               if (node.hasOwnProperty(key)) {
@@ -7481,9 +7487,23 @@
         editor.onDidChangeModelContent(parseCode);
         editor.onDidChangeModelContent(updateInlayHints);
 
+        // Trigger IntelliSense on keyboard events
+        editor.onKeyDown((e) => {
+          // Trigger suggestions on dot/period key (.)
+          if (e.keyCode === monaco.KeyCode.US_DOT) {
+            editor.trigger("luaU", "editor.action.triggerSuggest", {});
+          }
+
+          // Trigger parameter hints on open parenthesis key (()
+          if (e.keyCode === monaco.KeyCode.US_OPEN_SQUARE_BRACKET) {
+            editor.trigger("luaU", "editor.action.triggerParameterHints", {});
+          }
+        });
+
         // Initial update of inlay hints
         updateInlayHints();
         parseCode();
+
         var colorPickerButton = document.createElement("button");
         colorPickerButton.style.backgroundColor = "red";
         colorPickerButton.style.display = "none";
