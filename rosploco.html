@@ -1,58 +1,17 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <!-- By Microsoft and EthanMcBloxxer under the MIT License (see the end of this document) -->
 <html
   lang="en"
   style="width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden"
 >
   <head>
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
-    />
-
     <meta charset="utf-8" />
     <title></title>
-    <!-- Include Pickr JavaScript file from jsDelivr CDN -->
-    <link rel="stylesheet" href="vs/nano-theme.css" />
-    <script src="vs/pickr.min.js"></script>
-    <!-- Include jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <style>
-      .pickr .pcr-button {
-        height: 0;
-        width: 0;
-        padding: 0;
-      }
-      .color-container {
-        display: flex;
-        align-items: center;
-        margin-bottom: 5px;
-      }
-      .color-preview {
-        width: 20px;
-        height: 20px;
-        margin-right: 5px;
-      }
-      /* CSS for inlay hint classes */
-      .lua-inlay-hint {
-        color: #888888;
-      }
-
-      .lua-inlay-hint.parameter {
-        color: #555555;
-      }
-      .monaco-editor .margin-view-overlays .line-numbers {
-        cursor: default;
-      }
-    </style>
   </head>
 
   <body
     style="width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden"
   >
-    <div id="color-picker" class="dark-mode"></div>
-    <script src="https://unpkg.com/luaparse@1.2.2"></script>
-    <script src="https://cdn.jsdelivr.net/npm/luaparse@0.3.1/luaparse.min.js"></script>
     <div id="container" style="width: 100%; height: 100%"></div>
     <script type="text/javascript">
       /* FileSaver.js //purl.eligrey.com/github/FileSaver.js (MIT License) */ var saveAs =
@@ -1906,7 +1865,7 @@
                       "Acts the same as `Color3.new`, but the RGB components are instead on the range [0, 255].",
                   },
 
-                  insertText: "Color3.fromRGB(${1:255}, ${2:255}, ${3:255})",
+                  insertText: "Color3.fromRGB(${1:r}, ${2:g}, ${3:b})",
                   insertTextRules:
                     monaco.languages.CompletionItemInsertTextRule
                       .InsertAsSnippet,
@@ -7109,51 +7068,31 @@
         monaco.editor.defineTheme("vsLight", { base: "vs" });
         monaco.editor.defineTheme("vsDark", { base: "vs-dark" });
 
-        monaco.editor.defineTheme("visualStudio-Dark", {
+        monaco.editor.defineTheme("studio", {
           // also synapse's theme
           base: "vs-dark",
           inherit: true,
           rules: [
-            { token: "keyword", foreground: "d62279" },
-            { token: "global", foreground: "b688f2" },
-            { token: "type", foreground: "2B91AF" },
-            { token: "string", foreground: "58F6A5" },
-            { token: "number", foreground: "d6ac22" },
-            { token: "operator", foreground: "89DDFF" },
-            { token: "comment", foreground: "666666" },
-            { token: "comment.todo", foreground: "666666" },
+            { token: "keyword", foreground: "f86d7c", fontStyle: "bold" },
+            { token: "global", foreground: "84d6f7", fontStyle: "bold" },
+            { token: "type", foreground: "84d6f7" },
+            { token: "string", foreground: "adf195" },
+            { token: "number", foreground: "fcc600" },
+            { token: "operator", foreground: "ffffff" },
+            { token: "comment", foreground: "669966" },
+            { token: "comment.todo", fontStyle: "bold" },
           ],
           colors: {
-            "editor.background": "#00000000",
-            "editor.foreground": "#f0f0f0",
-          },
-        });
-
-        monaco.editor.defineTheme("visualStudio-Light", {
-          // also synapse's theme
-          base: "vs",
-          inherit: true,
-          rules: [
-            { token: "keyword", foreground: "BB9AF7" },
-            { token: "global", foreground: "7AA2F7" },
-            { token: "type", foreground: "2B91AF" },
-            { token: "string", foreground: "58f6a5" },
-            { token: "number", foreground: "FF9E64" },
-            { token: "operator", foreground: "89DDFF" },
-            { token: "comment", foreground: "666666" },
-            { token: "comment.todo", foreground: "666666" },
-          ],
-          colors: {
-            "editor.background": "#ffffff",
-            "editor.foreground": "#000000",
+            "editor.background": "#252525",
+            "editor.foreground": "#cccccc",
           },
         });
 
         editor = monaco.editor.create(document.getElementById("container"), {
           value:
-            "-- Monaco (Microsoft) and Rosploco (EthanMcBloxxer) licensed under the MIT License.  \n-- Has been edited by KanekiCat",
+            "-- Monaco (Microsoft) and Rosploco (EthanMcBloxxer) licensed under the MIT License.",
           language: "lua",
-          theme: "visualStudio-Dark",
+          theme: "studio",
           folding: true,
           scrollbar: {
             useShadows: false,
@@ -7173,731 +7112,222 @@
           autoClosingBrackets: "always",
           detectIndentation: true,
           autoIndent: "full",
-          cursorSmoothCaretAnimation: true,
           insertSpaces: false,
-          cursorBlinking: "smooth",
+          cursorBlinking: "phase",
           formatOnPaste: true,
           formatOnType: true,
           snippetSuggestions: "bottom",
           stickyTabStops: true,
-          wordBasedSuggestionsOnlySameLanguage: true,
-          // Additional Features for Luau Development
-          suggestOnTriggerCharacters: true, // Enable suggestions on trigger characters like ".", ":" etc.
-          parameterHints: true, // Show parameter hints for function/method calls
-          quickSuggestions: true, // Show quick suggestions as you type
-          contextmenu: true, // Enable context menu options for code editing
+          wordBasedSuggestionsOnlySameLanguage: false,
         });
 
-        const deprecatedFunctions = [];
-
-        const luaUUnsupportedFeatures = [
-          "type",
-          "shared",
-          "protected",
-          "public",
-          "private",
-          "extends",
-          "implements",
-          "override",
-          "overridable",
-          "final",
-          "abstract",
-          "interface",
-          "newindex",
-          "inherit",
-          "getmetatable",
-          "setmetatable",
-          "getpeername",
-          "setpeername",
-          "rawequal",
-          "rawget",
-          "rawset",
-          "gcinfo",
-          "getfenv",
-          "setfenv",
-          "debug",
-          "traceback",
-          "requiref",
-          "math.type",
-          "table.getn",
-          "table.setn",
-          "table.foreach",
-          "table.foreachi",
-          "table.maxn",
-          "table.n",
-          "table.clone",
-          "table.clear",
-          "table.shallowcopy",
-          "table.deepmerge",
-          "table.deepcopy",
-          "table.shallowmerge",
-          "table.merge",
-          "table.getmetatable",
-          "table.setmetatable",
-          "string.gfind",
-          "string.gmatch",
-          "string.match",
-          "string.gfind",
-          "string.find",
-          "string.gsub",
-          "string.gmatch",
-          "string.match",
-          "string.dump",
-          "string.reverse",
-          "string.lower",
-          "string.upper",
-          "string.rep",
-          "string.byte",
-          "string.char",
-          "io.open",
-          "io.popen",
-          "io.output",
-          "io.input",
-          "io.tmpfile",
-          "io.stdin",
-          "io.stdout",
-          "io.stderr",
-          "io.write",
-          "io.close",
-          "io.flush",
-          "io.lines",
-          "io.read",
-          "io.tmpname",
-          "os.exit",
-          "os.execute",
-          "os.getenv",
-          "os.remove",
-          "os.rename",
-          "os.setlocale",
-          "os.clock",
-          "os.date",
-          "os.difftime",
-          "os.time",
-          "os.tmpname",
-          "os.getenv",
-          "coroutine.wrap",
-          "coroutine.create",
-          "coroutine.yield",
-          "coroutine.status",
-          "coroutine.resume",
-          "coroutine.running",
-        ];
-
-        let inlayHintDecorations = [];
-        let ast;
-
-        function parseCode() {
-          const code = editor.getValue();
-
-          try {
-            ast = luaparse.parse(code, { locations: true });
-
-            const markers = traverseAST(ast);
-            const inlayHints = generateInlayHints(ast);
-
-            monaco.editor.setModelMarkers(
-              editor.getModel(),
-              "luaparse",
-              markers
-            );
-
-            updateInlayHints(inlayHints);
-          } catch (error) {
-            const { line, column, message } = error;
-
-            const adjustedLine = line - 1; // Adjust for zero-based line numbers
-            const adjustedColumn = column - 1; // Adjust for zero-based column numbers
-
-            const marker = {
-              startLineNumber: adjustedLine,
-              endLineNumber: adjustedLine,
-              startColumn: adjustedColumn,
-              endColumn: adjustedColumn,
-              message,
-              severity: monaco.MarkerSeverity.Error,
-            };
-
-            monaco.editor.setModelMarkers(editor.getModel(), "luaparse", [
-              marker,
-            ]);
-          }
+        function addAction(id, label, run, keybinds) {
+          editor.addAction({
+            id: id,
+            label: label,
+            precondition: null,
+            keybindings: keybinds,
+            keybindingContext: null,
+            contextMenuGroupId: "navigation",
+            contextMenuOrder: 1.5,
+            run: function () {
+              run();
+              return null;
+            },
+          });
         }
 
-        function traverseAST(node) {
-          const markers = [];
-
-          if (node && node.type === "CallExpression") {
-            if (
-              node.base &&
-              node.base.type === "Identifier" &&
-              deprecatedFunctions.includes(node.base.name)
-            ) {
-              const { line, column } = node.base.loc.start;
-
-              const adjustedLine = line - 1; // Adjust for zero-based line numbers
-              const adjustedColumn = column - 1; // Adjust for zero-based column numbers
-
-              const marker = {
-                startLineNumber: adjustedLine,
-                endLineNumber: adjustedLine,
-                startColumn: adjustedColumn,
-                endColumn: adjustedColumn + node.base.name.length,
-                message: `Deprecated function '${node.base.name}' used.`,
-                severity: monaco.MarkerSeverity.Warning,
-              };
-
-              markers.push(marker);
-            }
-          }
-
-          if (node && node.type === "Identifier") {
-            if (luaUUnsupportedFeatures.includes(node.name)) {
-              const { line, column } = node.loc.start;
-
-              const adjustedLine = line - 1; // Adjust for zero-based line numbers
-              const adjustedColumn = column - 1; // Adjust for zero-based column numbers
-
-              const marker = {
-                startLineNumber: adjustedLine,
-                endLineNumber: adjustedLine,
-                startColumn: adjustedColumn,
-                endColumn: adjustedColumn + node.name.length,
-                message: `Unsupported LuaU feature '${node.name}' used.`,
-                severity: monaco.MarkerSeverity.Error,
-              };
-
-              markers.push(marker);
-            }
-          }
-
-          if (node && typeof node === "object") {
-            for (const key in node) {
-              if (node.hasOwnProperty(key)) {
-                const childMarkers = traverseAST(node[key]);
-                markers.push(...childMarkers);
-              }
-            }
-          }
-
-          return markers;
-        }
-
-        function generateInlayHints(node) {
-          let hints = [];
-
-          if (node && node.type === "FunctionDeclaration") {
-            if (node.identifier) {
-              const { line, column } = node.identifier.loc.start;
-
-              const adjustedLine = line - 1; // Adjust for zero-based line numbers
-              const adjustedColumn = column - 1; // Adjust for zero-based column numbers
-
-              hints.push({
-                position: {
-                  lineNumber: adjustedLine,
-                  column: adjustedColumn,
-                },
-                text: "Function",
-              });
-            }
-          }
-
-          if (node && node.type === "LocalStatement") {
-            node.variables.forEach((variable) => {
-              const { line, column } = variable.loc.start;
-
-              const adjustedLine = line - 1; // Adjust for zero-based line numbers
-              const adjustedColumn = column - 1; // Adjust for zero-based column numbers
-
-              hints.push({
-                position: {
-                  lineNumber: adjustedLine,
-                  column: adjustedColumn,
-                },
-                text: "Local variable",
-              });
-            });
-          }
-
-          // Handle additional Lua U-specific hints here
-          // ...
-
-          if (node && typeof node === "object") {
-            for (const key in node) {
-              if (node.hasOwnProperty(key)) {
-                hints = hints.concat(generateInlayHints(node[key]));
-              }
-            }
-          }
-
-          return hints;
-        }
-
-        function updateInlayHints(hints) {
-          const model = editor.getModel();
-          let decorations = [];
-
-          if (Array.isArray(hints)) {
-            decorations = hints.map((hint) => ({
-              range: new monaco.Range(
-                hint.position.lineNumber,
-                hint.position.column,
-                hint.position.lineNumber,
-                hint.position.column
-              ),
-              options: {
-                inlineClassName: "inlay-hint",
-                hoverMessage: { value: hint.text },
-              },
-            }));
-          }
-
-          inlayHintDecorations = model.deltaDecorations(
-            inlayHintDecorations,
-            decorations
-          );
-        }
-
-        const initialInlayHints = generateInlayHints(ast);
-        updateInlayHints(initialInlayHints);
-
-        editor.onDidChangeModelContent(parseCode);
-        editor.onDidChangeModelContent(updateInlayHints);
-
-        // Trigger IntelliSense on keyboard events
-        editor.onKeyDown((e) => {
-          // Trigger suggestions on dot/period key (.)
-          if (e.keyCode === monaco.KeyCode.US_DOT) {
-            editor.trigger("luaU", "editor.action.triggerSuggest", {});
-          }
-
-          // Trigger parameter hints on open parenthesis key (()
-          if (e.keyCode === monaco.KeyCode.US_OPEN_SQUARE_BRACKET) {
-            editor.trigger("luaU", "editor.action.triggerParameterHints", {});
-          }
-        });
-
-        // Initial update of inlay hints
-        updateInlayHints();
-        parseCode();
-
-        var colorPickerButton = document.createElement("button");
-        colorPickerButton.style.backgroundColor = "red";
-        colorPickerButton.style.display = "none";
-        colorPickerButton.style.position = "absolute";
-        colorPickerButton.style.top = "0";
-        colorPickerButton.style.zIndex = "100000";
-        colorPickerButton.style.left = "0";
-        colorPickerButton.style.padding = "4.5px";
-        colorPickerButton.style.marginTop = "4px";
-        colorPickerButton.style.marginLeft = "2px";
-        colorPickerButton.addEventListener("click", function () {
-          colorPicker.show();
-        });
-
-        // Append the color picker button to the editor container
-        var editorContainer = document.getElementById("container");
-        if (editorContainer) {
-          editorContainer.appendChild(colorPickerButton);
-        } else {
-          console.error("Editor container element not found.");
-        }
-
-        // Attach a listener to the editor for cursor position change events
-        editor.onDidChangeCursorPosition(function (e) {
-          var position = e.position;
-          if (!position) {
-            return;
-          }
-
-          var hoveredColor = getColorAtPosition(position);
-
-          // Check if the text at the cursor position is a valid color
-          if (hoveredColor && isValidColor(hoveredColor)) {
-            // Set the background color of the colorPickerButton to the hovered color
-            colorPickerButton.style.backgroundColor = hoveredColor;
-
-            // Get the line number where the cursor is located
-            var lineNumber = position.lineNumber;
-
-            // Get the position of the line
-            var linePosition = editor.getTopForLineNumber(lineNumber);
-
-            // Calculate the position of the colorPickerButton
-            var top = linePosition + "px";
-            var left = "0";
-
-            // Set the position of the colorPickerButton
-            colorPickerButton.style.top = top;
-            colorPickerButton.style.left = left;
-
-            colorPickerButton.style.display = "block"; // Show the colorPickerButton
-          } else {
-            // Reset the background color of the colorPickerButton to the default color
-            colorPickerButton.style.backgroundColor = "red";
-            colorPickerButton.style.display = "none"; // Hide the colorPickerButton
-          }
-        });
-
-        // Helper function to get the color at a given position
-        function getColorAtPosition(position) {
-          var model = editor.getModel();
-          var lineContent = model.getLineContent(position.lineNumber);
-
-          // Extract the RGB code from the hovered text
-          var rgbRegex =
-            /(?:Color3\.fromRGB\()?\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*(?:\))?/;
-          var colorMatch = rgbRegex.exec(lineContent);
-
-          if (colorMatch) {
-            var r = parseInt(colorMatch[1]);
-            var g = parseInt(colorMatch[2]);
-            var b = parseInt(colorMatch[3]);
-            return "rgb(" + r + "," + g + "," + b + ")";
-          }
-
-          return null;
-        }
-
-        // Helper function to check if the text is a valid color
-        function isValidColor(text) {
-          var colorRegex = /^rgb\(\d{1,3},\s*\d{1,3},\s*\d{1,3}\)$/;
-          return colorRegex.test(text);
-        }
-      });
-
-      // Initialize the Pickr color picker
-      const colorPicker = Pickr.create({
-        el: "#color-picker",
-        theme: "nano",
-        default: "#000000",
-        swatches: [],
-        draggable: true,
-        components: {
-          preview: true,
-          opacity: true,
-          hue: true,
-          interaction: {
-            hex: false,
-            rgba: false,
-            hsva: false,
-            input: false,
-            clear: false,
-            save: false,
+        addAction(
+          "monaco-help",
+          "~ Help",
+          function () {
+            document.location.href =
+              "https://github.com/EthanMcBloxxer/Rosploco/";
           },
-        },
-      });
-      function handleColorChange(color) {
-        const rgbaValues = color.toRGBA();
-        const selectedColor = `${Math.round(rgbaValues[0])}, ${Math.round(
-          rgbaValues[1]
-        )}, ${Math.round(rgbaValues[2])}`;
-
-        const model = editor.getModel();
-        const position = editor.getPosition();
-        const lineNumber = position.lineNumber;
-        const lineContent = model.getLineContent(lineNumber);
-
-        // Match and replace the selected RGB color value in the line
-        const rgbRegex = /(\b\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\b)/g;
-        let match;
-        let lastMatch;
-        while ((match = rgbRegex.exec(lineContent)) !== null) {
-          if (
-            match.index <= position.column - 1 &&
-            rgbRegex.lastIndex >= position.column
-          ) {
-            lastMatch = match;
-            break;
-          }
-        }
-
-        if (lastMatch) {
-          const startIndex = lastMatch.index;
-          const endIndex = startIndex + lastMatch[0].length;
-
-          const updatedLineContent =
-            lineContent.substring(0, startIndex) +
-            selectedColor +
-            lineContent.substring(endIndex);
-
-          // Update the editor with the modified line content
-          editor.executeEdits("", [
-            {
-              range: new monaco.Range(
-                lineNumber,
-                1,
-                lineNumber,
-                lineContent.length + 1
-              ),
-              text: updatedLineContent,
-            },
-          ]);
-        }
-      }
-
-      // Attach the color change event listener
-      colorPicker.on("change", handleColorChange);
-
-      // Add a custom event listener for the color picker panel to enable dragging
-      colorPicker.on("init", function () {
-        const pickerPanel = document.querySelector(".pcr-app");
-
-        // Variables to store the initial mouse position and panel position
-        let startX, startY, panelX, panelY;
-
-        // Event listener for the mousedown event on the panel
-        pickerPanel.addEventListener("mousedown", function (e) {
-          // Check if the target element is part of the color picker
-          const isColorPickerElement = e.target.closest(
-            ".pcr-palette, .pcr-cursor, .pcr-last-color, .pcr-type, .pcr-color-chooser, .pcr-color-opacity"
-          );
-          if (isColorPickerElement) {
-            return;
-          }
-
-          e.preventDefault();
-
-          // Store the initial mouse position and panel position
-          startX = e.clientX;
-          startY = e.clientY;
-          panelX = pickerPanel.offsetLeft;
-          panelY = pickerPanel.offsetTop;
-
-          // Add event listeners for mousemove and mouseup events on the document
-          document.addEventListener("mousemove", dragPanel);
-          document.addEventListener("mouseup", stopDragging);
-
-          // Function to handle dragging of the panel
-          function dragPanel(e) {
-            // Calculate the distance moved by the mouse
-            const dx = e.clientX - startX;
-            const dy = e.clientY - startY;
-
-            // Update the panel position based on the mouse movement
-            pickerPanel.style.left = panelX + dx + "px";
-            pickerPanel.style.top = panelY + dy + "px";
-          }
-
-          // Function to stop dragging the panel
-          function stopDragging() {
-            // Remove the event listeners for mousemove and mouseup events
-            document.removeEventListener("mousemove", dragPanel);
-            document.removeEventListener("mouseup", stopDragging);
-          }
-
-          window.addEventListener("resize", () => {
-            editor.layout();
-          });
-
-          addAction(
-            "monaco-help",
-            "~ Help",
-            function () {
-              document.location.href =
-                "https://github.com/EthanMcBloxxer/Rosploco/";
-            },
-            [monaco.KeyMod.chord(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_H)]
-          );
-          addAction(
-            "save",
-            "Save",
-            function () {
-              saveTextAs(editor.getValue(), "script.lua");
-            },
-            [monaco.KeyMod.chord(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S)]
-          );
-          addAction("clear-editor", "Clear", function () {
-            editor.setValue("");
-
-            addAction(
-              "refresh",
-              "Refresh",
-              function () {
-                var replaceValue = editor.getValue();
-                editor.setValue(replaceValue);
-                replaceValue = null;
-              },
-              [
-                monaco.KeyMod.chord(
-                  monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_R
-                ),
-              ]
-            );
-
-            window.onresize = function () {
-              editor.layout();
-            };
-
-            var getText = function () {
-              return editor.getValue();
-            };
-            var setText = function (x) {
-              editor.setValue(x);
-            };
-            var setTheme = function (themeName) {
-              monaco.editor.setTheme(themeName);
-            };
-
-            var setImage = function (x) {
-              document.getElementsByClassName(
-                "lines-content monaco-editor-background"
-              )[0].style.backgroundImage = "url=(" + x + ")";
-              document.getElementsByClassName(
-                "margin"
-              )[0].style.backgroundImage = "url=(" + x + ")";
-            };
-
-            var switchMinimap = function (flag) {
-              editor.updateOptions({ minimap: { enabled: flag } });
-            };
-            var switchReadonly = function (flag) {
-              editor.updateOptions({ readOnly: flag });
-            };
-            var switchRenderWhitespace = function (op) {
-              editor.updateOptions({ renderWhitespace: op });
-            };
-            var switchLinks = function (flag) {
-              editor.updateOptions({ links: flag });
-            };
-            var switchLineHeight = function (num) {
-              editor.updateOptions({ lineHeight: num });
-            };
-            var switchFontSize = function (num) {
-              editor.updateOptions({ fontSize: num });
-            };
-            var switchFolding = function (flag) {
-              editor.updateOptions({ folding: flag });
-            };
-            var switchAutoIndent = function (flag) {
-              editor.updateOptions({ autoIndent: flag });
-            };
-            var switchFontFamily = function (name) {
-              editor.updateOptions({ fontFamily: name });
-            };
-            var switchFontLigatures = function (flag) {
-              editor.updateOptions({ fontLigatures: flag });
-            };
-
-            var addIntellisense = function (l, k, d, i) {
-              var t;
-              switch (k) {
-                case "Class":
-                  t = monaco.languages.CompletionItemKind.Class;
-                  break;
-                case "Color":
-                  t = monaco.languages.CompletionItemKind.Color;
-                  break;
-                case "Constructor":
-                  t = monaco.languages.CompletionItemKind.Constructor;
-                  break;
-                case "Enum":
-                  t = monaco.languages.CompletionItemKind.Enum;
-                  break;
-                case "Field":
-                  t = monaco.languages.CompletionItemKind.Field;
-                  break;
-                case "File":
-                  t = monaco.languages.CompletionItemKind.File;
-                  break;
-                case "Folder":
-                  t = monaco.languages.CompletionItemKind.Folder;
-                  break;
-                case "Function":
-                  t = monaco.languages.CompletionItemKind.Method;
-                  break;
-                case "Interface":
-                  t = monaco.languages.CompletionItemKind.Interface;
-                  break;
-                case "Keyword":
-                  t = monaco.languages.CompletionItemKind.Keyword;
-                  break;
-                case "Method":
-                  t = monaco.languages.CompletionItemKind.Method;
-                  break;
-                case "Module":
-                  t = monaco.languages.CompletionItemKind.Module;
-                  break;
-                case "Property":
-                  t = monaco.languages.CompletionItemKind.Property;
-                  break;
-                case "Reference":
-                  t = monaco.languages.CompletionItemKind.Reference;
-                  break;
-                case "Snippet":
-                  t = monaco.languages.CompletionItemKind.Snippet;
-                  break;
-                case "Text":
-                  t = monaco.languages.CompletionItemKind.Text;
-                  break;
-                case "Unit":
-                  t = monaco.languages.CompletionItemKind.Unit;
-                  break;
-                case "Value":
-                  t = monaco.languages.CompletionItemKind.Value;
-                  break;
-                case "Variable":
-                  t = monaco.languages.CompletionItemKind.Variable;
-                  break;
-              }
-
-              monaco.languages.registerCompletionItemProvider("lua", {
-                provideCompletionItems: function () {
-                  return {
-                    suggestions: [
-                      {
-                        label: l,
-                        kind: t,
-                        documentation: { value: d },
-
-                        insertText: i,
-                        insertTextRules:
-                          monaco.languages.CompletionItemInsertTextRule
-                            .InsertAsSnippet,
-                      },
-                    ],
-                  };
-                },
-              });
-            };
-
-            var showErr = function (
-              line,
-              column,
-              endline,
-              endcolumn,
-              errMessage
-            ) {
-              editor.revealPositionInCenter({
-                lineNumber: line,
-                column: column,
-              });
-              editor.deltaDecorations(
-                [],
-                [
-                  {
-                    range: new monaco.Range(line, column, endline, endcolumn),
-                    options: {
-                      inlineClassName: "squiggly-error",
-                      hoverMessage: { value: errMessage },
-                    },
-                  },
-                ]
-              );
-            };
-
-            var setScroll = function (line) {
-              editor.revealLineInCenter({ lineNumber: line });
-            };
-
-            var refresh = function () {
-              var text = getText();
-              setText("");
-              editor.trigger("keyboard", "type", { text: text });
-            };
-          });
+          [monaco.KeyMod.chord(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_H)]
+        );
+        addAction(
+          "save",
+          "Save",
+          function () {
+            saveTextAs(editor.getValue(), "script.lua");
+          },
+          [monaco.KeyMod.chord(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S)]
+        );
+        addAction("clear-editor", "Clear", function () {
+          editor.setValue("");
         });
+        addAction(
+          "refresh",
+          "Refresh",
+          function () {
+            var replaceValue = editor.getValue();
+            editor.setValue(replaceValue);
+            replaceValue = null;
+          },
+          [monaco.KeyMod.chord(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_R)]
+        );
+
+        window.onresize = function () {
+          editor.layout();
+        };
       });
+      var getText = function () {
+        return editor.getValue();
+      };
+      var setText = function (x) {
+        editor.setValue(x);
+      };
+      var setTheme = function (themeName) {
+        monaco.editor.setTheme(themeName);
+      };
+
+      var setImage = function (x) {
+        document.getElementsByClassName(
+          "lines-content monaco-editor-background"
+        )[0].style.backgroundImage = "url=(" + x + ")";
+        document.getElementsByClassName("margin")[0].style.backgroundImage =
+          "url=(" + x + ")";
+      };
+
+      var switchMinimap = function (flag) {
+        editor.updateOptions({ minimap: { enabled: flag } });
+      };
+      var switchReadonly = function (flag) {
+        editor.updateOptions({ readOnly: flag });
+      };
+      var switchRenderWhitespace = function (op) {
+        editor.updateOptions({ renderWhitespace: op });
+      };
+      var switchLinks = function (flag) {
+        editor.updateOptions({ links: flag });
+      };
+      var switchLineHeight = function (num) {
+        editor.updateOptions({ lineHeight: num });
+      };
+      var switchFontSize = function (num) {
+        editor.updateOptions({ fontSize: num });
+      };
+      var switchFolding = function (flag) {
+        editor.updateOptions({ folding: flag });
+      };
+      var switchAutoIndent = function (flag) {
+        editor.updateOptions({ autoIndent: flag });
+      };
+      var switchFontFamily = function (name) {
+        editor.updateOptions({ fontFamily: name });
+      };
+      var switchFontLigatures = function (flag) {
+        editor.updateOptions({ fontLigatures: flag });
+      };
+
+      var addIntellisense = function (l, k, d, i) {
+        var t;
+        switch (k) {
+          case "Class":
+            t = monaco.languages.CompletionItemKind.Class;
+            break;
+          case "Color":
+            t = monaco.languages.CompletionItemKind.Color;
+            break;
+          case "Constructor":
+            t = monaco.languages.CompletionItemKind.Constructor;
+            break;
+          case "Enum":
+            t = monaco.languages.CompletionItemKind.Enum;
+            break;
+          case "Field":
+            t = monaco.languages.CompletionItemKind.Field;
+            break;
+          case "File":
+            t = monaco.languages.CompletionItemKind.File;
+            break;
+          case "Folder":
+            t = monaco.languages.CompletionItemKind.Folder;
+            break;
+          case "Function":
+            t = monaco.languages.CompletionItemKind.Method;
+            break;
+          case "Interface":
+            t = monaco.languages.CompletionItemKind.Interface;
+            break;
+          case "Keyword":
+            t = monaco.languages.CompletionItemKind.Keyword;
+            break;
+          case "Method":
+            t = monaco.languages.CompletionItemKind.Method;
+            break;
+          case "Module":
+            t = monaco.languages.CompletionItemKind.Module;
+            break;
+          case "Property":
+            t = monaco.languages.CompletionItemKind.Property;
+            break;
+          case "Reference":
+            t = monaco.languages.CompletionItemKind.Reference;
+            break;
+          case "Snippet":
+            t = monaco.languages.CompletionItemKind.Snippet;
+            break;
+          case "Text":
+            t = monaco.languages.CompletionItemKind.Text;
+            break;
+          case "Unit":
+            t = monaco.languages.CompletionItemKind.Unit;
+            break;
+          case "Value":
+            t = monaco.languages.CompletionItemKind.Value;
+            break;
+          case "Variable":
+            t = monaco.languages.CompletionItemKind.Variable;
+            break;
+        }
+
+        monaco.languages.registerCompletionItemProvider("lua", {
+          provideCompletionItems: function () {
+            return {
+              suggestions: [
+                {
+                  label: l,
+                  kind: t,
+                  documentation: { value: d },
+
+                  insertText: i,
+                  insertTextRules:
+                    monaco.languages.CompletionItemInsertTextRule
+                      .InsertAsSnippet,
+                },
+              ],
+            };
+          },
+        });
+      };
+
+      var showErr = function (line, column, endline, endcolumn, errMessage) {
+        editor.revealPositionInCenter({ lineNumber: line, column: column });
+        editor.deltaDecorations(
+          [],
+          [
+            {
+              range: new monaco.Range(line, column, endline, endcolumn),
+              options: {
+                inlineClassName: "squiggly-error",
+                hoverMessage: { value: errMessage },
+              },
+            },
+          ]
+        );
+      };
+
+      var setScroll = function (line) {
+        editor.revealLineInCenter({ lineNumber: line });
+      };
+
+      var refresh = function () {
+        var text = getText();
+        setText("");
+        editor.trigger("keyboard", "type", { text: text });
+      };
     </script>
   </body>
 </html>
