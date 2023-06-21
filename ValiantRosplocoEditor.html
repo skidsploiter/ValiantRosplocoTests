@@ -7501,7 +7501,9 @@
         } else {
           console.error("Editor container element not found.");
         }
-
+        window.addEventListener("resize", () => {
+          editor.layout();
+        });
         // Attach a listener to the editor for cursor position change events
         editor.onDidChangeCursorPosition(function (e) {
           var position = e.position;
