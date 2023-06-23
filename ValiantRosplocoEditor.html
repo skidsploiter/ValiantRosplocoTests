@@ -1024,7 +1024,7 @@
                         "Sets the metatable for the given table to `metatable`. If `metatable` is nil, the metatable of t is removed. If t already has a metatable whose __metatable metamethod is set, calling this on t raises an error.",
                     },
 
-                    insertText: "setmetatable(${1:table}, ${2:metatable})",
+                    insertText: "(${1:table}, ${2:metatable})",
                     insertTextRules:
                       monaco.languages.CompletionItemInsertTextRule
                         .InsertAsSnippet,
@@ -4246,7 +4246,7 @@
                     "${1:Class}.__index = ${1:Class}",
                     "",
                     "function ${1:Class}.new()",
-                    "\tlocal ${2:Object} = setmetatable({}, ${1:Class})",
+                    "\tlocal ${2:Object} = ({}, ${1:Class})",
                     "\t$0",
                     "\treturn ${2:Object}",
                     "end",
@@ -5251,7 +5251,7 @@
                     detail: "Metamethod",
                     documentation: {
                       value:
-                        "If present, locks the metatable so `getmetatable` will return this instead of the metatable and `setmetatable` will error. Non-function value.",
+                        "If present, locks the metatable so `getmetatable` will return this instead of the metatable and `` will error. Non-function value.",
                     },
 
                     insertText: '__metatable = "${1:The metatable is locked}"',
@@ -7012,7 +7012,7 @@
                         .InsertAsSnippet,
                   },
                   {
-                    label: "debug.setmetatable",
+                    label: "debug.",
                     kind: monaco.languages.CompletionItemKind.Function,
                     detail: "Function",
                     documentation: {
@@ -7021,7 +7021,7 @@
                     },
 
                     insertText:
-                      "debug.setmetatable(${1:table}, ${2:metatable})",
+                      "debug.(${1:table}, ${2:metatable})",
                     insertTextRules:
                       monaco.languages.CompletionItemInsertTextRule
                         .InsertAsSnippet,
@@ -7204,8 +7204,6 @@
           "interface",
           "newindex",
           "inherit",
-          "getmetatable",
-          "setmetatable",
           "getpeername",
           "setpeername",
           "rawequal",
