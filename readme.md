@@ -1,4 +1,5 @@
-## ValiantRosploco - a modifed version of Rosploco (pls dm me if you found a bug)
+## ValiantRosploco - a modifed version of Rosploco 
+(pls dm me if you found a bug discord: kazekikitten)
 
 You're in a repository that forked a web-based code editor, Monaco, from the Microsoft Corporation that has been forked again to this one.
 
