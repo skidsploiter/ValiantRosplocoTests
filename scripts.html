@@ -118,7 +118,7 @@
     const scriptData = await fetchScript(query, 1);
 
     if (scriptData) { // Check if scriptData is not null
-        if (scriptData.scripts && Array.isArray(scriptData.scripts) && scriptData.scripts.length > 0) { // Check if scripts exists, is an array and has at least 1 element
+        if (scriptData.scripts && Array.isArray(scriptData.result.scripts) && scriptData.result.scripts.length > 0) { // Check if scripts exists, is an array and has at least 1 element
             if (scriptData.scripts[0].script) { // Check if the script property exists
                 scriptContent.textContent = scriptData.scripts[0].script;
             } else {
