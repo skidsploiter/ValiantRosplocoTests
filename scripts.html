@@ -12,40 +12,40 @@
             background-color: #1e1e1e;
             color: white;
         }
-        
+
         header, footer {
             background-color: #333;
             color: white;
             padding: 10px;
             text-align: center;
         }
-        
+
         h2 {
             color: white;
         }
-        
+
         input, button {
             padding: 10px;
             border: none;
             border-radius: 5px;
             margin-bottom: 10px;
         }
-        
+
         input {
             width: calc(100% - 22px);
             margin-right: 10px;
         }
-        
+
         button {
             background-color: #007bff;
             color: white;
             cursor: pointer;
         }
-        
+
         button:hover {
             background-color: #0056b3;
         }
-        
+
         pre {
             background-color: #2d2d2d;
             color: #d4d4d4;
@@ -53,8 +53,12 @@
             border-radius: 5px;
             font-family: 'Courier New', Courier, monospace;
             overflow-x: auto;
-            white-space: pre-wrap;
+            white-space: pre-wrap; /* Important for wrapping long lines */
         }
+          #error-message {
+              color: red;
+              margin-top: 10px;
+          }
     </style>
 </head>
 <body>
@@ -70,6 +74,7 @@
 
         <h2>Script from API</h2>
         <pre id="script-content">Enter a search query and click 'Search' to load the script.</pre>
+        <div id="error-message"></div>
     </main>
 
     <footer>
@@ -78,19 +83,47 @@
 
     <script>
         async function fetchScript(query, page) {
-            const response = await fetch(`https://scriptblox-api-proxy.vercel.app/api/search?q=${encodeURIComponent(query)}&page=${page}`);
-            const data = await response.json();
-            return data;
+            try {
+                const response = await fetch(`https://scriptblox-api-proxy.vercel.app/api/search?q=${encodeURIComponent(query)}&page=${page}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error("Error fetching script:", error);
+                displayError("An error occurred while fetching the script.");
+                return null; // Important: Return null to prevent further errors
+            }
+        }
+
+        function displayError(message) {
+            const errorMessageDiv = document.getElementById("error-message");
+            errorMessageDiv.textContent = message;
         }
 
         async function displayScript() {
             const query = document.getElementById('search-query').value.trim();
-            if (query === '') return;
+            const scriptContent = document.getElementById('script-content');
+            const errorMessageDiv = document.getElementById("error-message");
+            errorMessageDiv.textContent = ""; // Clear any previous errors
+
+            if (query === '') {
+                scriptContent.textContent = "Please enter a search query.";
+                return;
+            }
+
+            scriptContent.textContent = "Loading...";
 
             const scriptData = await fetchScript(query, 1);
 
-            const scriptContent = document.getElementById('script-content');
-            scriptContent.textContent = scriptData.result[0]?.script || 'No script found';
+            if (scriptData && scriptData.scripts && scriptData.scripts.length > 0) {
+                scriptContent.textContent = scriptData.scripts[0].script;
+            } else if (scriptData && scriptData.scripts && scriptData.scripts.length === 0) {
+              scriptContent.textContent = "No scripts found for that query.";
+            } else {
+                scriptContent.textContent = "Failed to retrieve script.";
+            }
         }
     </script>
 
