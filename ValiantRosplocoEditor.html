@@ -7150,7 +7150,7 @@
 
         editor = monaco.editor.create(document.getElementById("container"), {
           value:
-            "-- Monaco (Microsoft) and Rosploco (EthanMcBloxxer) licensed under the MIT License.  \n-- Has been edited by KanekiCat",
+            "-- Type something...",
           language: "lua",
           theme: "visualStudio-Dark",
           folding: true,
@@ -7905,6 +7905,32 @@
         editor.trigger("keyboard", "type", { text: text });
       };
     </script>
+    <script>
+    function postEditorValue() {
+        const editorValue = monaco.getValue(); // Get the value of the editor
+
+        if (window.parent !== window) {
+            // If in an iframe, post the value to the parent window
+            window.parent.postMessage({
+                type: 'monacoEditorValue',
+                value: editorValue
+            }, '*');
+        } else {
+            // If not in an iframe, simply return the value
+            console.log("Editor Value:", editorValue); // Output value for testing
+            return editorValue;
+        }
+    }
+
+    // Optional: Bind the function to a keyboard shortcut for convenience
+    document.addEventListener('keydown', function (e) {
+        if (e.ctrlKey && e.key === 's') { // Ctrl+S to trigger
+            e.preventDefault(); // Prevent default save behavior
+            postEditorValue();
+        }
+    });
+</script>
+
   </body>
 </html>
 
