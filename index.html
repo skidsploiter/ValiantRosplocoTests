@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roblox Executor - Synapse X Style</title>
+    <title>Websploit - Roblox Executor</title>
     <style>
         :root {
             --background-color: #1E1E1E;
@@ -12,6 +12,9 @@
             --button-hover: #005a9e;
             --border-color: #444;
             --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --header-color: #2D2D2D;
+            --header-text-color: #C0C0C0;
+            --section-background: #282828;
         }
 
         html, body {
@@ -26,17 +29,26 @@
             font-family: var(--font-family);
         }
 
+        header {
+            background-color: var(--header-color);
+            color: var(--header-text-color);
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
         iframe {
             flex-grow: 1;
             border: none;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
             border-radius: 8px;
         }
 
         #controls {
             padding: 10px;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
             background-color: var(--background-color);
             border-top: 1px solid var(--border-color);
@@ -57,52 +69,121 @@
         button:hover {
             background-color: var(--button-hover);
         }
+
+        #sidebar {
+            width: 250px;
+            background-color: var(--section-background);
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .sidebar-item {
+            padding: 10px;
+            cursor: pointer;
+            background-color: #3A3A3A;
+            color: var(--text-color);
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
+        }
+
+        .sidebar-item:hover {
+            background-color: #333333;
+        }
     </style>
 </head>
 <body>
-    <iframe id="editorFrame" src="ValiantRosplocoEditor.html"></iframe>
-    <div id="controls">
-        <button id="executeButton">Execute</button>
+
+<header>
+    <div>Websploit - Roblox Executor</div>
+    <div>
+        <button id="settingsButton">Settings</button>
+        <button id="logoutButton">Logout</button>
     </div>
+</header>
 
-    <script>
-        const iframe = document.getElementById('editorFrame');
-        const executeButton = document.getElementById('executeButton');
+<div style="display: flex; height: calc(100% - 50px);">
+    <div id="sidebar">
+        <div class="sidebar-item" id="homeTab">Home</div>
+        <div class="sidebar-item" id="scriptsTab">Scripts</div>
+        <div class="sidebar-item" id="aboutTab">About</div>
+    </div>
+    <iframe id="editorFrame" src="ValiantRosplocoEditor.html"></iframe>
+</div>
 
-        // Listen for messages from the iframe
-        window.addEventListener('message', (event) => {
-            if (event.data.type === 'monacoEditorValue') {
-                sendToWebSocket(event.data.value);
-            }
-        });
+<div id="controls">
+    <button id="executeButton">Execute</button>
+</div>
 
-        // Request value from the iframe when the button is clicked
-        executeButton.addEventListener('click', () => {
-            if (iframe.contentWindow) {
-                iframe.contentWindow.postMessage({ type: 'requestEditorValue' }, '*');
-            }
-        });
+<script>
+    const iframe = document.getElementById('editorFrame');
+    const executeButton = document.getElementById('executeButton');
+    const homeTab = document.getElementById('homeTab');
+    const scriptsTab = document.getElementById('scriptsTab');
+    const aboutTab = document.getElementById('aboutTab');
+    const settingsButton = document.getElementById('settingsButton');
+    const logoutButton = document.getElementById('logoutButton');
 
-        // WebSocket setup
-        const ws = new WebSocket('ws://localhost:1827/exec');
-
-        ws.addEventListener('open', () => {
-            console.log('Connected to WebSocket server');
-        });
-
-        ws.addEventListener('error', (error) => {
-            console.error('WebSocket Error:', error);
-        });
-
-        ws.addEventListener('close', () => {
-            console.log('WebSocket closed');
-        });
-
-        // Function to send editor content to WebSocket
-        function sendToWebSocket(code) {
-            console.log(`Sending: ${code}`);
-            ws.send(code);
+    // Listen for messages from the iframe
+    window.addEventListener('message', (event) => {
+        if (event.data.type === 'monacoEditorValue') {
+            sendToWebSocket(event.data.value);
         }
-    </script>
+    });
+
+    // Request value from the iframe when the button is clicked
+    executeButton.addEventListener('click', () => {
+        if (iframe.contentWindow) {
+            iframe.contentWindow.postMessage({ type: 'requestEditorValue' }, '*');
+        }
+    });
+
+    // WebSocket setup
+    const ws = new WebSocket('ws://localhost:1827/exec');
+
+    ws.addEventListener('open', () => {
+        console.log('Connected to WebSocket server');
+    });
+
+    ws.addEventListener('error', (error) => {
+        console.error('WebSocket Error:', error);
+    });
+
+    ws.addEventListener('close', () => {
+        console.log('WebSocket closed');
+    });
+
+    // Function to send editor content to WebSocket
+    function sendToWebSocket(code) {
+        console.log(`Sending: ${code}`);
+        ws.send(code);
+    }
+
+    // Sidebar navigation tabs
+    [homeTab, scriptsTab, aboutTab].forEach(tab => {
+        tab.addEventListener('click', () => {
+            const activeTab = document.querySelector('.sidebar-item.active');
+            if (activeTab) activeTab.classList.remove('active');
+            tab.classList.add('active');
+            iframe.src = tab.id === 'homeTab' ? 'ValiantRosplocoEditor.html' : `${tab.id}.html`;
+        });
+    });
+
+    // Settings and Logout buttons
+    settingsButton.addEventListener('click', () => {
+        alert('Settings functionality is under development.');
+    });
+
+    logoutButton.addEventListener('click', () => {
+        alert('Logged out.');
+        ws.close();
+    });
+
+    // Initialize
+    homeTab.click();  // Default to Home tab
+</script>
+
 </body>
 </html>
