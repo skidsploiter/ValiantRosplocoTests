@@ -53,6 +53,7 @@
             border-radius: 5px;
             font-family: 'Courier New', Courier, monospace;
             overflow-x: auto;
+            white-space: pre-wrap;
         }
     </style>
 </head>
@@ -68,12 +69,12 @@
         <button onclick="displayScript()">Search</button>
 
         <h2>Script from API</h2>
-        <pre id="script-content"></pre>
+        <pre id="script-content">Enter a search query and click 'Search' to load the script.</pre>
     </main>
 
-    <!--<footer>
+    <footer>
         &copy; 2025 ValiantRosplocoEditor. All rights reserved.
-    </footer>-->
+    </footer>
 
     <script>
         async function fetchScript(query, page) {
