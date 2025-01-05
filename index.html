@@ -10,10 +10,6 @@
             --text-color: #E4E4E4;
             --button-background: #0078D4;
             --button-hover: #005a9e;
-            --tab-background: #2D2D2D;
-            --tab-active-background: #0078D4;
-            --tab-text-color: #C0C0C0;
-            --tab-active-text-color: white;
             --border-color: #444;
             --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
@@ -37,42 +33,12 @@
             border-radius: 8px;
         }
 
-        #tabs {
-            display: flex;
-            background-color: var(--tab-background);
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .tab {
-            padding: 12px 24px;
-            cursor: pointer;
-            color: var(--tab-text-color);
-            border-right: 1px solid var(--border-color);
-            text-align: center;
-            flex-grow: 1;
-        }
-
-        .tab:last-child {
-            border-right: none;
-        }
-
-        .tab.active {
-            background-color: var(--tab-active-background);
-            color: var(--tab-active-text-color);
-            font-weight: bold;
-        }
-
-        .tab:hover {
-            background-color: var(--tab-active-background);
-            color: var(--tab-active-text-color);
-        }
-
         #controls {
             padding: 10px;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-            background-color: var(--tab-background);
+            background-color: var(--background-color);
             border-top: 1px solid var(--border-color);
         }
 
@@ -94,10 +60,6 @@
     </style>
 </head>
 <body>
-    <div id="tabs">
-        <div class="tab active" id="executeTab">Execute</div>
-        <div class="tab" id="otherTab">Other Functionality</div>
-    </div>
     <iframe id="editorFrame" src="ValiantRosplocoEditor.html"></iframe>
     <div id="controls">
         <button id="executeButton">Execute</button>
@@ -106,8 +68,6 @@
     <script>
         const iframe = document.getElementById('editorFrame');
         const executeButton = document.getElementById('executeButton');
-        const executeTab = document.getElementById('executeTab');
-        const otherTab = document.getElementById('otherTab');
 
         // Listen for messages from the iframe
         window.addEventListener('message', (event) => {
