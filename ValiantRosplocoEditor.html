@@ -7909,7 +7909,7 @@
     // Listen for messages from the parent iframe
     window.addEventListener('message', (event) => {
         if (event.data.type === 'requestEditorValue') {
-            const editorValue = monaco.getValue(); // Get the editor's value
+            const editorValue = editor.getValue(); // Get the editor's value
             window.parent.postMessage({
                 type: 'monacoEditorValue',
                 value: editorValue
