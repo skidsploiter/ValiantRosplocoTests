@@ -162,13 +162,17 @@
     }
 
     // Sidebar navigation tabs
-    [homeTab, scriptsTab, aboutTab].forEach(tab => {
+    [homeTab, aboutTab].forEach(tab => {
         tab.addEventListener('click', () => {
             const activeTab = document.querySelector('.sidebar-item.active');
             if (activeTab) activeTab.classList.remove('active');
             tab.classList.add('active');
             iframe.src = tab.id === 'homeTab' ? 'ValiantRosplocoEditor.html' : `${tab.id}.html`;
         });
+    });
+    
+    scriptsTab.addEventListener('click', () => {
+        iframe.src = 'scripts.html'
     });
 
     // Settings and Logout buttons
