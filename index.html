@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iframe Host for Monaco Editor</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background: #222;
+            color: #fff;
+            font-family: Arial;
+        }
+        iframe {
+            flex-grow: 1;
+            border: none;
+        }
+        #controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: #f0f0f0;
+            border-top: 1px solid #ccc;
+        }
+        #log {
+            flex-grow: 0;
+            height: 150px;
+            overflow-y: auto;
+            font-family: monospace;
+            background: #f9f9f9;
+            padding: 10px;
+            border-top: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <iframe id="editorFrame" src="ValiantRosplocoEditor.html"></iframe>
+    <div id="controls">
+        <button id="getValueButton">Get Editor Value</button>
+    </div>
+    <div id="log">Waiting for editor messages...</div>
+
+    <script>
+        const iframe = document.getElementById('editorFrame');
+        const logDiv = document.getElementById('log');
+        const getValueButton = document.getElementById('getValueButton');
+
+        // Function to log messages
+        function logMessage(message) {
+            const logEntry = document.createElement('div');
+            logEntry.textContent = message;
+            logDiv.appendChild(logEntry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        // Listen for messages from the iframe
+        window.addEventListener('message', (event) => {
+            if (event.data.type === 'monacoEditorValue') {
+                logMessage(`Received value: ${event.data.value}`);
+            } else {
+                logMessage(`Unknown message type: ${JSON.stringify(event.data)}`);
+            }
+        });
+
+        // Request value from the iframe when the button is clicked
+        getValueButton.addEventListener('click', () => {
+            if (iframe.contentWindow) {
+                iframe.contentWindow.postMessage({ type: 'requestEditorValue' }, '*');
+            }
+        });
+    </script>
+</body>
+</html>
