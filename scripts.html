@@ -103,28 +103,34 @@
         }
 
         async function displayScript() {
-            const query = document.getElementById('search-query').value.trim();
-            const scriptContent = document.getElementById('script-content');
-            const errorMessageDiv = document.getElementById("error-message");
-            errorMessageDiv.textContent = ""; // Clear any previous errors
+    const query = document.getElementById('search-query').value.trim();
+    const scriptContent = document.getElementById('script-content');
+    const errorMessageDiv = document.getElementById("error-message");
+    errorMessageDiv.textContent = "";
 
-            if (query === '') {
-                scriptContent.textContent = "Please enter a search query.";
-                return;
-            }
+    if (query === '') {
+        scriptContent.textContent = "Please enter a search query.";
+        return;
+    }
 
-            scriptContent.textContent = "Loading...";
+    scriptContent.textContent = "Loading...";
 
-            const scriptData = await fetchScript(query, 1);
+    const scriptData = await fetchScript(query, 1);
 
-            if (scriptData && scriptData.scripts && scriptData.scripts.length > 0) {
+    if (scriptData) { // Check if scriptData is not null
+        if (scriptData.scripts && Array.isArray(scriptData.scripts) && scriptData.scripts.length > 0) { // Check if scripts exists, is an array and has at least 1 element
+            if (scriptData.scripts[0].script) { // Check if the script property exists
                 scriptContent.textContent = scriptData.scripts[0].script;
-            } else if (scriptData && scriptData.scripts && scriptData.scripts.length === 0) {
-              scriptContent.textContent = "No scripts found for that query.";
             } else {
-                scriptContent.textContent = "Failed to retrieve script.";
+                scriptContent.textContent = "Script data is missing the 'script' property.";
             }
+        } else {
+            scriptContent.textContent = "No scripts found for that query.";
         }
+    } else {
+        scriptContent.textContent = "Failed to retrieve script (API request failed)."; // More accurate message
+    }
+}
     </script>
 
 </body>
