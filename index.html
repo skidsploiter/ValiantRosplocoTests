@@ -122,24 +122,33 @@
 </div>
 
 <script>
-   const iframe = document.getElementById('editorFrame');
-const executeButton = document.getElementById('executeButton');
-const homeTab = document.getElementById('homeTab');
-const scriptsTab = document.getElementById('scriptsTab');
-const aboutTab = document.getElementById('aboutTab');
-const settingsButton = document.getElementById('settingsButton');
-const logoutButton = document.getElementById('logoutButton');
-const headerHr = document.querySelector('.hr');
+    const iframe = document.getElementById('editorFrame');
+    const executeButton = document.getElementById('executeButton');
+    const homeTab = document.getElementById('homeTab');
+    const scriptsTab = document.getElementById('scriptsTab');
+    const aboutTab = document.getElementById('aboutTab');
+    const settingsButton = document.getElementById('settingsButton');
+    const logoutButton = document.getElementById('logoutButton');
 
-let ws;
+    // Listen for messages from the iframe
+    window.addEventListener('message', (event) => {
+        if (event.data.type === 'monacoEditorValue') {
+            sendToWebSocket(event.data.value);
+        }
+    });
 
-// Function to connect to the WebSocket server
-function connectWebSocket() {
-    ws = new WebSocket('ws://localhost:1827/exec');
+    // Request value from the iframe when the button is clicked
+    executeButton.addEventListener('click', () => {
+        if (iframe.contentWindow) {
+            iframe.contentWindow.postMessage({ type: 'requestEditorValue' }, '*');
+        }
+    });
+
+    // WebSocket setup
+    const ws = new WebSocket('ws://localhost:1827/exec');
 
     ws.addEventListener('open', () => {
         console.log('Connected to WebSocket server');
-        headerHr.style.color = 'green';
     });
 
     ws.addEventListener('error', (error) => {
@@ -148,55 +157,40 @@ function connectWebSocket() {
 
     ws.addEventListener('close', () => {
         console.log('WebSocket closed');
-        headerHr.style.color = 'red';
-        setTimeout(connectWebSocket, 1000); // Try reconnecting every second
     });
-}
 
-// Function to send editor content to WebSocket
-function sendToWebSocket(code) {
-    console.log(`Sending: ${code}`);
-    ws.send(code);
-}
-
-// Sidebar navigation tabs
-[homeTab, aboutTab].forEach(tab => {
-    tab.addEventListener('click', () => {
-        const activeTab = document.querySelector('.sidebar-item.active');
-        if (activeTab) activeTab.classList.remove('active');
-        tab.classList.add('active');
-        iframe.src = tab.id === 'homeTab' ? 'ValiantRosplocoEditor.html' : `${tab.id}.html`;
-    });
-});
-
-scriptsTab.addEventListener('click', () => {
-    iframe.src = 'scripts.html';
-});
-
-// Settings and Logout buttons
-settingsButton.addEventListener('click', () => {
-    alert('Settings functionality is under development.');
-});
-
-logoutButton.addEventListener('click', () => {
-    alert('Logged out.');
-    ws.close();
-});
-
-// Request editor value when Execute button is clicked
-executeButton.addEventListener('click', () => {
-    if (iframe.contentWindow) {
-        iframe.contentWindow.postMessage({ type: 'requestEditorValue' }, '*');
+    // Function to send editor content to WebSocket
+    function sendToWebSocket(code) {
+        console.log(`Sending: ${code}`);
+        ws.send(code);
     }
-});
 
-// Initialize WebSocket connection
-connectWebSocket();
+    // Sidebar navigation tabs
+    [homeTab, aboutTab].forEach(tab => {
+        tab.addEventListener('click', () => {
+            const activeTab = document.querySelector('.sidebar-item.active');
+            if (activeTab) activeTab.classList.remove('active');
+            tab.classList.add('active');
+            iframe.src = tab.id === 'homeTab' ? 'ValiantRosplocoEditor.html' : `${tab.id}.html`;
+        });
+    });
+    
+    scriptsTab.addEventListener('click', () => {
+        iframe.src = 'scripts.html';
+    });
 
-// Default to Home tab
-homeTab.click();
+    // Settings and Logout buttons
+    settingsButton.addEventListener('click', () => {
+        alert('Settings functionality is under development.');
+    });
 
+    logoutButton.addEventListener('click', () => {
+        alert('Logged out.');
+        ws.close();
+    });
 
+    // Initialize
+    homeTab.click();  // Default to Home tab
 </script>
 
 </body>
