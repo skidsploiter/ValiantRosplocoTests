@@ -15,6 +15,7 @@
             --tab-text-color: #C0C0C0;
             --tab-active-text-color: white;
             --border-color: #444;
+            --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         html, body {
@@ -26,12 +27,46 @@
             flex-direction: column;
             background-color: var(--background-color);
             color: var(--text-color);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: var(--font-family);
         }
+
         iframe {
             flex-grow: 1;
             border: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
         }
+
+        #tabs {
+            display: flex;
+            background-color: var(--tab-background);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tab {
+            padding: 12px 24px;
+            cursor: pointer;
+            color: var(--tab-text-color);
+            border-right: 1px solid var(--border-color);
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        .tab:last-child {
+            border-right: none;
+        }
+
+        .tab.active {
+            background-color: var(--tab-active-background);
+            color: var(--tab-active-text-color);
+            font-weight: bold;
+        }
+
+        .tab:hover {
+            background-color: var(--tab-active-background);
+            color: var(--tab-active-text-color);
+        }
+
         #controls {
             padding: 10px;
             display: flex;
@@ -40,8 +75,9 @@
             background-color: var(--tab-background);
             border-top: 1px solid var(--border-color);
         }
+
         button {
-            padding: 10px 20px;
+            padding: 12px 24px;
             font-size: 16px;
             cursor: pointer;
             background-color: var(--button-background);
@@ -51,30 +87,16 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
             transition: background-color 0.2s ease;
         }
+
         button:hover {
             background-color: var(--button-hover);
-        }
-        #tabs {
-            display: flex;
-            background-color: var(--tab-background);
-            border-bottom: 1px solid var(--border-color);
-        }
-        .tab {
-            padding: 10px 20px;
-            cursor: pointer;
-            border: 1px solid transparent;
-            color: var(--tab-text-color);
-        }
-        .tab:hover, .tab.active {
-            background-color: var(--tab-active-background);
-            color: var(--tab-active-text-color);
         }
     </style>
 </head>
 <body>
     <div id="tabs">
         <div class="tab active" id="executeTab">Execute</div>
-        <!-- <div class="tab" id="otherTab">Other Functionality</div> -->
+        <div class="tab" id="otherTab">Other Functionality</div>
     </div>
     <iframe id="editorFrame" src="ValiantRosplocoEditor.html"></iframe>
     <div id="controls">
