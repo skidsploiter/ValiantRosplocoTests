@@ -11,7 +11,6 @@
     --input-border: #ffffff;
     --input-focus-border: #0078d7;
     --input-text-color: #ffffff;
-    --iframe-border: none;
 }
 
 * {
@@ -91,7 +90,7 @@ header button:hover {
 #editorFrame {
     flex-grow: 1;
     width: 100%;
-    border: var(--iframe-border);
+    border: none;
 }
 
 #controls {
