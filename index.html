@@ -75,7 +75,7 @@
     }
 
     // Sidebar navigation tabs
-    [homeTab, aboutTab].forEach(tab => {
+    [homeTab].forEach(tab => {
         tab.addEventListener('click', () => {
             const activeTab = document.querySelector('.sidebar-item.active');
             if (activeTab) activeTab.classList.remove('active');
@@ -87,6 +87,11 @@
     scriptsTab.addEventListener('click', () => {
         iframe.src = 'scripts.html';
     });
+
+    aboutTab.addEventListener('click', () => {
+        iframe.src = 'abt.html';
+    });
+    
 
     // Settings and Logout buttons
     settingsButton.addEventListener('click', () => {
