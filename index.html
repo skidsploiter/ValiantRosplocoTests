@@ -10,7 +10,7 @@
 <body>
 
 <header>
-    <div class="hr">Pulse</div>
+    <div id="hr">Pulse</div>
     <div>
         <button id="settingsButton">Settings</button>
         <button id="logoutButton">Logout</button>
@@ -38,6 +38,7 @@
     const aboutTab = document.getElementById('aboutTab');
     const settingsButton = document.getElementById('settingsButton');
     const logoutButton = document.getElementById('logoutButton');
+    const header = document.getElementById('hr');
 
     // Listen for messages from the iframe
     window.addEventListener('message', (event) => {
@@ -58,6 +59,7 @@
 
     ws.addEventListener('open', () => {
         console.log('Connected to WebSocket server');
+        header.style.color = '#00ff00';       
     });
 
     ws.addEventListener('error', (error) => {
@@ -66,6 +68,7 @@
 
     ws.addEventListener('close', () => {
         console.log('WebSocket closed');
+        header.style.color = '#ff0000';
     });
 
     // Function to send editor content to WebSocket
