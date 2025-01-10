@@ -90,7 +90,7 @@ header button:hover {
 #editorFrame {
     flex-grow: 1;
     width: 100%;
-    border: none;
+    border: 4px solid var(--text-color);
 }
 
 #controls {
