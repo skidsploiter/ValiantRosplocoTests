@@ -1,15 +1,15 @@
 /* styles.css */
 
 :root {
-    --background-color: #1E1E1E;
-    --text-color: #E4E4E4;
-    --button-background: #0078D4;
-    --button-hover: #005A9E;
-    --border-color: #444;
+    --background-color: #0B0B0B;
+    --text-color: #BFBFBF;
+    --button-background: #004080;
+    --button-hover: #002850;
+    --border-color: #1A1A1A;
     --font-family: 'Montserrat', sans-serif;
-    --header-color: #2D2D2D;
-    --header-text-color: #C0C0C0;
-    --section-background: #282828;
+    --header-color: #151515;
+    --header-text-color: #888888;
+    --section-background: #101010;
 }
 
 input {
