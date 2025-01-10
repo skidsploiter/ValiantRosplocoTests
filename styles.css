@@ -54,17 +54,16 @@ input {
     width: calc(100% - 22px);
     margin-right: 10px;
     padding: 10px;
-    border: 10px solid var(--border-light);
-    border-radius: 5px;
-    background-color: var(--background-color);
+    border: 1px solid var(--text-color); /* Light border always */
+    background-color: var(--section-background);
     color: var(--text-color);
-    font-size: 14px;
-    outline: none;
-    transition: border-color 0.2s ease, background-color 0.2s ease;
+    border-radius: 5px;
+    transition: box-shadow 0.3s ease;
 }
 
 input:focus {
-    border-color: var(--button-background);
+    box-shadow: 0 0 8px var(--text-color); /* Glow effect on focus */
+    outline: none;
 }
 
 button {
