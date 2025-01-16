@@ -4,7 +4,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pulse - feel the power</title>
+    <title>Pulse - Feel the Power</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -17,11 +17,30 @@
     </div>
 </header>
 
-<div style="display: flex; height: calc(100% - 50px);">
+<div class="main-container">
     <div id="sidebar">
-        <div class="sidebar-item" id="homeTab"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-house"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg> Home</div>
-        <div class="sidebar-item" id="scriptsTab"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-braces"><path d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1"/><path d="M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1"/></svg> Scripts</div>
-        <div class="sidebar-item" id="aboutTab"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg> About</div>
+        <div class="sidebar-item active" id="homeTab">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-house">
+                <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/>
+                <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            </svg>
+            Home
+        </div>
+        <div class="sidebar-item" id="scriptsTab">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-braces">
+                <path d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1"/>
+                <path d="M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1"/>
+            </svg>
+            Scripts
+        </div>
+        <div class="sidebar-item" id="aboutTab">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 16v-4"/>
+                <path d="M12 8h.01"/>
+            </svg>
+            About
+        </div>
     </div>
     <iframe id="editorFrame" src="ValiantRosplocoEditor.html"></iframe>
 </div>
@@ -30,85 +49,7 @@
     <button id="executeButton">Execute</button>
 </div>
 
-<script>
-    const iframe = document.getElementById('editorFrame');
-    const executeButton = document.getElementById('executeButton');
-    const homeTab = document.getElementById('homeTab');
-    const scriptsTab = document.getElementById('scriptsTab');
-    const aboutTab = document.getElementById('aboutTab');
-    const settingsButton = document.getElementById('settingsButton');
-    const logoutButton = document.getElementById('logoutButton');
-    const header = document.getElementById('hr');
-
-    // Listen for messages from the iframe
-    window.addEventListener('message', (event) => {
-        if (event.data.type === 'monacoEditorValue') {
-            sendToWebSocket(event.data.value);
-        }
-    });
-
-    // Request value from the iframe when the button is clicked
-    executeButton.addEventListener('click', () => {
-        if (iframe.contentWindow) {
-            iframe.contentWindow.postMessage({ type: 'requestEditorValue' }, '*');
-        }
-    });
-
-    // WebSocket setup
-    const ws = new WebSocket('ws://localhost:1827/exec');
-
-    ws.addEventListener('open', () => {
-        console.log('Connected to WebSocket server');
-        header.style.color = '#00ff00';       
-    });
-
-    ws.addEventListener('error', (error) => {
-        console.error('WebSocket Error:', error);
-    });
-
-    ws.addEventListener('close', () => {
-        console.log('WebSocket closed');
-        header.style.color = '#ff0000';
-    });
-
-    // Function to send editor content to WebSocket
-    function sendToWebSocket(code) {
-        console.log(`Sending: ${code}`);
-        ws.send(code);
-    }
-
-    // Sidebar navigation tabs
-    [homeTab].forEach(tab => {
-        tab.addEventListener('click', () => {
-            const activeTab = document.querySelector('.sidebar-item.active');
-            if (activeTab) activeTab.classList.remove('active');
-            tab.classList.add('active');
-            iframe.src = tab.id === 'homeTab' ? 'ValiantRosplocoEditor.html' : `${tab.id}.html`;
-        });
-    });
-    
-    scriptsTab.addEventListener('click', () => {
-        iframe.src = 'scripts.html';
-    });
-
-    aboutTab.addEventListener('click', () => {
-        iframe.src = 'abt.html';
-    });
-    
-
-    // Settings and Logout buttons
-    settingsButton.addEventListener('click', () => {
-        alert('Settings functionality is under development.');
-    });
-
-    logoutButton.addEventListener('click', () => {
-        alert('there\'s no need to log out.');
-        ws.close();
-    });
-
-    // Initialize
-    homeTab.click();  // Default to Home tab
-</script>
+<script src="scripts.js"></script>
 
 </body>
 </html>
